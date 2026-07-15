@@ -1,5 +1,6 @@
 import "./hero.css";
-import { FaLeaf } from "react-icons/fa";
+import { PiLeafFill } from "react-icons/pi";
+import { Leaf } from "lucide-react";
 import heroImage from "../../assets/images/hero-box.png"; // your image
 
 function Hero() {
@@ -7,7 +8,7 @@ function Hero() {
     <section className="hero">
       <div className="hero-container">
         <div className="hero-badge">
-        <PiLeafFill className="leaf-icon" />
+        <Leaf className="badge-icon" />
         <span>CUSTOM SOLUTIONS AVAILABLE</span>
         </div>
         <h1 className="hero-title">
