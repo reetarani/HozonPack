@@ -1,0 +1,163 @@
+/* ===========================
+   Features Section
+=========================== */
+
+.features{
+    width:100%;
+    background:#FBF7F4;
+    padding:100px 0;
+}
+.container-feaatures{
+    max-width:1200px;
+    width:100%;
+    margin:0 auto;
+    padding:0 20px;
+}
+/* Uses your global .container class */
+.features-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:32px;
+}
+
+/* ===========================
+   Card
+=========================== */
+
+.feature-card{
+    background:#fff;
+    border-radius:36px;
+    padding:45px;
+    box-shadow:0 15px 40px rgba(0,0,0,.04);
+    transition:all .35s ease;
+}
+
+.feature-card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 30px 60px rgba(0,0,0,.08);
+}
+
+/* ===========================
+   Icon
+=========================== */
+
+.feature-icon{
+    width:56px;
+    height:56px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#FDECE3;
+    color:#EB6B2A;
+    border-radius:15px;
+    font-size:28px;
+    margin-bottom:32px;
+}
+
+/* ===========================
+   Title
+=========================== */
+
+.feature-title{
+    font-family:"Playfair Display", serif;
+    font-size:25px;
+    font-weight:700;
+    line-height:1.2;
+    color:#171717;
+    margin-bottom:20px;
+}
+
+.feature-title span{
+    display:block;
+    margin-top:8px;
+    font-family:"Inter", sans-serif;
+    font-size:16px;
+    font-weight:400;
+    color:#888;
+}
+
+/* ===========================
+   Description
+=========================== */
+
+.feature-card p{
+    font-family:"Inter", sans-serif;
+    font-size:18px;
+    line-height:1.8;
+    color:#666;
+}
+
+/* ===========================
+   Tablet
+=========================== */
+
+@media (max-width:991px){
+
+    .features-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+/* ===========================
+   Mobile
+=========================== */
+
+@media (max-width:768px){
+
+    .features{
+        padding:70px 0;
+    }
+
+    .features-grid{
+
+        display:flex;
+
+        gap:20px;
+
+        overflow-x:auto;
+
+        scroll-snap-type:x mandatory;
+
+        -webkit-overflow-scrolling:touch;
+
+        scrollbar-width:none;
+    }
+
+    .features-grid::-webkit-scrollbar{
+        display:none;
+    }
+
+    .feature-card{
+
+        min-width:320px;
+
+        flex:0 0 85%;
+
+        scroll-snap-align:start;
+
+        padding:36px;
+
+        border-radius:28px;
+    }
+
+    .feature-icon{
+
+        width:72px;
+        height:72px;
+
+        border-radius:20px;
+
+        font-size:34px;
+    }
+
+    .feature-title{
+        font-size:28px;
+    }
+
+    .feature-card p{
+        font-size:17px;
+        line-height:1.7;
+    }
+
+}
