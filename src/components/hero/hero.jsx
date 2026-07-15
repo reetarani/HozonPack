@@ -1,0 +1,37 @@
+import "./hero.css";
+import { FaLeaf } from "react-icons/fa";
+import heroImage from "../../assets/images/hero-box.png"; // your image
+
+function Hero() {
+  return (
+    <section className="hero">
+      <div className="hero-container">
+        <div className="hero-badge">
+        <PiLeafFill className="leaf-icon" />
+        <span>CUSTOM SOLUTIONS AVAILABLE</span>
+        </div>
+        <h1 className="hero-title">
+          <span className="dark">Packaging</span>{" "}
+          <span className="orange">that Performs</span>
+        </h1>
+
+        <p className="hero-description">
+          Smart, sustainable, and high-strength corrugated solutions for
+          businesses of every size.
+        </p>
+
+        <button className="hero-btn">
+          Explore Our Range
+        </button>
+
+        <div className="hero-image">
+          <img src={heroImage} alt="Packaging Boxes" />
+        </div>
+
+      </div>
+
+    </section>
+  );
+}
+
+export default Hero;

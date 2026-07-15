@@ -1,0 +1,68 @@
+.topbar{
+    background:#9CB347;
+    color:#222;
+    height:30px;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+}
+
+.marquee{
+    width:100%;
+    overflow:hidden;
+}
+.marquee-track{
+    display:flex;
+    gap:100px;
+    width:max-content;
+    animation:scroll 20s linear infinite;
+}
+.marquee-content{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    width:max-content;
+    animation:marquee 20s linear infinite;
+    white-space:nowrap;
+}
+
+.marquee-content span,
+.marquee-content a{
+    font-size:13px;
+    font-weight:500;
+}
+
+.marquee-content a{
+    color:#222;
+    text-decoration:underline;
+}
+.copy-btn{
+    background:none;
+    border:none;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    color:#222;
+    transition:.3s;
+}
+
+.copy-btn:hover{
+    color:#fff;
+}
+@keyframes marquee{
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(-50%);
+    }
+}
+
+/* Pause on hover */
+
+.topbar:hover .marquee-content{
+    animation-play-state:paused;
+}
