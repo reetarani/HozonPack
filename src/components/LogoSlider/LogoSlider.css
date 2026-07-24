@@ -1,0 +1,35 @@
+.logo-slider {
+  overflow: hidden;
+  width: 100%;
+  padding: 40px 0;
+  background: #fbf7f4;
+}
+
+.logo-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 190s linear infinite;
+}
+
+.logo-slider:hover .logo-track {
+  animation-play-state: paused;
+}
+
+.logo-item {
+  flex-shrink: 0;
+  padding: 0 40px;
+  white-space: nowrap;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}

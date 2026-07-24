@@ -1,6 +1,7 @@
 import "./hero.css";
 import { PiLeafFill } from "react-icons/pi";
 import { Leaf } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "../../assets/images/hero-box.png"; // your image
 
 function Hero() {
@@ -21,8 +22,17 @@ function Hero() {
           businesses of every size.
         </p>
 
-        <button className="hero-btn">
-          Explore Our Range
+       <button
+            className="hero-btn"
+            onClick={() => {
+                document
+                    .getElementById("products")
+                    ?.scrollIntoView({
+                        behavior: "smooth",
+                    });
+            }}
+        >
+            Explore Our Range
         </button>
 
         <div className="hero-image">

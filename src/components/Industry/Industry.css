@@ -1,0 +1,152 @@
+/* ===========================
+   Products Section
+=========================== */
+
+.industries{
+    width:100%;
+    background:#ffffff;
+    padding:30px 0 50px 0px;
+}
+
+.industry-layout {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 24px;
+}
+
+/* CARDS */
+
+.industry-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    cursor: pointer;
+    background: #eee;
+}
+
+.industry-card img,
+.industry-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.industry-card:hover .industry-image {
+    transform: scale(1.05);
+}
+
+/* TEXT OVERLAY */
+
+.industry-summary {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 28px;
+    color: #fff;
+    z-index: 2;
+
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.85) 0%,
+        rgba(0, 0, 0, 0.45) 45%,
+        rgba(0, 0, 0, 0) 100%
+    );
+}
+
+.industry-title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.industry-subtitle {
+    margin: 8px 0;
+    color: #f47c20;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.industry-description {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* LARGE LEFT CARD */
+
+.industry-card.large {
+    height: 640px;
+}
+
+/* RIGHT COLUMN */
+
+.right-column {
+    display: grid;
+    gap: 24px;
+}
+
+.right-column .industry-card {
+    height: 308px;
+}
+
+/* BOTTOM ROW */
+
+.bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.bottom-row .industry-card {
+    height: 280px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 991px) {
+
+    .industry-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .industry-card.large,
+    .right-column .industry-card,
+    .bottom-row .industry-card {
+        height: 350px;
+    }
+
+    .bottom-row {
+        grid-template-columns: 1fr;
+    }
+
+    .industry-title {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .industry-layout,
+    .bottom-row {
+        display: none;
+    }
+
+    .mobile-slider {
+        display: block;
+    }
+
+    .mobile-slider .industry-card {
+        height: 420px;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-slider {
+        display: none;
+    }
+}

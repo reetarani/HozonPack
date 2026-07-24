@@ -1,7 +1,24 @@
+import { Routes, Route } from "react-router-dom";
+import ScrollToHash from "./components/ScrollToHash";
+import ScrollToTop from "./components/ScrollToTop";
+
 import Home from "./pages/Home";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsNConditions from "./pages/Terms&Conditions";
 
 function App() {
-  return <Home />;
+  return (
+    <>
+    <ScrollToTop />
+    <ScrollToHash />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms-conditions" element={<TermsNConditions />} />
+    </Routes>
+    </>
+     
+  );
 }
 
 export default App;

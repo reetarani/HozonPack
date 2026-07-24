@@ -1,18 +1,29 @@
 import "./header.css";
+import { Link } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import { FiSearch } from "react-icons/fi";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   const navItems = [
-    { title: "Products", url: "/products" },
-    { title: "Our Clients", url: "/clients" },
-    { title: "Get a Quote", url: "/quote" },
-    { title: "Contact", url: "/contact" },
+    { title: "Products", url: "/#products" },
+    { title: "Our Clients", url: "/#clients" },
+    { title: "Get a Quote", url: "/#quote" },
+    { title: "Contact", url: "/#contact" },
   ];
 
   const toggleMenu = () => {
@@ -26,12 +37,20 @@ function Header() {
   };
 
   return (
-    <header className="header">
+    <header className={`header ${isSticky ? "sticky" : ""}`}>
       <div className="container">
 
         {/* Logo */}
         <div className="logo">
-          <img src={logo} alt="Hozon Logo" />
+          <Link to="/" 
+          onClick={() =>
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            })
+          }>
+            <img src={logo} alt="Logo" width="100" />
+          </Link>
         </div>
 
         {/* Desktop Navigation */}

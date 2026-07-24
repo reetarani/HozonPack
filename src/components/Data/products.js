@@ -1,0 +1,68 @@
+export const productCategories = [{id: "corrugated",
+    title: "Corrugated Packagings",
+    products: [{id: 1,
+        name: "Single Wall Corrugated Box2",
+        description:"Strong and reliable boxes used for packaging, storage, & transportation.",
+        image: "/images/products/box1.png"
+    }, 
+    {id: 2,
+        name: "E-Flute Corrugated Boxes",
+        description:"Custom printed boxes used for branding and product identification.",
+        image: "/images/products/box2.png"
+    },
+    {id: 3,
+        name: "Plain Corrugated Boxes",
+        description:"Specially designed boxes created using die-cut molds.",
+        image: "/images/products/box3.png"
+    },
+    {id: 4,
+        name: "Printed Corrugated Boxes",
+        description:"Strong and reliable boxes used for packaging, storage, & transportation.",
+        image: "/images/products/box4.png"
+    },
+    {id: 5,
+        name: "Die-Cut Corrugated Boxes and universal boxes",
+        description:"Custom printed boxes used for branding and product identification.",
+        image: "/images/products/box5.png"
+    },
+    {id: 6,
+        name: "Master Cartons",
+        description:"Specially designed boxes created using die-cut molds.",
+        image: "/images/products/box6.png"
+    },
+],
+},
+{id: "PaperBoard",
+    title: "Paper & Board Materials",
+    products: [{id: 1,
+        name: "Kraft Paper Rolls",
+        description:"Premium quality kraft paper for wrapping and protection.",
+        image: "/images/products/box7.png"
+    }, 
+    {id: 2,
+        name: "Duplex Board Sheets",
+        description:"High GSM duplex boards for premium packaging applications.",
+        image: "/images/products/box8.png"
+    },
+    {id: 3,
+        name: "Greyboard",
+        description:"Eco-friendly greyboard for rigid box construction.",
+        image: "/images/products/box9.png"
+    },
+],
+},
+{id: "PackagingAccessories",
+    title: "Packaging Accessories",
+    products: [{id: 1,
+        name: "Partitions & Dividers",
+        description:"Custom partitions for product separation and protection.",
+        image: "/images/products/box10.png"
+    }, 
+    {id: 2,
+        name: "Storage Bins",
+        description:"Durable corrugated storage solutions for warehousing.",
+        image: "/images/products/box11.png"
+    },
+],
+},
+];

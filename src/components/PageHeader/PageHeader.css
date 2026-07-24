@@ -1,0 +1,28 @@
+.page{
+  padding: 100px 0;
+}
+.title-bar {
+  margin-bottom: 50px;
+}
+
+.title-bar.left {
+  text-align: left;
+}
+
+.title-bar h1 {
+  font-size: clamp(36px, 5vw, 56px);
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  color: #222;
+  line-height: 1.2;
+}
+
+.title-bar .highlight {
+  color: #F26722;
+}
+
+.page-header p {
+  margin-top: 12px;
+  font-size: 18px;
+  color: #666;
+}
