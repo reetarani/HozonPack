@@ -1,5 +1,11 @@
 import { useState } from "react";
-import emailjs from "@emailjs/browser";
+import { sendEnquiry } from "../../services/emailService";
+import { scrollToError } from "../../utils/scrollToError";
+import { SUCCESS_MESSAGE_DURATION } from "../../utils/constants";
+import {
+    validateForm,
+    validateField,
+} from "../../utils/validation";
 import "./EnquiryPopup.css";
     const initialFormData = {
     companyName: "",
@@ -8,8 +14,7 @@ import "./EnquiryPopup.css";
     contactNumber: "",
     email: "",
     message: "",
-};
-        
+};   
 function EnquiryPopup({
     isOpen,
     selectedProduct,
@@ -43,86 +48,6 @@ function EnquiryPopup({
         setFormData(initialFormData);
         setErrors({});
     };
-    const validateForm = () => {
-    const newErrors = {};
-
-        if (!formData.companyName.trim()) {
-            newErrors.companyName = "Company Name is required";
-        }
-
-        if (!formData.companyLocation.trim()) {
-            newErrors.companyLocation = "Company Location is required";
-        }
-
-        if (!formData.fullName.trim()) {
-            newErrors.fullName = "Full Name is required";
-        }
-
-        if (!formData.contactNumber.trim()) {
-            newErrors.contactNumber = "Contact Number is required";
-        } 
-        else if (!/^\d{10}$/.test(formData.contactNumber)) {
-            newErrors.contactNumber = "Please enter a valid 10-digit contact number";
-        }
-
-        if (
-            formData.email &&
-            !/\S+@\S+\.\S+/.test(formData.email)
-        ) {
-            newErrors.email = "Please enter a valid email";
-        }
-
-        return newErrors;
-    };
-    const validateField = (name, value) => {
-            let error = "";
-
-            switch (name) {
-                case "companyName":
-                    if (!value.trim()) {
-                        error = "Company Name is required";
-                    }
-                    break;
-
-                case "email":
-                    if (!value.trim()) {
-                        error = "Email is required";
-                    } else if (value && !/\S+@\S+\.\S+/.test(value)) {
-                        error = "Please enter a valid email";
-                    }
-                    break;
-
-                case "contactNumber":
-                    if (!value.trim()) {
-                        error = "Contact Number is required";
-                    } else if (!/^[0-9]{10}$/.test(value)) {
-                        error = "Please enter a valid 10-digit number";
-                    }
-                    break;
-                case "companyLocation":
-                if (!value.trim()) {
-                    error = "Company Location is required";
-                }
-                break;
-
-            case "fullName":
-                if (!value.trim()) {
-                    error = "Full Name is required";
-                }
-                break;
-
-            case "message":
-                if (!value.trim()) {
-                    error = "Message is required";
-                }
-                break;
-                
-                default:
-                    break;
-            }
-
-            return error;
-        };
     const handleBlur = (e) => {
             const { name, value } = e.target;
 
@@ -143,47 +68,17 @@ function EnquiryPopup({
         
     const handleSubmit = async (e) => {
     e.preventDefault();
-    const newErrors = validateForm();
-        if (Object.keys(newErrors).length > 0) {
-                setErrors(newErrors);
-
-                const firstErrorField = Object.keys(newErrors)[0];
-
-                const element = document.querySelector(
-                    `[name="${firstErrorField}"]`
-                );
-
-                if (element) {
-                    element.scrollIntoView({
-                        behavior: "smooth",
-                        block: "nearest",
-                    });
-
-                    element.focus();
-                }
-
-                return;
-            }
-            setErrors({});
-            // API Call
-            const templateParams = {
-            company_name: formData.companyName,
-            company_location: formData.companyLocation,
-            full_name: formData.fullName,
-            contact_number: formData.contactNumber,
-            email: formData.email,
-            selected_product: selectedProduct,
-            message: formData.message,
-            };
+         const newErrors = validateForm(formData);
+               if (Object.keys(newErrors).length > 0) {
+                        setErrors(newErrors);
+                        scrollToError(newErrors);
+                        return;
+                    }
+                    setErrors({});
+           
             try {
                 setIsSubmitting(true);
-                await emailjs.send(
-                    import.meta.env.VITE_EMAILJS_SERVICE_ID,
-                    import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-                    templateParams,
-                    import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-                );
-
+                await sendEnquiry(formData, selectedProduct);
                 setSubmitError("");
                 setSubmitSuccess("Enquiry sent successfully!");
                 handleReset();

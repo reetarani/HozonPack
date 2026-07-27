@@ -17,6 +17,7 @@ const testimonials = [
     company: "Xtreme Acoustics",
     image: "/images/testimonials/faiza.jpg",
   },
+  
 ];
 
 export default testimonials;

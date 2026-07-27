@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import ProductCard from "../ProductCard/ProductCard";
 import SectionHeader from "../SectionHeader/SectionHeader";
-import { productCategories } from "./productData";
+import { productCategories } from "../../data/products";
 import EnquiryPopup from "../EnquiryPopup/EnquiryPopup";
 
 import "./products.css";
@@ -22,7 +22,7 @@ function Products() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState("");
     const handleEnquiry = (productName) => {
-    console.log(productName);
+    //console.log(productName);
 
     setSelectedProduct(productName);
     setIsPopupOpen(true);

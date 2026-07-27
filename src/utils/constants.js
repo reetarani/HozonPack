@@ -1,0 +1,1 @@
+export const SUCCESS_MESSAGE_DURATION = 3000;

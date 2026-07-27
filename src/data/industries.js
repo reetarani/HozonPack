@@ -1,8 +1,8 @@
-import ecommerce from "../../assets/images/industry/1.jpg";
-import pizza from "../../assets/images/industry/2.jpg";
-import logistics from "../../assets/images/industry/3.jpg";
-import electronics from "../../assets/images/industry/4.jpg";
-import pharma from "../../assets/images/industry/5.jpg";
+import ecommerce from "../assets/images/industry/1.jpg";
+import pizza from "../assets/images/industry/2.jpg";
+import logistics from "../assets/images/industry/3.jpg";
+import electronics from "../assets/images/industry/4.jpg";
+import pharma from "../assets/images/industry/5.jpg";
 
 const industries = [
   {

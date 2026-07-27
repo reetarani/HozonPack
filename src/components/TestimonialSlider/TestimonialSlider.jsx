@@ -1,4 +1,4 @@
-import testimonials from "./testimonials";
+import testimonials from "../../data/testimonials";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import SectionHeader from "../SectionHeader/SectionHeader";

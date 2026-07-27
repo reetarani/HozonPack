@@ -1,19 +1,12 @@
-import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import IndustryCard from "../Industry/IndustryCard";
 import SectionHeader from "../SectionHeader/SectionHeader";
-import industries from "../Data/industries";
+import industries from "../../data/industries";
 
 import "./Industry.css";
 function Industries() {
-    const renderCard = (industry) => (
-    <IndustryCard
-    key={industry.id}
-    industry={industry}
-/>
-   
-);
+    
     return (
     
         <section className="industries" id="industries">
@@ -38,7 +31,7 @@ function Industries() {
                     <Swiper>
                         {industries.map((industry) => (
                             <SwiperSlide key={industry.id}>
-                                {renderCard(industry)}
+                                <IndustryCard industry={industry} />
                             </SwiperSlide>
                         ))}
                 </Swiper>
