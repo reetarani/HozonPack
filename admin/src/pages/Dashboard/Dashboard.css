@@ -1,0 +1,209 @@
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 22px 24px;
+    min-height: 150px;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.stat-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.stat-card-title {
+    margin: 0 0 10px;
+    color: #64748b;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.stat-card-value {
+    margin: 0;
+    color: #172033;
+    font-size: 34px;
+    line-height: 1.1;
+    font-weight: 700;
+}
+
+.stat-card-description {
+    margin: 10px 0 0;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.stat-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 20px;
+}
+
+.recent-enquiries {
+    margin-top: 32px;
+    width: 100%;
+}
+
+.recent-enquiries .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.recent-enquiries .section-header h3 {
+    margin: 0;
+    color: #172033;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.recent-enquiries .table-box {
+    width: 100%;
+    overflow-x: auto;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+}
+
+.recent-enquiries .product-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.recent-enquiries .product-table th {
+    padding: 15px 20px;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.recent-enquiries .product-table td {
+    padding: 16px 20px;
+    color: #334155;
+    font-size: 14px;
+    border-top: 1px solid #f1f5f9;
+    text-align: left;cursor: pointer;
+}
+
+.recent-enquiries .product-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.recent-enquiries .product-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.section-header {
+    margin-bottom: 15px;
+}
+
+.section-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.status-badge.new {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-badge.read {
+    background: #e2e8f0;
+    color: #475569;
+}
+.view-all-btn {
+    border: 0;
+    background: transparent;
+    color: #2563eb;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 0;
+}
+
+.view-all-btn:hover {
+    text-decoration: underline;
+}
+.recent-enquiry-row {
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.recent-enquiry-row:hover {
+    background: #f8fafc;
+}
+.stat-card-clickable {
+    cursor: pointer;
+}
+
+.stat-card-clickable:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card-clickable:focus {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+.dashboard-page,
+.product-page {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.product-container {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+@media (max-width: 1000px) {
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .recent-enquiries .product-table {
+        min-width: 700px;
+    }
+}

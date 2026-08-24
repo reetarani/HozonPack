@@ -1,0 +1,64 @@
+.layout{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+.layout-body{
+    flex:1;
+    display:flex;
+}
+
+.content{
+    flex:1;
+    padding:0px;
+    overflow:auto;
+}
+
+@media screen and (max-width: 768px) {
+  .layout-body{display: inline;}
+  .sidebar {
+    width: 100%;
+    background: #1f2937;
+    color: #fff;
+    padding: 24px;
+}
+ /* Force table elements to stack vertically */
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  
+  /* Hide the original table headers visually while keeping accessibility intact */
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  
+  /* Create spacing between the vertical row cards */
+  tr {
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Design cells to look like label/value columns */
+  td {
+    border: none;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%; /* Leave space on the left for the label */
+  }
+  
+  /* Inject the data-label value into the empty left column space */
+  td::before {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    content: attr(data-label); /* Pulls value from HTML */
+    font-weight: bold;
+  }
+}

@@ -1,0 +1,43 @@
+
+/* HEADER */
+
+.page-header{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.page-header p{
+
+    margin:5px 0;
+
+    color:#64748b;
+
+}
+
+
+
+.add-product-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+    border:0;
+
+    padding:12px 22px;
+
+    border-radius:10px;
+
+    font-weight:600;
+
+}
+
+
+

@@ -1,0 +1,52 @@
+.search-keywords-page {
+    min-height: 100vh;
+}
+
+.keyword-summary {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    font-size: 15px;
+    color: #555;
+}
+
+.search-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 35px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: #fff1e9;
+    color: #ef6d28;
+    font-weight: 600;
+}
+
+.search-keywords-page .table-box {
+    overflow-x: auto;
+}
+
+.search-keywords-page .product-table {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+
+    .search-keywords-page .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-keywords-page
+        .search-input,
+    .search-keywords-page
+        .status-select {
+        width: 100%;
+    }
+
+    .search-keywords-page
+        .table-box {
+        overflow-x: auto;
+    }
+
+}
