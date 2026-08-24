@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { sendEnquiry } from "../../services/emailService";
+import { createPublicEnquiry } from "../../services/enquiryService";
 import { scrollToError } from "../../utils/scrollToError";
 import { SUCCESS_MESSAGE_DURATION } from "../../utils/constants";
 import {
@@ -68,35 +68,61 @@ function EnquiryPopup({
         
     const handleSubmit = async (e) => {
     e.preventDefault();
-         const newErrors = validateForm(formData);
-               if (Object.keys(newErrors).length > 0) {
-                        setErrors(newErrors);
-                        scrollToError(newErrors);
-                        return;
-                    }
-                    setErrors({});
-           
-            try {
-                setIsSubmitting(true);
-                await sendEnquiry(formData, selectedProduct);
-                setSubmitError("");
-                setSubmitSuccess("Enquiry sent successfully!");
-                handleReset();
-                    setTimeout(() => {
-                        setSubmitSuccess("");
-                        onClose();
-                    }, SUCCESS_MESSAGE_DURATION);
 
-            } catch (error) {
-                console.error(error);
+    const newErrors = validateForm(formData);
 
-                setSubmitSuccess("");
-                setSubmitError("Failed to send enquiry. Please try again.");
+    if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        scrollToError(newErrors);
+        return;
+    }
 
-            } finally {
-                setIsSubmitting(false);
-            }
-        };
+    setErrors({});
+
+    try {
+        setIsSubmitting(true);
+
+        const enquiryData = {
+        companyName: formData.companyName,
+        companyLocation: formData.companyLocation,
+        name: formData.fullName,
+        email: formData.email,
+        phone: formData.contactNumber,
+        subject: selectedProduct,
+        message: formData.message,
+    };
+
+await createPublicEnquiry(enquiryData);
+
+        setSubmitError("");
+        setSubmitSuccess(
+            "Enquiry sent successfully!"
+        );
+
+        handleReset();
+
+        setTimeout(() => {
+            setSubmitSuccess("");
+            onClose();
+        }, SUCCESS_MESSAGE_DURATION);
+
+    } catch (error) {
+        console.error(
+            "Create enquiry error:",
+            error
+        );
+
+        setSubmitSuccess("");
+
+        setSubmitError(
+            error.response?.data?.message ||
+            "Failed to send enquiry. Please try again."
+        );
+
+    } finally {
+        setIsSubmitting(false);
+    }
+};
     if (!isOpen) return null;
     return (
         <div className="popup-overlay" onClick={onClose}>

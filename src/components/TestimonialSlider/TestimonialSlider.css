@@ -1,3 +1,4 @@
+.testimonial-section{background-color: #fffefe;padding: 100px 0px;}
 .testimonials{background-color: rgb(251 247 244);
 padding: 50px 0;}
 /* Make all slides the same height */
@@ -73,6 +74,12 @@ padding: 50px 0;}
 .testimonial-grid .testimonial-card {
   height: 100%;
 }
+.testimonial-quote{    
+  font-style: italic;
+    font-size: 19px;
+    letter-spacing: 1.5px;
+    color: #545454;
+    line-height: 30px;}
 @media(max-width:767px){
 
 .testimonial-grid{

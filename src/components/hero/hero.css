@@ -1,6 +1,6 @@
-.hero{
+.hero-section{
     background:#faf7f4;
-    padding:40px 20px 0;
+    padding:130px 20px 0;
 }
 .hero-container{
     max-width:1200px;
@@ -12,12 +12,12 @@
     display:inline-flex;
     align-items:center;
     gap:5px;
-    padding:12px 12px;
+    padding:14px 14px;
     border-radius:50px;
     background:#ffa07026;
     color:#E86C2D;
     font-weight:600;
-    font-size:12px;
+    font-size:14px;
     margin-bottom:30px;
 }
 .badge-icon{
@@ -29,10 +29,14 @@
 /* Heading */
 
 .hero-title{
-    font-size:clamp(38px,5vw,70px);
+    font-size:clamp(48px,6vw,80px);
     line-height:clamp(54px,7vw,90px);
     margin-bottom:20px;
     font-weight:700;
+    font-family: "Playfair Display", serif;
+    color: rgb(26, 26, 26);
+    --tw-tracking: 14px;
+    letter-spacing: 14px;
 }
 
 .hero-title .dark{
@@ -45,6 +49,8 @@
 .hero-title .orange{
     font-family: "Bricolage Grotesque", sans-serif;
     color:#ef6d28;
+    --tw-tracking: 0;
+    letter-spacing: normal;
 }
 
 /* Description */
@@ -76,7 +82,7 @@
 }
 /* Image */
 .hero-image{
-    margin-top:40px;
+    margin-top:0px;
 }
 .hero-image img{
     width:60%;
@@ -87,7 +93,7 @@
 /* Mobile */
 @media (max-width:768px){
 .hero{
-    padding:40px 20px 0;
+    padding:130px 20px 0;
 }
 .hero-container{
         text-align: left;

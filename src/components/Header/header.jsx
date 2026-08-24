@@ -1,128 +1,390 @@
 import "./header.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import { FiSearch } from "react-icons/fi";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import { useState, useEffect } from "react";
 
-function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
-  const [isSticky, setIsSticky] = useState(false);
+import {
+    getSearchSuggestions,
+} from "../../services/searchService";
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsSticky(window.scrollY > 100);
+function Header() {
+    const navigate = useNavigate();
+
+    const [isMenuOpen, setIsMenuOpen] =
+        useState(false);
+
+    const [showSearch, setShowSearch] =
+        useState(false);
+
+    const [isSticky, setIsSticky] =
+        useState(false);
+
+    const [search, setSearch] = useState("");
+
+    const [suggestions, setSuggestions] =
+        useState([]);
+
+    const [showSuggestions, setShowSuggestions] =
+        useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsSticky(window.scrollY > 100);
+        };
+
+        window.addEventListener(
+            "scroll",
+            handleScroll
+        );
+
+        return () =>
+            window.removeEventListener(
+                "scroll",
+                handleScroll
+            );
+    }, []);
+
+    // Get search suggestions
+    useEffect(() => {
+        const keyword = search.trim();
+
+        if (keyword.length < 2) {
+            setSuggestions([]);
+            setShowSuggestions(false);
+            return;
+        }
+
+        const timer = setTimeout(async () => {
+            try {
+                const response =
+                    await getSearchSuggestions(
+                        keyword
+                    );
+
+                if (response.success) {
+                    setSuggestions(
+                        response.suggestions || []
+                    );
+
+                    setShowSuggestions(
+                        response.suggestions?.length > 0
+                    );
+                }
+            } catch (error) {
+                console.error(
+                    "Search suggestions error:",
+                    error
+                );
+
+                setSuggestions([]);
+            }
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [search]);
+
+    const navItems = [
+        {
+            title: "Products",
+            url: "/#products",
+        },
+        {
+            title: "Our Clients",
+            url: "/#clients",
+        },
+        {
+            title: "Get a Quote",
+            url: "/#quote",
+        },
+        {
+            title: "Contact",
+            url: "/#contact",
+        },
+    ];
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+        setShowSearch(false);
+        setShowSuggestions(false);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    const toggleSearch = () => {
+        setShowSearch(!showSearch);
+        setIsMenuOpen(false);
+    };
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-  const navItems = [
-    { title: "Products", url: "/#products" },
-    { title: "Our Clients", url: "/#clients" },
-    { title: "Get a Quote", url: "/#quote" },
-    { title: "Contact", url: "/#contact" },
-  ];
+    const handleSearch = () => {
+        const keyword = search.trim();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-    setShowSearch(false);
-  };
+        if (!keyword) return;
 
-  const toggleSearch = () => {
-    setShowSearch(!showSearch);
-    setIsMenuOpen(false);
-  };
+        setShowSuggestions(false);
+        setShowSearch(false);
 
-  return (
-    <header className={`header ${isSticky ? "sticky" : ""}`}>
-      <div className="container">
+        navigate(
+            `/search?q=${encodeURIComponent(keyword)}`
+        );
+    };
+
+    const handleSuggestionClick = (item) => {
+        setSearch(item.text);
+        setShowSuggestions(false);
+        setShowSearch(false);
+
+        navigate(
+            `/search?q=${encodeURIComponent(
+                item.text
+            )}`
+        );
+    };
+
+    const handleSearchKeyDown = (e) => {
+        if (e.key === "Enter") {
+            handleSearch();
+        }
+
+        if (e.key === "Escape") {
+            setShowSuggestions(false);
+        }
+    };
+
+    return (
+        <header className={`header ${isSticky ? "sticky" : ""}`}>
+
+    <div className="container">
 
         {/* Logo */}
         <div className="logo">
-          <Link to="/" 
-          onClick={() =>
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            })
-          }>
-            <img src={logo} alt="Logo" width="100" />
-          </Link>
+            <Link
+                to="/"
+                onClick={() =>
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth",
+                    })
+                }
+            >
+                <img
+                    src={logo}
+                    alt="Logo"
+                    width="100"
+                />
+            </Link>
         </div>
 
         {/* Desktop Navigation */}
         <nav className="nav">
-          {navItems.map((item) => (
-            <a key={item.title} href={item.url}>
-              {item.title}
-            </a>
-          ))}
+            {navItems.map((item) => (
+                <a
+                    key={item.title}
+                    href={item.url}
+                >
+                    {item.title}
+                </a>
+            ))}
         </nav>
 
         {/* Desktop Search */}
         <div className="search">
-          <FiSearch className="search-icon" />
-          <input
-            type="text"
-            placeholder="Search products by names, needs, categories..."
-          />
+
+            <FiSearch
+                className="search-icon"
+                onClick={handleSearch}
+            />
+
+            <input
+                type="text"
+                placeholder="Search products by names, needs, categories..."
+                value={search}
+                onChange={(e) =>
+                    setSearch(e.target.value)
+                }
+                onKeyDown={handleSearchKeyDown}
+                onFocus={() => {
+                    if (suggestions.length > 0) {
+                        setShowSuggestions(true);
+                    }
+                }}
+            />
+
+            {showSuggestions &&
+                suggestions.length > 0 && (
+                    <div className="search-suggestions">
+
+                        {suggestions.map(
+                            (item, index) => (
+                                <button
+                                    key={`${item.type}-${item.id || item.text}-${index}`}
+                                    type="button"
+                                    className="search-suggestion"
+                                    onClick={() =>
+                                        handleSuggestionClick(
+                                            item
+                                        )
+                                    }
+                                >
+                                    <span className="suggestion-icon">
+                                        {item.type ===
+                                            "product" && "📦"}
+
+                                        {item.type ===
+                                            "category" && "🏷️"}
+
+                                        {item.type ===
+                                            "industry" && "🏭"}
+
+                                        {item.type ===
+                                            "keyword" && "🔍"}
+                                    </span>
+
+                                    <span>
+                                        {item.text}
+                                    </span>
+                                </button>
+                            )
+                        )}
+
+                    </div>
+                )}
+
         </div>
 
         {/* Mobile Icons */}
         <div className="mobile-actions">
-          <FiSearch
-            className="mobile-search-icon"
-            onClick={toggleSearch}
-          />
 
-          <div className="menu-toggle" onClick={toggleMenu}>
-            {isMenuOpen ? <HiOutlineX /> : <HiOutlineMenu />}
-          </div>
+            <FiSearch
+                className="mobile-search-icon"
+                onClick={toggleSearch}
+            />
+
+            <div
+                className="menu-toggle"
+                onClick={toggleMenu}
+            >
+                {isMenuOpen ? (
+                    <HiOutlineX />
+                ) : (
+                    <HiOutlineMenu />
+                )}
+            </div>
+
         </div>
 
-      </div>
-
-      {/* Mobile Search */}
-      <div className={`mobile-search ${showSearch ? "open" : ""}`}>
-        <input
-          type="text"
-          placeholder="Search products..."
-        />
-      </div>
-      <div
-      className={`menu-overlay ${isMenuOpen ? "show" : ""}`}
-      onClick={() => setIsMenuOpen(false)}> 
     </div>
-      {/* Mobile Menu */}
-      <nav className={`mobile-nav ${isMenuOpen ? "open" : ""}`}>
-      <div className="mobile-menu-header">
-        <h3>Menu</h3>
-        <button
-          type="button"
-          className="mobile-menu-close"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          <HiOutlineX />
-        </button>
-      </div>
 
-      {navItems.map((item) => (
-        <a
-          key={item.title}
-          href={item.url}
-          onClick={() => setIsMenuOpen(false)}
-        >
-          <span>{item.title}</span>
-          <span className="arrow">›</span>
-        </a>
-      ))}
+
+    {/* Mobile Search */}
+    <div
+        className={`mobile-search ${
+            showSearch ? "open" : ""
+        }`}
+    >
+
+        <input
+            type="text"
+            placeholder="Search products..."
+            value={search}
+            onChange={(e) =>
+                setSearch(e.target.value)
+            }
+            onKeyDown={handleSearchKeyDown}
+        />
+
+        {showSearch &&
+            showSuggestions &&
+            suggestions.length > 0 && (
+                <div className="search-suggestions mobile-suggestions">
+
+                    {suggestions.map(
+                        (item, index) => (
+                            <button
+                                key={`${item.type}-${item.id || item.text}-${index}`}
+                                type="button"
+                                className="search-suggestion"
+                                onClick={() =>
+                                    handleSuggestionClick(
+                                        item
+                                    )
+                                }
+                            >
+                                <span className="suggestion-icon">
+                                    {item.type ===
+                                        "product" && "📦"}
+
+                                    {item.type ===
+                                        "category" && "🏷️"}
+
+                                    {item.type ===
+                                        "industry" && "🏭"}
+
+                                    {item.type ===
+                                        "keyword" && "🔍"}
+                                </span>
+
+                                <span>
+                                    {item.text}
+                                </span>
+                            </button>
+                        )
+                    )}
+
+                </div>
+            )}
+
+    </div>
+
+
+    {/* Menu Overlay */}
+    <div
+        className={`menu-overlay ${
+            isMenuOpen ? "show" : ""
+        }`}
+        onClick={() => setIsMenuOpen(false)}
+    />
+
+
+    {/* Mobile Menu */}
+    <nav
+        className={`mobile-nav ${
+            isMenuOpen ? "open" : ""
+        }`}
+    >
+
+        <div className="mobile-menu-header">
+
+            <h3>Menu</h3>
+
+            <button
+                type="button"
+                className="mobile-menu-close"
+                onClick={() =>
+                    setIsMenuOpen(false)
+                }
+            >
+                <HiOutlineX />
+            </button>
+
+        </div>
+
+        {navItems.map((item) => (
+            <a
+                key={item.title}
+                href={item.url}
+                onClick={() =>
+                    setIsMenuOpen(false)
+                }
+            >
+                <span>{item.title}</span>
+                <span className="arrow">›</span>
+            </a>
+        ))}
 
     </nav>
-    </header>
-  );
+
+</header>
+    );
 }
 
 export default Header;

@@ -4,10 +4,11 @@
 
 .products{
     width:100%;
-    background:#FBF7F4;
+   background: #fbf7f4 !important;
     padding:30px 0 50px 0px;
 }
-
+.products-section{background: #fbf7f4 !important;
+padding-bottom: 100px;}
 /* Your global .container will be used */
 
 .products-header{
@@ -71,10 +72,10 @@
    Grid
 =========================== */
 
-.products-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:30px;
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
 }
 .desktop-grid{
     display:grid;

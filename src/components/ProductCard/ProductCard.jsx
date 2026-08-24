@@ -9,10 +9,18 @@ function ProductCard({
     return (
         <div className="product-card">
             <div className="product-image">
-                <img
-                    src={image}
-                    alt={name}
-                />
+                {image && (
+                    <img
+                        src={
+                            image
+                                ? image.startsWith("http")
+                                    ? image
+                                    : `http://localhost:5000${image}`
+                                : "/images/product-placeholder.png"
+                        }
+                        alt={name}
+                    />
+                )}
             </div>
             <div className="product-content">
                 <h3>{name}</h3>
