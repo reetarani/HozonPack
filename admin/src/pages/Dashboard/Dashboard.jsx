@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PageHeader from "../../components/common/PageHeader";
 import StatCard from "../../components/common/StatCard";
 import EnquiryViewModal from "../../components/modals/EnquiryViewModal";
+import { getSearchKeywords } from "../../services/searchKeywordService";
 
 import {
     FaEnvelope,
@@ -10,6 +11,7 @@ import {
     FaBox,
     FaTags,
     FaIndustry,
+    FaSearch,
 } from "react-icons/fa";
 import {
     getDashboardStats,
@@ -24,13 +26,14 @@ import {
 function Dashboard() {
 const navigate = useNavigate();
     const [stats, setStats] = useState({
-        totalEnquiries: 0,
-        newEnquiries: 0,
-        readEnquiries: 0,
-        totalProducts: 0,
-        totalCategories: 0,
-        totalIndustries: 0,
-    });
+    totalEnquiries: 0,
+    newEnquiries: 0,
+    readEnquiries: 0,
+    totalProducts: 0,
+    totalCategories: 0,
+    totalIndustries: 0,
+    totalSearchKeywords: 0,
+});
 
     const [recentEnquiries, setRecentEnquiries] =
         useState([]);
@@ -47,53 +50,46 @@ const navigate = useNavigate();
         loadStats();
     }, []);
 
-
+const [recentSearchKeywords, setRecentSearchKeywords] = useState([]);
     const loadStats = async () => {
+    try {
+        setLoading(true);
 
-        try {
+        const response = await getDashboardStats();
 
-            setLoading(true);
+        const keywordResponse = await getSearchKeywords({
+            active: "true",
+            sort: "newest",
+            page: 1,
+            limit: 5,
+        });
 
-            const response =
-                await getDashboardStats();
+        setRecentSearchKeywords(
+            keywordResponse.keywords || []
+        );
 
-            console.log(
-                "Dashboard stats:",
-                response
-            );
+        setStats((prev) => ({
+            ...prev,
+            ...(response.stats || {}),
+            totalSearchKeywords:
+                keywordResponse.total || 0,
+        }));
 
+        console.log("Dashboard stats:", response);
 
-            setStats(
-                response.stats || {
-                    totalEnquiries: 0,
-                    newEnquiries: 0,
-                    readEnquiries: 0,
-                    totalProducts: 0,
-                    totalCategories: 0,
-                    totalIndustries: 0,
-                }
-            );
+        setRecentEnquiries(
+            response.recentEnquiries || []
+        );
 
-
-            setRecentEnquiries(
-                response.recentEnquiries || []
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "Failed to load dashboard stats:",
-                error
-            );
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
-    };
+    } catch (error) {
+        console.error(
+            "Failed to load dashboard stats:",
+            error
+        );
+    } finally {
+        setLoading(false);
+    }
+};
     const handleView = async (id) => {
         try {
             console.log("VIEW ENQUIRY ID:", id);
@@ -180,17 +176,15 @@ const navigate = useNavigate();
                     />
 
                     <StatCard
-                        title="Read Enquiries"
+                        title="Search Keywords"
                         value={
                             loading
                                 ? "..."
-                                : stats.readEnquiries
+                                : stats.totalSearchKeywords
                         }
-                        description="Already reviewed"
-                        icon={<FaEnvelopeOpen />}
-                        onClick={() =>
-                            navigate("/enquiries?status=read")
-                        }
+                        description="Total searches"
+                        icon={<FaSearch />}
+                        onClick={() => navigate("/search-keywords")}
                     />
                     <StatCard
                         title="Products"
@@ -225,16 +219,10 @@ const navigate = useNavigate();
                     />
                     
                 </div>
-                <div className="recent-enquiries">
+                <div className="dashboard-bottom-grid">
+                    <div className="dashboard-panel recent-enquiries">
                     <div className="section-header">
                         <h3>Recent Enquiries</h3>
-                        <button
-                            type="button"
-                            className="view-all-btn"
-                            onClick={() => navigate("/enquiries")}
-                        >
-                            View All →
-                        </button>
                     </div>
                     
 
@@ -298,6 +286,13 @@ const navigate = useNavigate();
                             </tbody>
                         </table>
                     </div>
+                    <button
+                            type="button"
+                            className="view-all-btn"
+                            onClick={() => navigate("/enquiries")}
+                        >
+                            View All →
+                        </button>
                     <EnquiryViewModal
                         isOpen={isViewOpen}
                         onClose={() => {
@@ -306,6 +301,55 @@ const navigate = useNavigate();
                         }}
                         enquiry={viewEnquiry}
                     />
+                </div>
+                <div className="dashboard-panel recent-search-keywords">
+                    <div className="section-header">
+                        <h3>Recent Search Keywords</h3>
+                    </div>
+
+                    <div className="table-box">
+                        <table className="product-table">
+                            <thead>
+                                <tr>
+                                    <th>Keyword</th>
+                                    <th>Count</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {recentSearchKeywords.length > 0 ? (
+                                    recentSearchKeywords.map((item) => (
+                                        <tr key={item._id}>
+                                            <td>{item.keyword}</td>
+                                            <td>{item.count}</td>
+                                            <td>
+                                                {item.lastSearchedAt
+                                                    ? new Date(
+                                                        item.lastSearchedAt
+                                                    ).toLocaleDateString()
+                                                    : "-"}
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="3" className="text-center">
+                                            No recent search keywords found.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                    <button
+                            type="button"
+                            className="view-all-btn"
+                            onClick={() => navigate("/search-keywords")}
+                        >
+                            View All →
+                        </button>
+                </div>
                 </div>
             </div>
         </div>

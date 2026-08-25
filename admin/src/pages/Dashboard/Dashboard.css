@@ -192,6 +192,38 @@
     max-width: 100%;
     overflow-x: hidden;
 }
+.dashboard-bottom-grid {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    gap: 15px;
+    margin-top: 32px;
+}
+
+.dashboard-panel {
+    min-width: 0;
+}
+
+.dashboard-panel .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.dashboard-panel .section-header h3 {
+    margin: 0;
+}
+
+.dashboard-panel .table-box {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.dashboard-panel .product-table {
+    width: 100%;
+}
+.recent-search-keywords{margin-top: 32px;}
+.recent-search-keywords h3{color: #000;}
 @media (max-width: 1000px) {
     .dashboard-stats {
         grid-template-columns: repeat(2, 1fr);
