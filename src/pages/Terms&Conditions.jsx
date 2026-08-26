@@ -1,47 +1,65 @@
+import { useState } from "react";
+
 import Header from "../components/Header/header.jsx";
 import Footer from "../components/footer/footer.jsx";
 import PageHeader from "../components/PageHeader/PageHeader.jsx";
 import TopBar from "../components/topbar/topbar.jsx";
+import EnquiryPopup from "../components/EnquiryPopup/EnquiryPopup";
 
 function TermsNConditions() {
-  return (
-    <>
-        <TopBar />
-        <Header />
+    const [isQuoteOpen, setIsQuoteOpen] = useState(false);
 
-        
-        <section className="page">
-            <div className="container">
-                <PageHeader
-                title="Terms & "
-                highlight="Conditions"
-                subtitle="Tailored packaging solutions for every sector"
-                />
-            <p>
-            The terms & conditions explains how Hozon Packaging collects, uses,
-            and protects your personal information.
-            </p>
+    return (
+        <>
+            <TopBar />
 
-            <h2>Information We Collect</h2>
-            <p>
-            We may collect your name, email address, phone number,
-            and company information when you contact us.
-            </p>
+            <Header
+                onGetQuote={() => setIsQuoteOpen(true)}
+            />
 
-            <h2>How We Use Your Information</h2>
-            <p>
-            We use your information to respond to enquiries,
-            improve our services, and communicate with you.
-            </p>
+            <section className="page">
+                <div className="container">
+                    <PageHeader
+                        title="Terms & "
+                        highlight="Conditions"
+                        subtitle="Tailored packaging solutions for every sector"
+                    />
 
-            <h2>Contact</h2>
-            <p>Email: info@hozonpack.com</p>
-            </div>
-        </section>
+                    <p>
+                        The terms & conditions explains how Hozon Packaging
+                        collects, uses, and protects your personal information.
+                    </p>
 
-      <Footer />
-    </>
-  );
+                    <h2>Information We Collect</h2>
+
+                    <p>
+                        We may collect your name, email address, phone number,
+                        and company information when you contact us.
+                    </p>
+
+                    <h2>How We Use Your Information</h2>
+
+                    <p>
+                        We use your information to respond to enquiries,
+                        improve our services, and communicate with you.
+                    </p>
+
+                    <h2>Contact</h2>
+
+                    <p>Email: info@hozonpack.com</p>
+                </div>
+            </section>
+
+            <Footer />
+
+            <EnquiryPopup
+                isOpen={isQuoteOpen}
+                selectedProduct=""
+                showProduct={false}
+                onClose={() => setIsQuoteOpen(false)}
+            />
+        </>
+    );
 }
 
 export default TermsNConditions;

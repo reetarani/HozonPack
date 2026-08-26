@@ -18,9 +18,12 @@ body{
     margin:0 auto;
     padding:0 20px;
 }
+.page{
+    background: #faf7f4;
+}
 #products,
 #clients,
-#contact {
+#contact, #about, #sustainability {
   scroll-margin-top: 100px;
 }
 

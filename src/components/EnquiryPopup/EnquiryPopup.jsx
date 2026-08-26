@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createPublicEnquiry } from "../../services/enquiryService";
+import { sendEnquiry } from "../../services/emailService";
 import { scrollToError } from "../../utils/scrollToError";
 import { SUCCESS_MESSAGE_DURATION } from "../../utils/constants";
 import {
@@ -19,6 +20,7 @@ function EnquiryPopup({
     isOpen,
     selectedProduct,
     onClose,
+    showProduct = true,
 }) {
     const [formData, setFormData] = useState(initialFormData);
     const [errors, setErrors] = useState({});
@@ -83,21 +85,37 @@ function EnquiryPopup({
         setIsSubmitting(true);
 
         const enquiryData = {
-        companyName: formData.companyName,
-        companyLocation: formData.companyLocation,
-        name: formData.fullName,
-        email: formData.email,
-        phone: formData.contactNumber,
-        subject: selectedProduct,
-        message: formData.message,
-    };
+            companyName: formData.companyName,
+            companyLocation: formData.companyLocation,
+            name: formData.fullName,
+            email: formData.email,
+            phone: formData.contactNumber,
 
+            subject: showProduct
+                ? selectedProduct
+                : "Get a Quote Enquiry",
+
+            message: formData.message,
+        };
+
+// Save enquiry to MongoDB
 await createPublicEnquiry(enquiryData);
 
-        setSubmitError("");
-        setSubmitSuccess(
-            "Enquiry sent successfully!"
-        );
+// Send enquiry email through EmailJS
+const emailSubject = showProduct
+    ? `New Product Enquiry - ${selectedProduct}`
+    : "New Get a Quote Enquiry";
+
+await sendEnquiry(
+    formData,
+    selectedProduct || "",
+    emailSubject
+);
+
+setSubmitError("");
+setSubmitSuccess(
+    "Enquiry sent successfully!"
+);
 
         handleReset();
 
@@ -146,131 +164,131 @@ await createPublicEnquiry(enquiryData);
 
                 <form className="enquiry-form" onSubmit={handleSubmit}>
                     <div className="form-grid">
+
+                        {/* Company Name */}
                         <div className="form-group">
-                        <label>Company Name *</label>
-                        <input className={
-                                    errors.companyName
-                                        ? "input-error"
-                                        : ""
-                                }
-                            type="text"
-                            placeholder="Enter company name" name="companyName"
-                            value={formData.companyName}
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                        />
-                        {errors.companyName && (
-                            <p className="error">
-                                {errors.companyName}
-                            </p>
+                            <label>Company Name *</label>
+                            <input
+                                className={errors.companyName ? "input-error" : ""}
+                                type="text"
+                                placeholder="Enter company name"
+                                name="companyName"
+                                value={formData.companyName}
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                            />
+                            {errors.companyName && (
+                                <p className="error">
+                                    {errors.companyName}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Company Location */}
+                        <div className="form-group">
+                            <label>Company Location *</label>
+                            <input
+                                className={errors.companyLocation ? "input-error" : ""}
+                                type="text"
+                                placeholder="Enter company location"
+                                name="companyLocation"
+                                value={formData.companyLocation}
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                            />
+                            {errors.companyLocation && (
+                                <p className="error">
+                                    {errors.companyLocation}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Full Name */}
+                        <div className="form-group">
+                            <label>Full Name *</label>
+                            <input
+                                className={errors.fullName ? "input-error" : ""}
+                                type="text"
+                                placeholder="Enter full name"
+                                name="fullName"
+                                value={formData.fullName}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {errors.fullName && (
+                                <p className="error">
+                                    {errors.fullName}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Contact Number */}
+                        <div className="form-group">
+                            <label>Contact Number *</label>
+                            <input
+                                className={errors.contactNumber ? "input-error" : ""}
+                                type="tel"
+                                placeholder="Enter contact number"
+                                name="contactNumber"
+                                value={formData.contactNumber}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {errors.contactNumber && (
+                                <p className="error">
+                                    {errors.contactNumber}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Email */}
+                        <div className="form-group full-width">
+                            <label>Email <span>(optional)</span></label>
+                            <input
+                                className={errors.email ? "input-error" : ""}
+                                type="email"
+                                placeholder="Enter email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {errors.email && (
+                                <p className="error">
+                                    {errors.email}
+                                </p>
+                            )}
+                        </div>
+
+                        {/* Selected Product */}
+                        {showProduct && (
+                            <div className="form-group full-width">
+                                <label>Selected Product</label>
+                                <input
+                                    type="text"
+                                    value={selectedProduct}
+                                    readOnly
+                                />
+                            </div>
                         )}
+
+                        {/* Message */}
+                        <div className="form-group full-width">
+                            <label>Your Product Description</label>
+                            <textarea
+                                rows="5"
+                                placeholder="Tell us about your requirement..."
+                                name="message"
+                                value={formData.message}
+                                onChange={handleChange}
+                            />
+                        </div>
+
                     </div>
 
-                    <div className="form-group">
-                        <label>Company Location *</label>
-                        <input className={
-                                    errors.companyLocation
-                                        ? "input-error"
-                                        : ""
-                                }
-                            type="text"
-                            placeholder="Enter company location" name="companyLocation"
-                            value={formData.companyLocation}
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                        />
-                        {errors.companyLocation && (
-                            <p className="error">
-                                {errors.companyLocation}
-                            </p>
-                        )}
-                    </div>
-
-                    <div className="form-group">
-                        <label>Full Name *</label>
-                        <input className={
-                                    errors.fullName
-                                        ? "input-error"
-                                        : ""
-                                }
-                            type="text"
-                            placeholder="Enter full name" name="fullName"
-                            value={formData.fullName}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        {errors.fullName && (
-                            <p className="error">
-                                {errors.fullName}
-                            </p>
-                        )}
-                    </div>
-
-                    <div className="form-group">
-                        <label>Contact Number *</label>
-                        <input className={
-                                    errors.contactNumber
-                                        ? "input-error"
-                                        : ""
-                                }
-                            type="tel"
-                            placeholder="Enter contact number" name="contactNumber"
-                            value={formData.contactNumber}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        {errors.contactNumber && (
-                            <p className="error">
-                                {errors.contactNumber}
-                            </p>
-                        )}
-                    </div>
-
-                    <div className="form-group">
-                        <label>Email</label>
-                        <input className={
-                                    errors.email
-                                        ? "input-error"
-                                        : ""
-                                }
-                            type="email"
-                            placeholder="Enter email" name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        {errors.email && (
-                            <p className="error">
-                                {errors.email}
-                            </p>
-                        )}
-                    </div>
-
-                    <div className="form-group">
-                        <label>Selected Product</label>
-
-                        <input
-                            type="text"
-                            value={selectedProduct}
-                            readOnly
-                        />
-                    </div>
-                    </div>
-                    
-
-                    <div className="form-group">
-                        <label>Message</label>
-
-                        <textarea
-                            rows="5"
-                            placeholder="Tell us about your requirement..."
-                            name="message"
-                            value={formData.message}
-                            onChange={handleChange}
-                        />                     
-                    </div>
                     <div className="form-actions">
-                        <button className="submit-btn"
+                        <button
+                            className="submit-btn"
                             type="submit"
                             disabled={isSubmitting}
                         >
@@ -279,25 +297,25 @@ await createPublicEnquiry(enquiryData);
 
                         <button
                             type="button"
-                            className="reset-btn" onClick={handleReset}
+                            className="reset-btn"
+                            onClick={handleReset}
                         >
                             Reset
                         </button>
                     </div>
-                        {
-                            submitError && (
-                                <p className="error-message">
-                                    {submitError}
-                                </p>
-                            )
-                        }
-                        {
-                            submitSuccess && (
-                                <p className="success-message">
-                                    {submitSuccess}
-                                </p>
-                            )
-                        }
+
+                    {submitError && (
+                        <p className="error-message">
+                            {submitError}
+                        </p>
+                    )}
+
+                    {submitSuccess && (
+                        <p className="success-message">
+                            {submitSuccess}
+                        </p>
+                    )}
+
                 </form>
             </div>
         </div>

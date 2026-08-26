@@ -7,7 +7,11 @@ import {
     EMAILJS_PUBLIC_KEY,
 } from "../config/env";
 
-export const sendEnquiry = (formData, selectedProduct) => {
+export const sendEnquiry = (
+    formData,
+    selectedProduct = "",
+    enquirySubject = ""
+) => {
 
     const templateParams = {
         company_name: formData.companyName,
@@ -15,8 +19,9 @@ export const sendEnquiry = (formData, selectedProduct) => {
         full_name: formData.fullName,
         contact_number: formData.contactNumber,
         email: formData.email,
-        selected_product: selectedProduct,
+        selected_product: selectedProduct || "",
         message: formData.message,
+        subject: enquirySubject,
     };
 
     return emailjs.send(

@@ -28,7 +28,7 @@ function Features() {
   ];
 
   return (
-    <section className="features">
+    <section className="features" id="sustainability">
         <div className="container">
       <div className="features-grid">
         {features.map((item, index) => (

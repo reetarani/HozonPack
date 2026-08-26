@@ -4,12 +4,13 @@ import logo from "../../assets/images/logo.png";
 import { FiSearch } from "react-icons/fi";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import { useState, useEffect } from "react";
+import EnquiryPopup from "../EnquiryPopup/EnquiryPopup";
 
 import {
     getSearchSuggestions,
 } from "../../services/searchService";
 
-function Header() {
+function Header({ onGetQuote }) {
     const navigate = useNavigate();
 
     const [isMenuOpen, setIsMenuOpen] =
@@ -28,7 +29,7 @@ function Header() {
 
     const [showSuggestions, setShowSuggestions] =
         useState(false);
-
+  
     useEffect(() => {
         const handleScroll = () => {
             setIsSticky(window.scrollY > 100);
@@ -96,8 +97,9 @@ function Header() {
         },
         {
             title: "Get a Quote",
-            url: "/#quote",
+            action: "quote",
         },
+        
         {
             title: "Contact",
             url: "/#contact",
@@ -149,7 +151,7 @@ function Header() {
             setShowSuggestions(false);
         }
     };
-
+    
     return (
         <header className={`header ${isSticky ? "sticky" : ""}`}>
 
@@ -176,15 +178,26 @@ function Header() {
 
         {/* Desktop Navigation */}
         <nav className="nav">
-            {navItems.map((item) => (
-                <a
-                    key={item.title}
-                    href={item.url}
-                >
-                    {item.title}
-                </a>
-            ))}
-        </nav>
+          {navItems.map((item) =>
+              item.action === "quote" ? (
+                  <button
+                      key={item.title}
+                      type="button"
+                      className="nav-quote-btn"
+                      onClick={onGetQuote}
+                  >
+                      {item.title}
+                  </button>
+              ) : (
+                  <a
+                      key={item.title}
+                      href={item.url}
+                  >
+                      {item.title}
+                  </a>
+              )
+          )}
+      </nav>
 
         {/* Desktop Search */}
         <div className="search">
@@ -368,21 +381,35 @@ function Header() {
 
         </div>
 
-        {navItems.map((item) => (
-            <a
-                key={item.title}
-                href={item.url}
-                onClick={() =>
-                    setIsMenuOpen(false)
-                }
-            >
-                <span>{item.title}</span>
-                <span className="arrow">›</span>
-            </a>
-        ))}
+        {navItems.map((item) =>
+          item.action === "quote" ? (
+              <button
+                  key={item.title}
+                  type="button"
+                  className="mobile-nav-quote"
+                  onClick={() => {
+                      setIsMenuOpen(false);
+                      onGetQuote();
+                  }}
+              >
+                  <span>{item.title}</span>
+                  <span className="arrow">›</span>
+              </button>
+          ) : (
+              <a
+                  key={item.title}
+                  href={item.url}
+                  onClick={() =>
+                      setIsMenuOpen(false)
+                  }
+              >
+                  <span>{item.title}</span>
+                  <span className="arrow">›</span>
+              </a>
+          )
+      )}
 
     </nav>
-
 </header>
     );
 }
