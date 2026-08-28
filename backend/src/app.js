@@ -1,6 +1,13 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+import mongoSanitize from "express-mongo-sanitize";
+import xss from "xss-clean";
+import hpp from "hpp";
+import compression from "compression";
+import morgan from "morgan";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import industryRoutes from "./routes/industryRoutes.js";
@@ -37,8 +44,24 @@ app.use(
     })
 );
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10kb" }));
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
+
+// Security middlewares
+app.use(helmet());
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP
+    standardHeaders: true,
+    legacyHeaders: false,
+  })
+);
+app.use(mongoSanitize());
+app.use(xss());
+app.use(hpp());
+app.use(compression());
+app.use(morgan("combined"));
 
 // Serve uploaded files
 app.use(
@@ -79,4 +102,20 @@ app.get("/api/public/search-test", (req, res) => {
         message: "Public search route is working",
     });
 });
+
+// 404 handler
+app.use((req, res, next) => {
+  res.status(404).json({ success: false, message: "Not Found" });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err);
+  const status = err.status || 500;
+  res.status(status).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
+});
+
 export default app;
