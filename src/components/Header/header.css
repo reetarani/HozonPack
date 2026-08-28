@@ -167,7 +167,14 @@
 .container{
     padding:15px 16px;
 }
+.header {
+        top: 0;
+        height: 70px;
+    }
 
+    .header .container {
+        height: 70px;
+    }
 .logo img{
     width:140px;
 }

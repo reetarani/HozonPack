@@ -11,13 +11,18 @@ function SeoMeta() {
     useEffect(() => {
         const loadSeoMeta = async () => {
             try {
-                const pathname =
-                    location.pathname || "/";
+                const pathname = location.pathname || "/";
 
-                const response =
-                    await getPublicSeoMeta(
-                        pathname
-                    );
+            const slug =
+                pathname === "/"
+                    ? "home"
+                    : pathname
+                        .split("/")
+                        .filter(Boolean)
+                        .pop();
+
+            const response =
+                await getPublicSeoMeta(slug);
 
                 if (
                     !response.success ||

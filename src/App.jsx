@@ -7,6 +7,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsNConditions from "./pages/Terms&Conditions";
 import SearchResults from "./pages/SearchResults/SearchResults";
 import SeoMeta from "./components/seo/SeoMeta";
+import IndustryDetails from "./pages/IndustryDetails";
 
 function App() {
   return (
@@ -20,6 +21,10 @@ function App() {
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/terms-conditions" element={<TermsNConditions />} />
       <Route path="/search" element={<SearchResults />} />
+      <Route
+    path="/industries/:slug"
+    element={<IndustryDetails />}
+/>
     </Routes>
     </>
      

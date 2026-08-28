@@ -6,7 +6,7 @@ const industrySchema = new mongoose.Schema(
             type: String,
             required: true,
             trim: true,
-            unique: true
+            unique: true,
         },
 
         slug: {
@@ -14,30 +14,38 @@ const industrySchema = new mongoose.Schema(
             required: true,
             unique: true,
             lowercase: true,
-            trim: true
+            trim: true,
+        },
+
+        subtitle: {
+            type: String,
+            default: "",
+            trim: true,
         },
 
         description: {
             type: String,
-            default: ""
+            default: "",
         },
 
         image: {
             type: String,
-            default: ""
+            default: "",
         },
 
         isActive: {
             type: Boolean,
-            default: true
-        }
+            default: true,
+        },
     },
     {
-        timestamps: true
+        timestamps: true,
     }
 );
 
-
-const Industry = mongoose.model("Industry", industrySchema);
+const Industry = mongoose.model(
+    "Industry",
+    industrySchema
+);
 
 export default Industry;

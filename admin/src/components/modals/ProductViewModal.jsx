@@ -91,7 +91,7 @@ function ProductViewModal({
                                         (industry) => (
                                             <span
                                                 key={industry._id}
-                                                className="badge bg-secondary me-2"
+                                                className="badge bg-industry me-2"
                                         >
                                             {industry.name}
                                         </span>

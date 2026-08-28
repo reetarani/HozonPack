@@ -1,5 +1,6 @@
 
 import Product from "../models/Product.js";
+import Industry from "../models/Industry.js";
 // CREATE PRODUCT
 export const createProduct = async (req, res) => {
     try {
@@ -323,6 +324,50 @@ export const getPublicProducts = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Unable to fetch products",
+        });
+    }
+};
+
+// PUBLIC - GET PRODUCTS BY INDUSTRY
+export const getPublicProductsByIndustry = async (req, res) => {
+    try {
+        const { slug } = req.params;
+
+        const industry = await Industry.findOne({
+            slug,
+            isActive: true,
+        });
+
+        if (!industry) {
+            return res.status(404).json({
+                success: false,
+                message: "Industry not found",
+            });
+        }
+
+        const products = await Product.find({
+            industries: industry._id,
+            isActive: true,
+        })
+            .populate("category", "name slug")
+            .populate("industries", "name slug")
+            .sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            success: true,
+            count: products.length,
+            products,
+        });
+
+    } catch (error) {
+        console.error(
+            "Get public products by industry error:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: error.message,
         });
     }
 };

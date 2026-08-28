@@ -97,7 +97,12 @@ function EnquiryPopup({
 
             message: formData.message,
         };
-
+useEffect(() => {
+    setFormData((prev) => ({
+        ...prev,
+        selectedProduct: selectedProduct || "",
+    }));
+}, [selectedProduct]);
 // Save enquiry to MongoDB
 await createPublicEnquiry(enquiryData);
 
@@ -264,9 +269,10 @@ setSubmitSuccess(
                         {showProduct && (
                             <div className="form-group full-width">
                                 <label>Selected Product</label>
+
                                 <input
                                     type="text"
-                                    value={selectedProduct}
+                                    value={selectedProduct || ""}
                                     readOnly
                                 />
                             </div>

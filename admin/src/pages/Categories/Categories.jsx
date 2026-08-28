@@ -311,6 +311,7 @@ useEffect(() => {
               <th>#</th>
               <th>Name</th>
               <th>Descriptions</th>
+              <th>Products</th>
               <th>Status</th>
               <th className="text-center">Actions</th>
             </tr>
@@ -323,7 +324,11 @@ useEffect(() => {
                 <td>{index + 1}</td>
                 <td>{category.name}</td>
                 <td>{category.description}</td>
-
+                <td className="text-center">
+                    <strong>
+                        {category.productCount || 0}
+                    </strong>
+                </td>
                 <td>
                     {category.isActive ? (
                         <span className="badge bg-success">Active</span>
@@ -362,7 +367,7 @@ useEffect(() => {
         ))
     ) : (
         <tr>
-            <td colSpan="5" className="text-center py-4">
+            <td colSpan="6" className="text-center py-4">
                 <div className="product-count">
                     <span>
                         Total Categories: <strong>{categories.length}</strong>

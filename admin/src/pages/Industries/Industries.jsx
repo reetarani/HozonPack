@@ -21,6 +21,7 @@ import {
 function Industries() {
     const emptyForm = {
     name: "",
+    subtitle: "",
     slug: "",
     description: "",
     image: null,
@@ -157,6 +158,9 @@ const handleSubmit = async (e) => {
     if (!formData.name.trim()) {
         newErrors.name = "Industry name is required.";
     }
+    if (!formData.subtitle.trim()) {
+        newErrors.subtitle = "Industry subtitle is required.";
+    }
 
     if (!formData.description.trim()) {
         newErrors.description =
@@ -179,6 +183,7 @@ const handleSubmit = async (e) => {
         const data = new FormData();
 
         data.append("name", formData.name);
+        data.append("subtitle", formData.subtitle);
         data.append("slug", formData.slug);
         data.append(
             "description",
@@ -246,6 +251,7 @@ const handleEdit = async (id) => {
 
         setFormData({
             name: industry.name || "",
+            subtitle: industry.subtitle || "",
             slug: industry.slug || "",
             description: industry.description || "",
             image: null,
@@ -398,7 +404,9 @@ const handleView = async (id) => {
             <tr>
               <th>#</th>
               <th>Name</th>
+              <th>Sub-Title</th>
               <th>Descriptions</th>
+              <th>Products</th>
               <th>Status</th>
               <th className="text-center">Actions</th>
             </tr>
@@ -410,7 +418,11 @@ const handleView = async (id) => {
             <tr key={industry._id}>
                 <td>{index + 1}</td>
                 <td>{industry.name}</td>
+                <td>{industry.subtitle}</td>
                 <td>{industry.description}</td>
+                <td className="text-center">
+                    <strong>{industry.productCount || 0}</strong>
+                </td>
 
                 <td>
                     {industry.isActive ? (

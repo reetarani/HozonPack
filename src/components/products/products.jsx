@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-
 import ProductCard from "../ProductCard/ProductCard";
 import SectionHeader from "../SectionHeader/SectionHeader";
 import EnquiryPopup from "../EnquiryPopup/EnquiryPopup";
@@ -19,9 +16,13 @@ function Products() {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState("");
 
-    // Get active products and categories
+    const [tabsFixed, setTabsFixed] = useState(false);
+
+    /* ===========================
+       Get Products & Categories
+    =========================== */
+
     useEffect(() => {
-        
         const fetchData = async () => {
             try {
                 const [
@@ -43,7 +44,7 @@ function Products() {
                         categoriesResponse.categories || []
                     );
                 }
-                
+
             } catch (error) {
                 console.error(
                     "Failed to load products/categories:",
@@ -54,49 +55,190 @@ function Products() {
 
         fetchData();
     }, []);
-const categoryOrder = [
-    "Corrugated Packaging",
-    "Paper & Board Materials",
-    "Packaging Accessories",
-];
 
-const sortedCategories = [...categories].sort(
-    (a, b) =>
-        categoryOrder.indexOf(a.name) -
-        categoryOrder.indexOf(b.name)
-);
-    // Category tabs
+
+    /* ===========================
+       Mobile Fixed Tabs
+    =========================== */
+
+    useEffect(() => {
+    const handleScroll = () => {
+
+        if (window.innerWidth > 767) {
+            setTabsFixed(false);
+            return;
+        }
+
+        const tabsElement =
+            document.getElementById(
+                "product-category-tabs"
+            );
+
+        const sectionElement =
+            document.getElementById(
+                "products"
+            );
+
+        if (!tabsElement || !sectionElement) {
+            return;
+        }
+
+        const headerHeight = 70;
+
+        const sectionRect =
+            sectionElement.getBoundingClientRect();
+
+        const tabsRect =
+            tabsElement.getBoundingClientRect();
+
+        // Where tabs normally start
+        const tabsOriginalTop =
+            tabsElement.getBoundingClientRect().top +
+            window.scrollY;
+
+        // Current scroll position
+        const scrollTop =
+            window.scrollY;
+
+        // Start fixing
+        const startPoint =
+            tabsOriginalTop -
+            headerHeight;
+
+        // Section bottom in document coordinates
+        const sectionBottom =
+            sectionRect.bottom +
+            window.scrollY;
+
+        // Bottom point where tabs should stop
+        const stopPoint =
+            sectionBottom -
+            tabsRect.height -
+            headerHeight;
+
+        const shouldFix =
+            scrollTop >= startPoint &&
+            scrollTop < stopPoint;
+
+        setTabsFixed(shouldFix);
+    };
+
+    window.addEventListener(
+        "scroll",
+        handleScroll,
+        { passive: true }
+    );
+
+    window.addEventListener(
+        "resize",
+        handleScroll
+    );
+
+    handleScroll();
+
+    return () => {
+        window.removeEventListener(
+            "scroll",
+            handleScroll
+        );
+
+        window.removeEventListener(
+            "resize",
+            handleScroll
+        );
+    };
+}, []);
+
+
+    /* ===========================
+       Category Order
+    =========================== */
+
+    const categoryOrder = [
+        "Corrugated Packaging",
+        "Paper & Board Materials",
+        "Packaging Accessories",
+    ];
+
+    const sortedCategories =
+        [...categories].sort((a, b) => {
+
+            const indexA =
+                categoryOrder.indexOf(a.name);
+
+            const indexB =
+                categoryOrder.indexOf(b.name);
+
+            // Unknown categories go at the end
+            return (
+                (indexA === -1 ? 999 : indexA) -
+                (indexB === -1 ? 999 : indexB)
+            );
+        });
+
+
+    /* ===========================
+       Category Tabs
+    =========================== */
+
     const tabs = [
-    {
-        id: "all",
-        title: "All",
-    },
-    ...sortedCategories.map((category) => ({
-        id: category._id,
-        title: category.name,
-    })),
-];
+        {
+            id: "all",
+            title: "All",
+        },
 
-    // Filter products
+        ...sortedCategories.map((category) => ({
+            id: category._id,
+            title: category.name,
+        })),
+    ];
+
+
+    /* ===========================
+       Filter Products
+    =========================== */
+
     const filteredProducts =
         activeTab === "all"
             ? products
             : products.filter((product) => {
+
                   const categoryId =
                       product.category?._id ||
                       product.category;
 
-                  return categoryId === activeTab;
+                  return (
+                      String(categoryId) ===
+                      String(activeTab)
+                  );
               });
 
-    // Enquiry popup
+
+    /* ===========================
+       Product Enquiry
+    =========================== */
+
     const handleEnquiry = (productName) => {
+
         setSelectedProduct(productName);
+
         setIsPopupOpen(true);
     };
 
+
+    /* ===========================
+       Render
+    =========================== */
+
     return (
-        <section className="products-section" id="products">
+        <section
+            className="products-section"
+            id="products"
+        >
+
+            {/* ===========================
+                Section Header
+            =========================== */}
 
             <div className="container">
 
@@ -106,74 +248,113 @@ const sortedCategories = [...categories].sort(
                     subtitle="Explore our range of quality products."
                 />
 
-                {/* Category Tabs */}
-                <div className="category-tabs">
+            </div>
 
-                    {tabs.map((tab) => (
-                        <button
-                            key={tab.id}
-                            onClick={() =>
-                                setActiveTab(tab.id)
-                            }
-                            className={
-                                activeTab === tab.id
-                                    ? "active"
-                                    : ""
-                            }
-                        >
-                            {tab.title}
-                        </button>
-                    ))}
+
+            {/* ===========================
+                Category Tabs
+            =========================== */}
+
+            {/* Placeholder prevents layout jump */}
+            {tabsFixed && (
+                <div className="category-tabs-placeholder"></div>
+            )}
+
+            <div
+                id="product-category-tabs"
+                className={`category-tabs-sticky ${
+                    tabsFixed
+                        ? "tabs-fixed"
+                        : ""
+                }`}
+            >
+
+                <div className="container">
+
+                    <div className="category-tabs">
+
+                        {tabs.map((tab) => (
+
+                            <button
+                                key={tab.id}
+                                type="button"
+                                onClick={() =>
+                                    setActiveTab(tab.id)
+                                }
+                                className={
+                                    activeTab === tab.id
+                                        ? "active"
+                                        : ""
+                                }
+                            >
+                                {tab.title}
+                            </button>
+
+                        ))}
+
+                    </div>
 
                 </div>
 
-                {/* Products */}
-                {filteredProducts.length > 0 && (
-                    <Swiper
-                        spaceBetween={20}
-                        slidesPerView={1}
-                        breakpoints={{
-                            576: {
-                                slidesPerView: 2,
-                            },
-                            992: {
-                                slidesPerView: 3,
-                            },
-                        }}
-                    >
-                        {filteredProducts.length > 0 && (
-                            <div className="products-grid">
-                                {filteredProducts.map((product) => (
-                                    <ProductCard
-                                        key={product._id}
-                                        name={product.name}
-                                        description={product.description}
-                                        image={product.image}
-                                        onEnquire={handleEnquiry}
-                                    />
-                                ))}
-                            </div>
-                        )}
-                    </Swiper>
-                )}
+            </div>
 
-                {/* No products */}
-                {filteredProducts.length === 0 && (
+
+            {/* ===========================
+                Products
+            =========================== */}
+
+            <div className="container">
+
+                {filteredProducts.length > 0 ? (
+
+                    <div className="products-grid">
+
+                        {filteredProducts.map(
+                            (product) => (
+
+                                <ProductCard
+                                    key={product._id}
+                                    name={product.name}
+                                    description={
+                                        product.description
+                                    }
+                                    image={product.image}
+                                    onEnquire={
+                                        handleEnquiry
+                                    }
+                                />
+
+                            )
+                        )}
+
+                    </div>
+
+                ) : (
+
                     <p className="text-center">
                         No products available.
                     </p>
+
                 )}
 
-                {/* Enquiry Popup */}
-                <EnquiryPopup
-                    isOpen={isPopupOpen}
-                    selectedProduct={selectedProduct}
-                    onClose={() =>
-                        setIsPopupOpen(false)
-                    }
-                />
-
             </div>
+
+
+            {/* ===========================
+                Enquiry Popup
+            =========================== */}
+
+            <EnquiryPopup
+                isOpen={isPopupOpen}
+                selectedProduct={selectedProduct}
+                showProduct={true}
+                onClose={() => {
+
+                    setIsPopupOpen(false);
+
+                    setSelectedProduct("");
+                }}
+            />
 
         </section>
     );

@@ -53,6 +53,10 @@ function IndustryViewModal({
                             <h3>Industry Name</h3>
                             <p>{industry.name || "-"}</p>
                         </div>
+                        <div className="view-field">
+                            <h3>Industry Subtitle</h3>
+                            <p>{industry.subtitle || "-"}</p>
+                        </div>
 
                         <div className="view-field">
                             <h3>Slug</h3>

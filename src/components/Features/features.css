@@ -103,61 +103,38 @@
    Mobile
 =========================== */
 
-@media (max-width:768px){
+@media (max-width: 768px) {
 
-    .features{
-        padding:70px 0;
+    .features {
+        padding: 70px 0;
     }
 
-    .features-grid{
-
-        display:flex;
-
-        gap:20px;
-
-        overflow-x:auto;
-
-        scroll-snap-type:x mandatory;
-
-        -webkit-overflow-scrolling:touch;
-
-        scrollbar-width:none;
+    .features-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
 
-    .features-grid::-webkit-scrollbar{
-        display:none;
+    .feature-card {
+        width: 100%;
+        min-width: 0;
+        padding: 36px;
+        border-radius: 28px;
     }
 
-    .feature-card{
-
-        min-width:320px;
-
-        flex:0 0 85%;
-
-        scroll-snap-align:start;
-
-        padding:36px;
-
-        border-radius:28px;
+    .feature-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 20px;
+        font-size: 34px;
     }
 
-    .feature-icon{
-
-        width:72px;
-        height:72px;
-
-        border-radius:20px;
-
-        font-size:34px;
+    .feature-title {
+        font-size: 28px;
     }
 
-    .feature-title{
-        font-size:28px;
+    .feature-card p {
+        font-size: 17px;
+        line-height: 1.7;
     }
-
-    .feature-card p{
-        font-size:17px;
-        line-height:1.7;
-    }
-
 }

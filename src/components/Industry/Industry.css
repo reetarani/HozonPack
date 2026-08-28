@@ -66,8 +66,10 @@
 .industry-subtitle {
     margin: 8px 0;
     color: #f47c20;
-    font-size: 1rem;
+    font-size: 21px;
     font-weight: 600;
+    --tw-leading: 31px;
+    line-height: 31px;
 }
 
 .industry-description {

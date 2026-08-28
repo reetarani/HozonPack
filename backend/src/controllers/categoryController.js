@@ -1,4 +1,5 @@
 import Category from "../models/Category.js";
+import Product from "../models/Product.js";
 // create / post categories
 export const createCategory = async (req, res) => {
     try {
@@ -64,12 +65,29 @@ export const getCategories = async (req, res) => {
         }
 
         const categories = await Category.find(filter)
-            .sort({ createdAt: -1 });
+            .sort({ createdAt: -1 })
+            .lean();
+
+        const categoriesWithCount = await Promise.all(
+            categories.map(async (category) => {
+
+                const productCount =
+                    await Product.countDocuments({
+                        category: category._id,
+                        isActive: true,
+                    });
+
+                return {
+                    ...category,
+                    productCount,
+                };
+            })
+        );
 
         res.status(200).json({
             success: true,
-            count: categories.length,
-            categories,
+            count: categoriesWithCount.length,
+            categories: categoriesWithCount,
         });
 
     } catch (error) {

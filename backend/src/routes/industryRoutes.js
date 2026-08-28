@@ -6,6 +6,7 @@ import {
     createIndustry,
     updateIndustry,
     getIndustries,
+    getIndustryBySlug,
     getIndustryById,
     deleteIndustry,
     permanentlyDeleteIndustry,
@@ -51,5 +52,5 @@ router.delete(
     permanentlyDeleteIndustry
 );
 
-
+router.get("/public/industries/:slug", getIndustryBySlug);
 export default router;

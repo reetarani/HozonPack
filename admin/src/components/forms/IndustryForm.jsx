@@ -28,6 +28,16 @@ function IndustryForm({
             />
 
             <InputField
+                label="Industry Subtitle"
+                name="subtitle"
+                value={formData.subtitle}
+                onChange={onChange}
+                placeholder="Enter Industry Subtitle"
+                required
+                error={errors?.subtitle}
+            />
+
+            <InputField
                 label="Slug"
                 name="slug"
                 value={formData.slug}

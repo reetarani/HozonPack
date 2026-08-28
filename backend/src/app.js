@@ -21,6 +21,7 @@ import publicSearchRoutes from "./routes/publicSearchRoutes.js";
 import searchKeywordRoutes from "./routes/searchKeywordRoutes.js";
 import seoMetaRoutes from "./routes/seoMetaRoutes.js";
 import publicSeoMetaRoutes from "./routes/publicSeoMetaRoutes.js";
+import publicIndustryRoutes from "./routes/publicIndustryRoutes.js";
 
 
 const app = express();
@@ -32,6 +33,7 @@ app.use(
             "http://localhost:5177",
              "http://localhost:5178",
              "http://localhost:5174",
+             "http://localhost:5175",
         ],
         credentials: true,
     })
@@ -72,6 +74,10 @@ app.use("/api/seo-meta", seoMetaRoutes);
 app.use(
     "/api/public",
     publicSeoMetaRoutes
+);
+app.use(
+    "/api/public/industries",
+    publicIndustryRoutes
 );
 app.get("/api/public/search-test", (req, res) => {
     res.json({
