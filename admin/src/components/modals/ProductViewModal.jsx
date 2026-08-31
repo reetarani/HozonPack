@@ -58,6 +58,12 @@ function ProductViewModal({
                             <p>{product.description}</p>
                         </div>
                     </div>
+                    <div className="col-12 mb-3">
+                        <h3>MOQ</h3>
+                        <div>
+                            <p>{product.moq}</p>
+                        </div>
+                    </div>
 
                     <div className="col-md-6 mb-3">
                         <h3>Category</h3>

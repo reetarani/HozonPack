@@ -15,6 +15,7 @@ function Products() {
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState("");
+    const [selectedProductMOQ, setSelectedProductMOQ] = useState("");
 
     const [tabsFixed, setTabsFixed] = useState(false);
 
@@ -218,13 +219,14 @@ function Products() {
        Product Enquiry
     =========================== */
 
-    const handleEnquiry = (productName) => {
+    const handleEnquiry = (product) => {
+    console.log("SELECTED PRODUCT:", product);
+    console.log("PRODUCT MOQ:", product.moq);
 
-        setSelectedProduct(productName);
-
-        setIsPopupOpen(true);
-    };
-
+    setSelectedProduct(product.name);
+    setSelectedProductMOQ(product.moq);
+    setIsPopupOpen(true);
+};
 
     /* ===========================
        Render
@@ -315,13 +317,10 @@ function Products() {
                                 <ProductCard
                                     key={product._id}
                                     name={product.name}
-                                    description={
-                                        product.description
-                                    }
+                                    description={product.description}
                                     image={product.image}
-                                    onEnquire={
-                                        handleEnquiry
-                                    }
+                                    moq={product.moq}
+                                    onEnquire={() => handleEnquiry(product)}
                                 />
 
                             )
@@ -347,12 +346,12 @@ function Products() {
             <EnquiryPopup
                 isOpen={isPopupOpen}
                 selectedProduct={selectedProduct}
+                selectedProductMOQ={selectedProductMOQ}
                 showProduct={true}
                 onClose={() => {
-
                     setIsPopupOpen(false);
-
                     setSelectedProduct("");
+                    setSelectedProductMOQ("");
                 }}
             />
 

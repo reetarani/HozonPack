@@ -51,6 +51,19 @@ function ProductForm({
                 error={errors?.description}
             />
 
+            {/* MOQ */}
+            <InputField
+                label="MOQ"
+                name="moq"
+                type="number"
+                value={formData.moq}
+                onChange={onChange}
+                placeholder="Enter Minimum Order Quantity"
+                min="1"
+                required
+                error={errors?.moq}
+            />
+
             <SelectField
                 label="Category"
                 name="category"
@@ -76,27 +89,29 @@ function ProductForm({
                 required
                 error={errors?.industries}
             />
+
             <SelectField
-    label="Status"
-    name="isActive"
-    value={String(formData.isActive)}
-    options={[
-        {
-            label: "Active",
-            value: "true",
-        },
-        {
-            label: "Inactive",
-            value: "false",
-        },
-    ]}
-    optionLabel="label"
-    optionValue="value"
-    onChange={onChange}
-    placeholder="Select Status"
-    required
-    error={errors?.isActive}
-/>
+                label="Status"
+                name="isActive"
+                value={String(formData.isActive)}
+                options={[
+                    {
+                        label: "Active",
+                        value: "true",
+                    },
+                    {
+                        label: "Inactive",
+                        value: "false",
+                    },
+                ]}
+                optionLabel="label"
+                optionValue="value"
+                onChange={onChange}
+                placeholder="Select Status"
+                required
+                error={errors?.isActive}
+            />
+
             <ImageUpload
                 label="Product Image"
                 name="image"

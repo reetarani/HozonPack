@@ -22,12 +22,12 @@ const enquirySchema = new mongoose.Schema(
 
         email: {
             type: String,
-            required: true,
             trim: true,
         },
 
         phone: {
             type: String,
+            required: true,
             trim: true,
         },
 
@@ -36,18 +36,25 @@ const enquirySchema = new mongoose.Schema(
             trim: true,
         },
 
+        // Customer requested quantity
+        customMOQ: {
+            type: Number,
+            default: null,
+        },
+
         message: {
             type: String,
-            required: true,
             trim: true,
         },
 
+        // Enquiry status
         status: {
             type: String,
             enum: ["new", "read"],
             default: "new",
         },
 
+        // Soft delete
         isActive: {
             type: Boolean,
             default: true,

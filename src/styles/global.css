@@ -67,7 +67,16 @@ body{
 }
 
 /* Products */
-
+.product-moq {
+    display: inline-block;
+    margin: 10px 0 15px;
+    padding: 6px 10px;
+    background: #fff4ed;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #EF6D28;
+}
 .industry-products {
     margin-top: 60px;
 }

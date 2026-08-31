@@ -3,6 +3,7 @@ import "./ProductCard.css";
 function ProductCard({
     name,
     description,
+    moq,
     image,
     onEnquire,
 }) {
@@ -25,6 +26,11 @@ function ProductCard({
             <div className="product-content">
                 <h3>{name}</h3>
                 <p>{description}</p>
+                {moq && (
+                    <p className="product-moq">
+                        MOQ: {Number(moq).toLocaleString()} units
+                    </p>
+                )}
                 <button
                     className="enquiry-btn"
                     onClick={() => onEnquire(name)}

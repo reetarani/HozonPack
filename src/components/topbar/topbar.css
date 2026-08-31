@@ -1,68 +1,85 @@
-.topbar{
-    background:#9CB347;
-    color:#222;
-    height:30px;
-    overflow:hidden;
-    display:flex;
-    align-items:center;
+/* ===========================
+   TOP BAR
+=========================== */
+
+.topbar {
+    width: 100%;
+    height: 30px;
+
+    background: #9CB347;
+    color: #222;
+
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+
+    position: relative;
+    z-index: 1100;
 }
 
-.marquee{
-    width:100%;
-    overflow:hidden;
+.marquee {
+    width: 100%;
+    overflow: hidden;
 }
-.marquee-track{
-    display:flex;
-    gap:100px;
-    width:max-content;
-    animation:scroll 20s linear infinite;
+
+.marquee-track {
+    display: flex;
+    align-items: center;
+
+    width: max-content;
+    gap: 100px;
+
+    animation: marqueeTrack 20s linear infinite;
 }
-.marquee-content{
-    display:flex;
-    align-items:center;
-    gap:15px;
-    width:max-content;
-    animation:marquee 20s linear infinite;
-    white-space:nowrap;
+
+.marquee-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    white-space: nowrap;
 }
 
 .marquee-content span,
-.marquee-content a{
-    font-size:13px;
-    font-weight:500;
+.marquee-content a {
+    font-size: 13px;
+    font-weight: 500;
 }
 
-.marquee-content a{
-    color:#222;
-    text-decoration:underline;
-}
-.copy-btn{
-    background:none;
-    border:none;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:18px;
-    color:#222;
-    transition:.3s;
+.marquee-content a {
+    color: #222;
+    text-decoration: underline;
 }
 
-.copy-btn:hover{
-    color:#fff;
+.copy-btn {
+    background: none;
+    border: none;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+    color: #222;
 }
-@keyframes marquee{
-    from{
-        transform:translateX(0);
+
+.copy-btn:hover {
+    color: #fff;
+}
+
+@keyframes marqueeTrack {
+    from {
+        transform: translateX(0);
     }
 
-    to{
-        transform:translateX(-50%);
+    to {
+        transform: translateX(-50%);
     }
 }
 
-/* Pause on hover */
-
-.topbar:hover .marquee-content{
-    animation-play-state:paused;
+.topbar:hover .marquee-track {
+    animation-play-state: paused;
 }

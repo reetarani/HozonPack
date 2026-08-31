@@ -17,6 +17,14 @@ const productSchema = new mongoose.Schema({
         required: true,
     },
 
+    // Minimum Order Quantity
+        moq: {
+            type: Number,
+            required: false,
+            min: 1,
+            default: null,
+        },
+
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Category",

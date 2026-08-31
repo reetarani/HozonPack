@@ -30,23 +30,47 @@ function Header({ onGetQuote }) {
     const [showSuggestions, setShowSuggestions] =
         useState(false);
   
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsSticky(window.scrollY > 100);
-        };
+    const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+const [hasScrolled, setHasScrolled] = useState(false);
 
-        window.addEventListener(
-            "scroll",
-            handleScroll
-        );
+useEffect(() => {
+    let lastScrollY = window.scrollY;
 
-        return () =>
-            window.removeEventListener(
-                "scroll",
-                handleScroll
-            );
-    }, []);
+    const handleScroll = () => {
+        const currentScrollY = window.scrollY;
 
+        // At the very top
+        if (currentScrollY <= 10) {
+            setHasScrolled(false);
+            setIsHeaderVisible(true);
+
+            lastScrollY = currentScrollY;
+            return;
+        }
+
+        // Scrolling DOWN
+        if (currentScrollY > lastScrollY) {
+            setHasScrolled(true);
+            setIsHeaderVisible(false);
+        }
+
+        // Scrolling UP
+        if (currentScrollY < lastScrollY) {
+            setHasScrolled(true);
+            setIsHeaderVisible(true);
+        }
+
+        lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, {
+        passive: true,
+    });
+
+    return () => {
+        window.removeEventListener("scroll", handleScroll);
+    };
+}, []);
     // Get search suggestions
     useEffect(() => {
         const keyword = search.trim();
@@ -153,7 +177,17 @@ function Header({ onGetQuote }) {
     };
     
     return (
-        <header className={`header ${isSticky ? "sticky" : ""}`}>
+        <header
+    className={`header ${
+        isHeaderVisible
+            ? "header-visible"
+            : "header-hidden"
+    } ${
+        hasScrolled
+            ? "header-scrolled"
+            : "header-at-top"
+    }`}
+>
 
     <div className="container">
 
@@ -267,11 +301,6 @@ function Header({ onGetQuote }) {
         {/* Mobile Icons */}
         <div className="mobile-actions">
 
-            <FiSearch
-                className="mobile-search-icon"
-                onClick={toggleSearch}
-            />
-
             <div
                 className="menu-toggle"
                 onClick={toggleMenu}
@@ -284,30 +313,29 @@ function Header({ onGetQuote }) {
             </div>
 
         </div>
-
     </div>
 
 
     {/* Mobile Search */}
-    <div
-        className={`mobile-search ${
-            showSearch ? "open" : ""
-        }`}
-    >
+<div className="mobile-search">
 
-        <input
-            type="text"
-            placeholder="Search products..."
-            value={search}
-            onChange={(e) =>
-                setSearch(e.target.value)
-            }
-            onKeyDown={handleSearchKeyDown}
-        />
+    <FiSearch
+        className="mobile-search-icon"
+        onClick={handleSearch}
+    />
 
-        {showSearch &&
-            showSuggestions &&
-            suggestions.length > 0 && (
+    <input
+        type="text"
+        placeholder="Search products by names, needs, categories..."
+        value={search}
+        onChange={(e) =>
+            setSearch(e.target.value)
+        }
+        onKeyDown={handleSearchKeyDown}
+    />
+
+    {showSuggestions &&
+        suggestions.length > 0 && (
                 <div className="search-suggestions mobile-suggestions">
 
                     {suggestions.map(

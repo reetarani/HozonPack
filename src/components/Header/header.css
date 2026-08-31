@@ -1,103 +1,226 @@
-/* Reset */
-/* Header */
+/* ===========================
+   Header
+=========================== */
+/* ===========================
+   HEADER
+=========================== */
 
 .header {
     position: fixed;
-    top: 30px; /* Hide above the viewport */
+
+    top: 30px;
     left: 0;
+
     width: 100%;
+
     z-index: 1000;
-    background: rgba(255,255,255,.95);
+
+    background: rgba(255, 255, 255, 0.97);
+
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    transition: top 0.1s ease;
+
+    transition:
+        top 0.3s ease,
+        transform 0.3s ease,
+        opacity 0.3s ease;
 }
 
-.header.sticky {
+
+/* ===========================
+   At Top
+=========================== */
+
+.header-at-top {
+    top: 30px;
+}
+
+
+/* ===========================
+   After Scrolling Up
+=========================== */
+
+.header-scrolled {
     top: 0;
 }
-.header .container{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    height:90px;
-    background:rgba(255,255,255,.95);
-}
-/* Logo */
 
-.logo img{
-    width:170px;
-}
 
-/* Desktop Nav */
+/* ===========================
+   Visible
+=========================== */
 
-.nav{
-    display:flex;
-    gap:35px;
+.header-visible {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
 }
 
-.nav a{
+
+/* ===========================
+   Hidden
+=========================== */
+
+.header-hidden {
+    transform: translateY(-110%);
+    opacity: 0;
+    visibility: hidden;
+}
+/* ===========================
+   Header Visible
+=========================== */
+
+.header-visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+
+/* ===========================
+   Header Hidden
+=========================== */
+
+.header-hidden {
+    transform: translateY(-110%);
+    opacity: 0;
+}
+
+
+/* ===========================
+   Header Container
+=========================== */
+
+.header .container {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    height: 90px;
+
+    background: rgba(255, 255, 255, 0.95);
+}
+
+
+/* ===========================
+   Logo
+=========================== */
+
+.logo img {
+    width: 170px;
+    height: auto;
+    display: block;
+}
+
+
+/* ===========================
+   Desktop Navigation
+=========================== */
+
+.nav {
+    display: flex;
+    gap: 35px;
+}
+
+.nav a {
     text-decoration: none;
+
     color: #1a1a1acc;
+
     font-weight: 600;
     font-size: 17px;
     line-height: 21px;
+
     font-family: Inter, sans-serif;
 }
-.nav a:hover, .nav-quote-btn:hover{
+
+.nav a:hover,
+.nav-quote-btn:hover {
     color: #474646cc;
-
 }
 
-/* Desktop Search */
 
-.search{
-    position:relative;
-    width:420px;
+/* ===========================
+   Desktop Search
+=========================== */
+
+.search {
+    position: relative;
+    width: 420px;
 }
 
-.search input{
-    width:100%;
-    height:52px;
-    border:1px solid #ddd;
-    border-radius:30px;
-    padding-left:50px;
-    outline:none;
+.search input {
+    width: 100%;
+    height: 52px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 30px;
+
+    padding-left: 50px;
+
+    outline: none;
 }
+
 .search input:focus {
-    border-color: #ef6d28; /* active border color */
+    border-color: #ef6d28;
 }
+
+
+/* Search Icon */
+
+.search-icon {
+    position: absolute;
+
+    left: 18px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: 20px;
+}
+
+
+/* ===========================
+   Quote Button
+=========================== */
+
 .nav-quote-btn {
     background: none;
     border: none;
+
     padding: 0;
+
     font: inherit;
+
     cursor: pointer;
-    color: inherit;
-    text-decoration: none;
+
     color: #1a1a1acc;
+
     font-weight: 600;
     font-size: 17px;
     line-height: 21px;
+
     font-family: Inter, sans-serif;
 }
-.search-icon{
-    position:absolute;
-    left:18px;
-    top:50%;
-    transform:translateY(-50%);
-    font-size:20px;
-}
-/* Desktop Search Suggestions */
+
+
+/* ===========================
+   Search Suggestions
+=========================== */
 
 .search-suggestions {
     position: absolute;
+
     top: calc(100% + 10px);
     left: 0;
+
     width: 100%;
 
     background: #fff;
+
     border: 1px solid #e5e5e5;
+
     border-radius: 14px;
 
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
@@ -107,22 +230,28 @@
     z-index: 99999;
 }
 
+
 .search-suggestion {
     width: 100%;
 
     display: flex;
+
     align-items: center;
+
     gap: 12px;
 
     padding: 14px 18px;
 
     border: none;
+
     background: #fff;
 
     text-align: left;
+
     cursor: pointer;
 
     font-size: 15px;
+
     color: #333;
 
     transition: background 0.2s ease;
@@ -132,11 +261,13 @@
     background: #f7f7f7;
 }
 
+
 .suggestion-icon {
     width: 28px;
     min-width: 28px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 }
@@ -144,214 +275,178 @@
 .suggestion-text {
     flex: 1;
 }
-/* Mobile */
 
-.mobile-actions{
-    display:none;
+
+/* ===========================
+   Mobile Defaults
+=========================== */
+
+.mobile-actions {
+    display: none;
 }
 
-.menu-toggle{
-    cursor:pointer;
-    font-size:32px;
+.menu-toggle {
+    cursor: pointer;
+    font-size: 32px;
 }
 
 .mobile-search,
-.mobile-nav{
-    display:none;
+.mobile-nav {
+    display: none;
 }
 
-/* ---------------- Mobile ---------------- */
 
-@media(max-width:768px){
+/* ===========================
+   MOBILE
+=========================== */
 
-.container{
-    padding:15px 16px;
-}
-.header {
-        top: 0;
-        height: 70px;
+@media (max-width: 768px) {
+
+    /* ===========================
+       Header
+    =========================== */
+
+    .header {
+        top: 30px;
+        width: 100%;
     }
+
+    .header-at-top {
+        top: 30px;
+    }
+
+    .header-scrolled {
+        top: 0;
+    }
+
+
+    /* ===========================
+       Header Row
+    =========================== */
 
     .header .container {
         height: 70px;
+
+        padding: 0 16px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
-.logo img{
-    width:140px;
-}
 
-.nav,
-.search{
-    display:none;
-}
 
-.mobile-actions{
-    display:flex;
-    align-items:center;
-    gap:18px;
-}
+    /* ===========================
+       Logo
+    =========================== */
 
-.mobile-search-icon{
-    font-size:24px;
-    cursor:pointer;
-}
+    .logo img {
+        width: 140px;
+        height: auto;
+        display: block;
+    }
 
-.menu-toggle{
-    display:flex;
-    font-size:32px;
-    cursor:pointer;
-}
-.mobile-nav-quote {
-    width: 100%;
-    background: none;
-    border: none;
-    padding: 15px 20px;
-    font: inherit;
-    color: inherit;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    text-align: left;
-}
-/* Mobile Search */
 
-.mobile-search{
-    display:block;
-    background:#fff;
-    padding:0 16px;
+    /* ===========================
+       Hide Desktop
+    =========================== */
 
-    max-height:0;
-    overflow:hidden;
-    transition:.35s;
-}
+    .nav,
+    .search {
+        display: none;
+    }
 
-.mobile-search.open{
-    max-height:100px;
-    padding:15px 16px;
-}
 
-.mobile-search input{
-    width:100%;
-    height:48px;
-    border:1px solid #ddd;
-    border-radius:30px;
-    padding:0 18px;
-    outline:none;
-}
+    /* ===========================
+       Mobile Actions
+    =========================== */
 
-/* Mobile Menu */
-/* Overlay */
+    .mobile-actions {
+        display: flex;
 
-.menu-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.45);
+        align-items: center;
 
-    opacity:0;
-    visibility:hidden;
+        gap: 18px;
+    }
 
-    transition:.3s ease;
+    .menu-toggle {
+        display: flex;
 
-    z-index:998;
-}
+        align-items: center;
+        justify-content: center;
 
-.menu-overlay.show{
-    opacity:1;
-    visibility:visible;
-}
+        font-size: 32px;
 
-/* Mobile Side Menu */
+        cursor: pointer;
+    }
 
-.mobile-nav{
-    position:fixed;
-    top:0;
-    right:-100%;
-    width:320px;
-    max-width:85%;
-    height:100vh;
-    background:#fff;
-    display:flex;
-    flex-direction:column;
-    transition:right .35s ease;
-    z-index:999;
-    box-shadow:-8px 0 25px rgba(0,0,0,.15);
-}
 
-.mobile-nav.open{
-    right:0;
-}
+    /* ===========================
+       Mobile Search
+    =========================== */
 
-/* Header */
+    .mobile-search {
+        display: block;
 
-.mobile-menu-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:22px 20px;
-    border-bottom:1px solid #eee;
-}
+        position: relative;
 
-.mobile-menu-header h3{
-    font-size:22px;
-    font-weight:600;
-    color:#222;
-}
+        width: 100%;
 
-/* Close Button */
+        background: #fff;
 
-.mobile-menu-close{
-    background:none;
-    border:none;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:30px;
-}
+        padding: 10px 16px 15px;
 
-/* Links */
+        max-height: none;
 
-.mobile-nav a{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:18px 20px;
-    color:#222;
-    text-decoration:none;
-    border-bottom:1px solid #f1f1f1;
-    transition:.25s;
-}
+        overflow: visible;
+    }
 
-.mobile-nav a:hover{
-    background:#fafafa;
-}
+    .mobile-search input {
+        width: 100%;
 
-.arrow{
-    font-size:22px;
-    color:#999;
-}
-.mobile-search {
-    position: relative;
-}
+        height: 52px;
 
-.mobile-suggestions {
-    position: absolute;
+        border: 1px solid #ddd;
 
-    top: calc(100% + 5px);
-    left: 16px;
-    right: 16px;
+        border-radius: 30px;
 
-    width: auto;
-    max-height: 350px;
+        padding: 0 18px 0 52px;
 
-    overflow-y: auto;
+        outline: none;
 
-    background: #fff;
-    border: 1px solid #e5e5e5;
-    border-radius: 12px;
+        font-family: Inter, sans-serif;
 
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        font-size: 16px;
 
-    z-index: 99999;
-}
+        color: #333;
+
+        background: #fff;
+    }
+
+    .mobile-search input::placeholder {
+        color: #777;
+    }
+
+    .mobile-search input:focus {
+        border-color: #ef6d28;
+    }
+
+
+    /* ===========================
+       Search Icon
+    =========================== */
+
+    .mobile-search-icon {
+        position: absolute;
+
+        left: 40px;
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        font-size: 24px;
+
+        color: #111;
+
+        z-index: 2;
+    }
 }

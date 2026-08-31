@@ -94,6 +94,7 @@ function Products() {
     name: "",
     slug: "",
     description: "",
+    moq: "",
     category: "",
     industries: [],
     image: null,
@@ -203,6 +204,7 @@ const resetForm = () => {
         name: "",
         slug: "",
         description: "",
+        moq: "",
         category: "",
         industries: [],
         image: null,
@@ -257,10 +259,17 @@ const handleSubmit = async (e) => {
 
     try {
     const data = new FormData();
-
     data.append("name", formData.name);
     data.append("slug", formData.slug);
     data.append("description", formData.description);
+
+    data.append(
+        "moq",
+        formData.moq
+            ? String(formData.moq)
+            : ""
+    );
+
     data.append("category", formData.category);
 
     data.append(
@@ -335,6 +344,7 @@ const handleEdit = async (id) => {
             name: product.name || "",
             slug: product.slug || "",
             description: product.description || "",
+            moq: product.moq ?? "",
             category: product.category?._id || "",
             industries:
                 product.industries?.map(

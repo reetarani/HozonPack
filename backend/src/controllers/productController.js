@@ -14,10 +14,16 @@ export const createProduct = async (req, res) => {
             industries = JSON.parse(req.body.industries);
         }
 
-        const product = await Product.create({
+       const product = await Product.create({
             ...req.body,
+
+            moq: req.body.moq
+                ? Number(req.body.moq)
+                : null,
+
             industries,
             image,
+
             isActive: req.body.isActive === "true",
         });
 
@@ -196,7 +202,13 @@ export const updateProduct = async (req, res) => {
 
         const updateData = {
             ...req.body,
+
+            moq: req.body.moq
+                ? Number(req.body.moq)
+                : null,
+
             industries,
+
             isActive: req.body.isActive === "true",
         };
 

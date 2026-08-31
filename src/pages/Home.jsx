@@ -23,6 +23,7 @@ function Home() {
             <Header
                 onGetQuote={() => setIsQuoteOpen(true)}
             />
+            
 
             <Hero />
             <Features />

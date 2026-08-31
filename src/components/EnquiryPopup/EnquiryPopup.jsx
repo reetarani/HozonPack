@@ -14,11 +14,13 @@ import "./EnquiryPopup.css";
     fullName: "",
     contactNumber: "",
     email: "",
+    customMOQ: "",
     message: "",
-};   
+};
 function EnquiryPopup({
     isOpen,
     selectedProduct,
+    selectedProductMOQ,
     onClose,
     showProduct = true,
 }) {
@@ -71,7 +73,20 @@ function EnquiryPopup({
     const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newErrors = validateForm(formData);
+    let newErrors = validateForm(formData);
+
+        if (showProduct && selectedProductMOQ) {
+            const minimumMOQ = Number(selectedProductMOQ);
+            const enteredMOQ = Number(formData.customMOQ);
+
+            if (!formData.customMOQ) {
+                newErrors.customMOQ =
+                    "Please enter required quantity.";
+            } else if (enteredMOQ < minimumMOQ) {
+                newErrors.customMOQ =
+                    `Minimum order quantity is ${minimumMOQ.toLocaleString()} units.`;
+            }
+        }
 
     if (Object.keys(newErrors).length > 0) {
         setErrors(newErrors);
@@ -84,25 +99,27 @@ function EnquiryPopup({
     try {
         setIsSubmitting(true);
 
-        const enquiryData = {
-            companyName: formData.companyName,
-            companyLocation: formData.companyLocation,
-            name: formData.fullName,
-            email: formData.email,
-            phone: formData.contactNumber,
+      const enquiryData = {
+    companyName: formData.companyName,
+    companyLocation: formData.companyLocation,
+    name: formData.fullName,
+    email: formData.email,
+    phone: formData.contactNumber,
 
-            subject: showProduct
-                ? selectedProduct
-                : "Get a Quote Enquiry",
+    subject: showProduct
+        ? selectedProduct
+        : "Get a Quote Enquiry",
 
-            message: formData.message,
-        };
-useEffect(() => {
-    setFormData((prev) => ({
-        ...prev,
-        selectedProduct: selectedProduct || "",
-    }));
-}, [selectedProduct]);
+    customMOQ:
+        showProduct && formData.customMOQ
+            ? Number(formData.customMOQ)
+            : null,
+
+    message: formData.message,
+};
+
+console.log("ENQUIRY DATA:", enquiryData);
+
 // Save enquiry to MongoDB
 await createPublicEnquiry(enquiryData);
 
@@ -266,18 +283,57 @@ setSubmitSuccess(
                         </div>
 
                         {/* Selected Product */}
-                        {showProduct && (
-                            <div className="form-group full-width">
-                                <label>Selected Product</label>
+                            {showProduct && (
+                                <div className="form-group full-width">
 
-                                <input
-                                    type="text"
-                                    value={selectedProduct || ""}
-                                    readOnly
-                                />
-                            </div>
-                        )}
+                                    <label>Selected Product</label>
 
+                                    <input
+                                        type="text"
+                                        value={selectedProduct || ""}
+                                        readOnly
+                                    />
+
+                                    {/* Dynamic MOQ */}
+                                    {selectedProductMOQ && (
+                                        <p className="moq-note">
+                                            MOQ:{" "}
+                                            {Number(selectedProductMOQ).toLocaleString()} units
+                                        </p>
+                                    )}
+
+                                    {/* Custom MOQ */}
+                                    <label className="custom-moq-label">
+                                        Required Quantity *
+                                    </label>
+
+                                    <input
+                                        type="number"
+                                        name="customMOQ"
+                                        min={selectedProductMOQ || 1}
+                                        value={formData.customMOQ}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        placeholder={
+                                            selectedProductMOQ
+                                                ? `Minimum ${Number(selectedProductMOQ).toLocaleString()} units`
+                                                : "Enter required quantity"
+                                        }
+                                        className={
+                                            errors.customMOQ
+                                                ? "input-error"
+                                                : ""
+                                        }
+                                    />
+
+                                    {errors.customMOQ && (
+                                        <p className="error">
+                                            {errors.customMOQ}
+                                        </p>
+                                    )}
+
+                                </div>
+                            )}
                         {/* Message */}
                         <div className="form-group full-width">
                             <label>Your Product Description</label>

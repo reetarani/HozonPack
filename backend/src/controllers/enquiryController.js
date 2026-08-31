@@ -10,6 +10,7 @@ export const createEnquiry = async (req, res) => {
             email,
             phone,
             subject,
+            customMOQ,
             message,
         } = req.body;
 
@@ -20,6 +21,14 @@ export const createEnquiry = async (req, res) => {
             email,
             phone,
             subject,
+
+            customMOQ:
+                customMOQ !== undefined &&
+                customMOQ !== null &&
+                customMOQ !== ""
+                    ? Number(customMOQ)
+                    : null,
+
             message,
         });
 
