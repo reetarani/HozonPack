@@ -170,7 +170,7 @@ export const updateClient = async (req, res) => {
             });
         }
 
-        const { name, isActive } = req.body;
+        const { name, isActive, removeLogo } = req.body;
 
         if (!name || !name.trim()) {
             return res.status(400).json({
@@ -180,9 +180,18 @@ export const updateClient = async (req, res) => {
         }
 
         client.name = name.trim();
-        client.isActive = isActive;
+        client.isActive = isActive === "true";
 
-        // Update logo only when a new image is uploaded
+        console.log("removeLogo:", removeLogo);
+        console.log("file:", req.file);
+
+        // Remove existing logo
+        if (removeLogo === "true") {
+            client.logo = "";
+        }
+
+        // Upload new logo
+        // New logo takes priority over remove
         if (req.file) {
             client.logo =
                 `/uploads/clients/${req.file.filename}`;
@@ -190,16 +199,21 @@ export const updateClient = async (req, res) => {
 
         await client.save();
 
-        res.status(200).json({
+        console.log("Updated client:", client);
+
+        return res.status(200).json({
             success: true,
             message: "Client updated successfully",
             client,
         });
 
     } catch (error) {
-        console.error(error);
+        console.error(
+            "Update client error:",
+            error
+        );
 
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: error.message,
         });

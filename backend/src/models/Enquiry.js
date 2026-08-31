@@ -36,18 +36,21 @@ const enquirySchema = new mongoose.Schema(
             trim: true,
         },
 
-        // Customer requested quantity
         customMOQ: {
             type: Number,
             default: null,
         },
 
+        dimensions: {
+            type: String,
+            trim: true,
+            default: "",
+        },
         message: {
             type: String,
             trim: true,
         },
 
-        // Enquiry status
         status: {
             type: String,
             enum: ["new", "read"],

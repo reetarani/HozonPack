@@ -7,6 +7,7 @@ function ClientModal({
     errors,
     onChange,
     onSubmit,
+    onRemoveLogo, // ✅ add this
     isSubmitting,
 }) {
     if (!isOpen) {
@@ -40,6 +41,7 @@ function ClientModal({
                         errors={errors}
                         onChange={onChange}
                         onSubmit={onSubmit}
+                        onRemoveLogo={onRemoveLogo} // ✅ add this
                         isSubmitting={isSubmitting}
                     />
                 </div>

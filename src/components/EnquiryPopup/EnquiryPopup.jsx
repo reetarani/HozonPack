@@ -15,6 +15,7 @@ import "./EnquiryPopup.css";
     contactNumber: "",
     email: "",
     customMOQ: "",
+    dimensions: "",
     message: "",
 };
 function EnquiryPopup({
@@ -114,7 +115,7 @@ function EnquiryPopup({
         showProduct && formData.customMOQ
             ? Number(formData.customMOQ)
             : null,
-
+    dimensions: formData.dimensions || "",
     message: formData.message,
 };
 
@@ -281,7 +282,7 @@ setSubmitSuccess(
                                 </p>
                             )}
                         </div>
-
+                            
                         {/* Selected Product */}
                             {showProduct && (
                                 <div className="form-group full-width">
@@ -301,7 +302,17 @@ setSubmitSuccess(
                                             {Number(selectedProductMOQ).toLocaleString()} units
                                         </p>
                                     )}
+                                <div className="form-group">
+                                    <label>Size / Dimensions</label>
 
+                                    <input
+                                        type="text"
+                                        name="dimensions"
+                                        value={formData.dimensions || ""}
+                                        onChange={handleChange}
+                                        placeholder="e.g. 12 x 10 x 8 inches"
+                                    />
+                                </div>
                                     {/* Custom MOQ */}
                                     <label className="custom-moq-label">
                                         Required Quantity *

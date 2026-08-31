@@ -20,8 +20,8 @@ export const sendEnquiry = (
         contact_number: formData.contactNumber,
         email: formData.email,
         selected_product: selectedProduct || "",
-        // MOQ entered by customer
         custom_moq: formData.customMOQ || "",
+        dimensions: formData.dimensions || "",
         message: formData.message,
         subject: enquirySubject,
     };

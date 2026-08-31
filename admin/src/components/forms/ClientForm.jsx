@@ -8,6 +8,7 @@ function ClientForm({
     errors,
     onChange,
     onSubmit,
+    onRemoveLogo,
     isSubmitting,
 }) {
     return (
@@ -51,6 +52,13 @@ function ClientForm({
                                     padding: "5px",
                                 }}
                             />
+                            <button
+                                type="button"
+                                className="remove-logo-btn"
+                                onClick={onRemoveLogo}
+                            >
+                                X
+                            </button>
                         </div>
 
                     </div>

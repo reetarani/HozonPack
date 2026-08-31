@@ -62,28 +62,36 @@ function EnquiryViewModal({
                     </div>
 
                     <div className="view-field">
-    <h3>Subject</h3>
-    <p>
-        {enquiry.subject || "-"}
-    </p>
-</div>
+                        <h3>Subject</h3>
+                        <p>
+                            {enquiry.subject || "-"}
+                        </p>
+                    </div>
 
-{enquiry.customMOQ !== null &&
-    enquiry.customMOQ !== undefined && (
-        <div className="view-field">
-            <h3>Required Quantity</h3>
-            <p>
-                {Number(enquiry.customMOQ).toLocaleString()} units
-            </p>
-        </div>
-    )}
+                        {enquiry.customMOQ !== null &&
+                            enquiry.customMOQ !== undefined && (
+                                <div className="view-field">
+                                    <h3>Required Quantity</h3>
+                                    <p>
+                                        {Number(enquiry.customMOQ).toLocaleString()} units
+                                    </p>
+                                </div>
+                            )}
+                    
 
-<div className="view-field">
-    <h3>Message</h3>
-    <p className="enquiry-message">
-        {enquiry.message || "-"}
-    </p>
-</div>
+                    <div className="view-field">
+                        <h3>Size / Dimensions</h3>
+                        <p>
+                            {enquiry.dimensions || "-"}
+                        </p>
+                    </div>
+
+                    <div className="view-field">
+                        <h3>Message</h3>
+                        <p className="enquiry-message">
+                            {enquiry.message || "-"}
+                        </p>
+                    </div>
 
                     <div className="view-field">
                         <h3 className="status-sec">Status</h3>

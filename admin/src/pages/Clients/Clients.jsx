@@ -14,6 +14,7 @@ function Clients() {
         name: "",
         logo: null,
         imageUrl: "",
+        removeLogo: false,
         isActive: true,
     };
 
@@ -155,16 +156,23 @@ function Clients() {
                 formData.isActive
             );
 
-            // Logo
+           // Logo
             if (formData.logo) {
-                data.append(
-                    "logo",
-                    formData.logo
-                );
+                data.append("logo", formData.logo);
+            }
+
+            // Remove existing logo
+            if (formData.removeLogo) {
+                data.append("removeLogo", "true");
             }
 
             // Update
             if (formData._id) {
+                console.log("FORM DATA BEFORE UPDATE:", {
+                    logo: formData.logo,
+                    imageUrl: formData.imageUrl,
+                    removeLogo: formData.removeLogo,
+                });
                 const response = await api.put(
                     `/clients/${formData._id}`,
                     data
@@ -244,6 +252,7 @@ function Clients() {
                 name: client.name || "",
                 logo: null,
                 imageUrl: client.logo || "",
+                removeLogo: false,
                 isActive: client.isActive,
             });
 
@@ -306,7 +315,14 @@ function Clients() {
             });
         }
     };
-
+const handleRemoveLogo = () => {
+    setFormData((prev) => ({
+        ...prev,
+        logo: null,
+        imageUrl: "",
+        removeLogo: true,
+    }));
+};
     return (
         <div className="container-fluid py-4">
             <div className="product-container">
@@ -528,6 +544,7 @@ function Clients() {
                     formData={formData}
                     errors={errors}
                     onChange={handleChange}
+                    onRemoveLogo={handleRemoveLogo}
                     onSubmit={handleSubmit}
                     isSubmitting={isSubmitting}
                 />
