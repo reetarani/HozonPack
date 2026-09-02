@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "./hero.css";
 
 import { getPublicHero } from "../../services/heroService";
+import { imageUrl } from "../../services/apiClient";
 
 function Hero() {
 
@@ -144,7 +145,7 @@ function Hero() {
                     <div className="hero-image">
 
                         <img
-                            src={`http://localhost:5000${hero.image}`}
+                            src={imageUrl(hero.image)}
                             alt={
                                 hero.title ||
                                 "Packaging"

@@ -1,11 +1,6 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:5000/api";
+import { api } from "./apiClient";
 
 export const getPublicTestimonials = async () => {
-    const response = await axios.get(
-        `${API_URL}/public/testimonials`
-    );
-
+    const response = await api.get("/public/testimonials");
     return response.data;
 };

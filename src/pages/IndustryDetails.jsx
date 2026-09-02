@@ -5,7 +5,7 @@ import EnquiryPopup from "../components/EnquiryPopup/EnquiryPopup";
 import Footer from "../components/Footer/Footer";
 import ProductCard from "../components/ProductCard/ProductCard";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { api, imageUrl } from "../services/apiClient";
 
 function IndustryDetails() {
     const { slug } = useParams();
@@ -21,8 +21,8 @@ function IndustryDetails() {
         const fetchIndustryData = async () => {
             try {
                 // Get industry details
-                const industryResponse = await axios.get(
-                    `http://localhost:5000/api/public/industries/${slug}`
+                const industryResponse = await api.get(
+                    `/public/industries/${slug}`
                 );
 
                 setIndustry(
@@ -30,8 +30,8 @@ function IndustryDetails() {
                 );
 
                 // Get products under this industry
-                const productsResponse = await axios.get(
-                    `http://localhost:5000/api/public/industries/${slug}/products`
+                const productsResponse = await api.get(
+                    `/public/industries/${slug}/products`
                 );
 
                 setProducts(
@@ -75,7 +75,7 @@ function IndustryDetails() {
 
                     {industry.image && (
                         <img
-                            src={`http://localhost:5000${industry.image}`}
+                            src={imageUrl(industry.image)}
                             alt={industry.name}
                             className="banner-bg"
                         />

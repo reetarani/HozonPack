@@ -1,58 +1,35 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:5000/api";
+import { api } from "./apiClient";
 
 // Admin APIs
 
 export const getHeroes = async () => {
-    const response = await axios.get(
-        `${API_URL}/heroes`
-    );
-
+    const response = await api.get("/heroes");
     return response.data;
 };
 
 export const getHero = async (id) => {
-    const response = await axios.get(
-        `${API_URL}/heroes/${id}`
-    );
-
+    const response = await api.get(`/heroes/${id}`);
     return response.data;
 };
 
 export const createHero = async (formData) => {
-    const response = await axios.post(
-        `${API_URL}/heroes`,
-        formData
-    );
-
+    const response = await api.post("/heroes", formData);
     return response.data;
 };
 
 export const updateHero = async (id, formData) => {
-    const response = await axios.put(
-        `${API_URL}/heroes/${id}`,
-        formData
-    );
-
+    const response = await api.put(`/heroes/${id}`, formData);
     return response.data;
 };
 
 export const deleteHero = async (id) => {
-    const response = await axios.delete(
-        `${API_URL}/heroes/${id}`
-    );
-
+    const response = await api.delete(`/heroes/${id}`);
     return response.data;
 };
-
 
 // Public Hero API
 
 export const getPublicHero = async () => {
-    const response = await axios.get(
-        `${API_URL}/public/hero`
-    );
-
+    const response = await api.get("/public/hero");
     return response.data;
 };

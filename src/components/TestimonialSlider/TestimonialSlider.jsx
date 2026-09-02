@@ -7,6 +7,7 @@ import SectionHeader from "../SectionHeader/SectionHeader";
 import {
     getPublicTestimonials,
 } from "../../services/testimonialService";
+import { imageUrl } from "../../services/apiClient";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -98,7 +99,7 @@ function TestimonialCard({ item }) {
 
                 {item.image && (
                     <img
-                        src={`http://localhost:5000${item.image}`}
+                        src={imageUrl(item.image)}
                         alt={item.name}
                     />
                 )}

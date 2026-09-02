@@ -1,4 +1,5 @@
 import "./Industry.css";
+import { imageUrl } from "../../services/apiClient";
 
 function IndustryCard({ industry }) {
     const {
@@ -13,7 +14,7 @@ function IndustryCard({ industry }) {
 
             {image && (
                 <img
-                    src={`http://localhost:5000${image}`}
+                    src={imageUrl(image)}
                     alt={name}
                     className="industry-image"
                 />

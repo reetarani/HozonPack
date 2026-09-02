@@ -1,12 +1,6 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:5000/api";
+import { api } from "./apiClient";
 
 export const createPublicEnquiry = async (data) => {
-    const response = await axios.post(
-        `${API_URL}/public/enquiry`,
-        data
-    );
-
+    const response = await api.post("/public/enquiry", data);
     return response.data;
 };

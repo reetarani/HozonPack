@@ -1,7 +1,5 @@
 import "./ProductCard.css";
-
-// Use Vite env for API base or empty string for same-origin
-const API_BASE = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_URL) || "";
+import { imageUrl } from "../../services/apiClient";
 
 function ProductCard({
     name,
@@ -10,11 +8,7 @@ function ProductCard({
     image,
     onEnquire,
 }) {
-    const src = image
-        ? image.startsWith("http")
-            ? image
-            : `${API_BASE}${image}`
-        : null;
+    const src = image ? imageUrl(image) : null;
 
     return (
         <div className="product-card">
