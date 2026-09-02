@@ -13,16 +13,20 @@ function SeoMeta() {
             try {
                 const pathname = location.pathname || "/";
 
-            const slug =
-                pathname === "/"
-                    ? "home"
-                    : pathname
-                        .split("/")
-                        .filter(Boolean)
-                        .pop();
+                // Home page uses "/" as the SEO slug
+                const slug =
+                    pathname === "/"
+                        ? "/"
+                        : pathname
+                            .split("/")
+                            .filter(Boolean)
+                            .pop();
 
-            const response =
-                await getPublicSeoMeta(slug);
+                console.log("SEO pathname:", pathname);
+                console.log("SEO slug:", slug);
+
+                const response =
+                    await getPublicSeoMeta(slug);
 
                 if (
                     !response.success ||
@@ -31,19 +35,19 @@ function SeoMeta() {
                     return;
                 }
 
-                const seo =
-                    response.seoMeta;
+                const seo = response.seoMeta;
 
-                // Title
+                // -------------------------
+                // TITLE
+                // -------------------------
                 if (seo.metaTitle) {
-                    document.title =
-                        seo.metaTitle;
+                    document.title = seo.metaTitle;
                 }
 
-                // Description
-                if (
-                    seo.metaDescription
-                ) {
+                // -------------------------
+                // DESCRIPTION
+                // -------------------------
+                if (seo.metaDescription) {
                     let description =
                         document.querySelector(
                             'meta[name="description"]'
@@ -51,9 +55,7 @@ function SeoMeta() {
 
                     if (!description) {
                         description =
-                            document.createElement(
-                                "meta"
-                            );
+                            document.createElement("meta");
 
                         description.setAttribute(
                             "name",
@@ -71,7 +73,9 @@ function SeoMeta() {
                     );
                 }
 
-                // Keywords
+                // -------------------------
+                // KEYWORDS
+                // -------------------------
                 if (seo.metaKeywords) {
                     let keywords =
                         document.querySelector(
@@ -80,9 +84,7 @@ function SeoMeta() {
 
                     if (!keywords) {
                         keywords =
-                            document.createElement(
-                                "meta"
-                            );
+                            document.createElement("meta");
 
                         keywords.setAttribute(
                             "name",
@@ -101,7 +103,7 @@ function SeoMeta() {
                 }
 
             } catch (error) {
-                // 404 is okay if a page has no SEO settings
+                // SEO settings are optional
                 console.warn(
                     "SEO meta not available:",
                     error
