@@ -9,14 +9,6 @@
 }
 
 
-/* ===========================
-   Category Tabs Wrapper
-=========================== */
-
-.category-tabs-sticky {
-    width: 100%;
-    background: #fbf7f4;
-}
 
 
 /* ===========================
@@ -43,9 +35,9 @@
 .category-tabs button {
     border: none;
 
-    background: #fff;
+    background: #EAECEF;
 
-    color: #EF6D28;
+    color: #000000;
 
     padding: 18px 40px;
 
@@ -61,12 +53,12 @@
 }
 
 .category-tabs button.active {
-    background: #EF6D28;
+    background: #202529;
     color: #fff;
 }
 
 .category-tabs button:hover {
-    background: #EF6D28;
+    background: #202529;
     color: #fff;
 }
 

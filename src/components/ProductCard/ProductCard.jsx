@@ -9,35 +9,58 @@ function ProductCard({
 }) {
     return (
         <div className="product-card">
+
+            {/* Product Image */}
             <div className="product-image">
+
                 {image && (
                     <img
                         src={
-                            image
-                                ? image.startsWith("http")
-                                    ? image
-                                    : `http://localhost:5000${image}`
-                                : "/images/product-placeholder.png"
+                            image.startsWith("http")
+                                ? image
+                                : `http://localhost:5000${image}`
                         }
                         alt={name}
                     />
                 )}
-            </div>
-            <div className="product-content">
-                <h3>{name}</h3>
-                <p>{description}</p>
-                {moq && (
-                    <p className="product-moq">
-                        MOQ: {Number(moq).toLocaleString()} units
-                    </p>
+
+                {/* Dynamic MOQ Badge */}
+                {moq !== null && moq !== undefined && moq !== "" && (
+                    <div className="product-moq-badge">
+                        MOQ : {Number(moq).toLocaleString()} pcs
+                    </div>
                 )}
-                <button
-                    className="enquiry-btn"
-                    onClick={() => onEnquire(name)}
-                >
-                    Enquire Now →
-                </button>
+
             </div>
+
+            {/* Product Content */}
+            <div className="product-content">
+
+                <h3>{name}</h3>
+
+                <p>{description}</p>
+
+                <div className="product-actions">
+
+                    <button
+                        className="learn-more-btn"
+                        type="button"
+                    >
+                        Learn More
+                    </button>
+
+                    <button
+                        className="enquiry-btn"
+                        type="button"
+                        onClick={() => onEnquire(name)}
+                    >
+                        Enquire now
+                    </button>
+
+                </div>
+
+            </div>
+
         </div>
     );
 }

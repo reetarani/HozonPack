@@ -14,8 +14,8 @@
     gap:5px;
     padding:14px 14px;
     border-radius:50px;
-    background:#ffa07026;
-    color:#E86C2D;
+    background:#DDE2E6;
+    color:#202529;
     font-weight:600;
     font-size:14px;
     margin-bottom:30px;
@@ -23,7 +23,7 @@
 .badge-icon{
     width:12px;
     height:12px;
-    color:#ef6d28;
+    color:#202529;
     stroke-width:2;
 }
 /* Heading */
@@ -48,7 +48,7 @@
 
 .hero-title .orange{
     font-family: "Bricolage Grotesque", sans-serif;
-    color:#ef6d28;
+    color:#7778F6;
     --tw-tracking: 0;
     letter-spacing: normal;
 }
@@ -66,7 +66,7 @@
 }
 /* Button */
 .hero-btn{
-    background:linear-gradient(135deg,#ef6d28,#c88b52);
+    background: #2D1103;
     color:#fff;
     border:none;
     border-radius:10px;
@@ -75,7 +75,7 @@
     font-weight:700;
     cursor:pointer;
     transition:.3s;
-    box-shadow:0 12px 35px rgba(239,109,40,.25);
+    box-shadow: 0 12px 35px rgba(119, 120, 246, .25);
 }
 .hero-btn:hover{
     transform:translateY(-4px);
@@ -105,7 +105,7 @@
     padding:12px 12px;
     border-radius:50px;
     background:#ffa07026;
-    color:#E86C2D;
+    color:#7778F6;
     font-weight:600;
     font-size:12px;
 }

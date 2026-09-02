@@ -82,7 +82,7 @@
 }
 
 .popup-close:hover {
-    background: #EB6B2A;
+    background: #7778F6;
     color: #fff;
 }
 
@@ -108,7 +108,7 @@
 }
 
 .popup h2 span {
-    color: #EB6B2A;
+    color: #7778F6;
 }
 
 
@@ -223,7 +223,7 @@
 
 .form-group input:focus,
 .form-group textarea:focus {
-    border-color: #EB6B2A;
+    border-color: #7778F6;
 }
 
 
@@ -284,13 +284,13 @@
 .submit-btn {
     border: none;
 
-    background: #EB6B2A;
+    background: #7778F6;
 
     color: #fff;
 }
 
 .submit-btn:hover {
-    background: #d95c1d;
+    background: #7778F6;
 
     transform: translateY(-2px);
 }
@@ -307,7 +307,7 @@
 .reset-btn:hover {
     background: #f8f8f8;
 
-    border-color: #EB6B2A;
+    border-color: #7778F6;
 }
 
 

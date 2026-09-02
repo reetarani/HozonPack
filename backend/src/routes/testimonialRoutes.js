@@ -3,20 +3,21 @@ import auth from "../middleware/authMiddleware.js";
 import upload from "../middleware/upload.js";
 
 import {
-  createTestimonial,
-  getTestimonials,
-  getTestimonial,
-  updateTestimonial,
-  deleteTestimonial
+    createTestimonial,
+    getTestimonials,
+    getTestimonial,
+    updateTestimonial,
+    deleteTestimonial
 } from "../controllers/testimonialController.js";
 
 const router = express.Router();
+
 router.use(auth);
 
 router.post(
-  "/",
-  upload.single("image"),
-  createTestimonial
+    "/",
+    upload.single("image"),
+    createTestimonial
 );
 
 router.get("/", getTestimonials);
@@ -24,9 +25,9 @@ router.get("/", getTestimonials);
 router.get("/:id", getTestimonial);
 
 router.put(
-  "/:id",
-  upload.single("image"),
-  updateTestimonial
+    "/:id",
+    upload.single("image"),
+    updateTestimonial
 );
 
 router.delete("/:id", deleteTestimonial);

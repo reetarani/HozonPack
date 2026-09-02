@@ -8,22 +8,28 @@ function TestimonialModal({
     errors,
     onChange,
     onSubmit,
+    onRemoveImage,
     isSubmitting,
 }) {
+
     if (!isOpen) {
         return null;
     }
 
     return (
-        <div className="modal-backdrop-custom">
-            <div className="custom-modal">
 
-                <div className="custom-modal-header">
-                    <h4>
+        <div className="modal-overlay">
+
+            <div className="modal-content">
+
+                <div className="modal-header">
+
+                    <h3>
                         {formData._id
                             ? "Edit Testimonial"
                             : "Add Testimonial"}
-                    </h4>
+                    </h3>
+
 
                     <button
                         type="button"
@@ -32,19 +38,44 @@ function TestimonialModal({
                     >
                         ×
                     </button>
+
                 </div>
 
-                <div className="custom-modal-body">
+
+                <div className="modal-body">
+
                     <TestimonialForm
-                        formData={formData}
-                        errors={errors}
-                        onChange={onChange}
-                        onSubmit={onSubmit}
-                        isSubmitting={isSubmitting}
+
+                        formData={
+                            formData
+                        }
+
+                        errors={
+                            errors
+                        }
+
+                        onChange={
+                            onChange
+                        }
+
+                        onSubmit={
+                            onSubmit
+                        }
+
+                        onRemoveImage={
+                            onRemoveImage
+                        }
+
+                        isSubmitting={
+                            isSubmitting
+                        }
+
                     />
+
                 </div>
 
             </div>
+
         </div>
     );
 }

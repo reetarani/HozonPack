@@ -3,17 +3,19 @@ import SelectField from "../common/SelectField";
 import TextAreaField from "../common/TextAreaField";
 import Button from "../common/Button";
 import "./forms.css";
-
+import "../common/common.css";
 function TestimonialForm({
     formData,
     errors,
     onChange,
     onSubmit,
+    onRemoveImage,
     isSubmitting,
 }) {
     return (
         <form onSubmit={onSubmit}>
 
+            {/* Name */}
             <InputField
                 label="Name"
                 name="name"
@@ -24,24 +26,27 @@ function TestimonialForm({
                 error={errors?.name}
             />
 
+            {/* Designation */}
             <InputField
                 label="Designation"
                 name="designation"
-                value={formData.designation}
+                value={formData.designation || ""}
                 onChange={onChange}
                 placeholder="Enter Designation"
                 error={errors?.designation}
             />
 
+            {/* Company */}
             <InputField
                 label="Company"
                 name="company"
-                value={formData.company}
+                value={formData.company || ""}
                 onChange={onChange}
                 placeholder="Enter Company"
                 error={errors?.company}
             />
 
+            {/* Message */}
             <TextAreaField
                 label="Message"
                 name="message"
@@ -52,30 +57,45 @@ function TestimonialForm({
                 error={errors?.message}
             />
 
-            <div className="mb-3">
-                <label className="form-label">
-                    Image
-                </label>
-                {formData.imageUrl && (
-                    <div className="mb-3">
-                        <label className="form-label">
-                            Current Image
-                        </label>
+            {/* Image */}
+            <div className="form-group mb-3">
 
-                        <div>
+                <label className="form-label">
+                    Current Image
+                </label>
+
+                {/* Existing Image */}
+                {formData.imageUrl && !formData.removeImage && (
+                    <div className="mb-3">
+
+                        <div className="current-testimonial-image">
+
                             <img
                                 src={`http://localhost:5000${formData.imageUrl}`}
                                 alt="Current testimonial"
-                                width="100"
-                                height="100"
+                                width="135"
+                                height="135"
                                 style={{
                                     objectFit: "cover",
-                                    borderRadius: "8px",
+                                    borderRadius: "10px",
+                                    border: "1px solid #ddd",
                                 }}
                             />
+
+                            <button
+                                type="button"
+                                className="remove-logo-btn"
+                                onClick={onRemoveImage}
+                            >
+                                X
+                            </button>
+
                         </div>
+
                     </div>
                 )}
+
+                {/* Upload new image */}
                 <input
                     type="file"
                     name="image"
@@ -89,8 +109,10 @@ function TestimonialForm({
                         {errors.image}
                     </div>
                 )}
+
             </div>
 
+            {/* Status */}
             <SelectField
                 label="Status"
                 name="isActive"
@@ -115,7 +137,11 @@ function TestimonialForm({
 
             <Button
                 type="submit"
-                text="Save Testimonial"
+                text={
+                    formData._id
+                        ? "Update Testimonial"
+                        : "Save Testimonial"
+                }
                 variant="primary"
                 loading={isSubmitting}
                 disabled={isSubmitting}

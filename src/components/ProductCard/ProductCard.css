@@ -1,65 +1,349 @@
-.product-card{
-    background:#fff;
-    border-radius:28px;
-    overflow:hidden;
-    box-shadow:0 10px 30px rgba(0,0,0,.05);
-    transition:.3s;
-    display:flex;
-    flex-direction:column;
-    flex:1;
-}
+/* =========================================
+   Product Card
+========================================= */
 
-.product-card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 20px 40px rgba(0,0,0,.08);
-}
+.product-card {
+    background: #fff;
 
-.product-image img{
-    width:100%;
-    height:240px;
-    object-fit:cover;
-    display:block;
-}
+    border-radius: 28px;
 
-.product-content{
-    height:100%;
-    display: flex;
-    flex-direction: column;
-    padding:24px;
-    flex: 1; background: #fff;
-}
+    overflow: hidden;
 
-.product-content h3{
-    font-family:"Playfair Display", serif;
-    font-size:24px;
-    line-height:1.3;
-    display:-webkit-box;
-    -webkit-line-clamp:2;
-    -webkit-box-orient:vertical;
-    overflow:hidden;
-    min-height:42px;
-}
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .05);
 
-.product-content p{
-    color:#666;
-    line-height:1.7;
-    margin-bottom:24px;
-}
-
-.enquiry-btn{
-    width: 100%;
-    background: linear-gradient(135deg, #ef6d28, #c88b52);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 15px 25px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
     transition: .3s;
-    box-shadow: 0 12px 35px rgba(239, 109, 40, .25);
+
+    display: flex;
+
+    flex-direction: column;
+
+    flex: 1;
+}
+
+.product-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .08);
+}
+
+
+/* =========================================
+   Product Image
+========================================= */
+
+.product-image {
+    position: relative;
+
+    width: 100%;
+
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+
+    height: 240px;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* =========================================
+   MOQ Badge
+========================================= */
+
+.product-moq-badge {
+    position: absolute;
+
+    top: 18px;
+
+    left: 18px;
+
+    background: #e9eef1;
+
+    color: #252b2f;
+
+    padding: 10px 22px;
+
+    border: 3px solid #fff;
+
+    border-radius: 30px;
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+
+    z-index: 2;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   Product Content
+========================================= */
+
+.product-content {
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 24px;
+
+    flex: 1;
+
+    background: #fff;
+}
+
+
+/* =========================================
+   Product Title
+========================================= */
+
+.product-content h3 {
+    font-family: "Playfair Display", serif;
+
+    font-size: 24px;
+
+    line-height: 1.3;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 2;
+
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+
+    min-height: 62px;
+
+    margin: 0 0 14px;
+}
+
+
+/* =========================================
+   Product Description
+========================================= */
+
+.product-content > p {
+    color: #666;
+
+    line-height: 1.7;
+
+    margin: 0 0 24px;
+}
+
+
+/* =========================================
+   Product Actions
+========================================= */
+
+.product-actions {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+
     margin-top: auto;
 }
-.enquiry-btn:hover{
-    transform:translateY(-4px);
+
+
+/* =========================================
+   Common Button
+========================================= */
+
+.learn-more-btn,
+.enquiry-btn {
+    width: 100%;
+
+    padding: 15px 25px;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .3s;
+
+    min-height: 52px;
+}
+
+
+/* =========================================
+   Learn More Button
+========================================= */
+
+.learn-more-btn {
+    background: #fff;
+
+    color: #252b2f;
+
+    border: 2px solid #252b2f;
+}
+
+.learn-more-btn:hover {
+    background: #252b2f;
+
+    color: #fff;
+
+    transform: translateY(-4px);
+}
+
+
+/* =========================================
+   Enquire Now Button
+========================================= */
+
+.enquiry-btn {
+    background: #2D1103;
+
+    color: #fff;
+
+    border: 2px solid #2D1103;
+
+    box-shadow: 0 12px 35px rgba(119, 120, 246, .25);
+
+    margin-top: 0;
+}
+
+.enquiry-btn:hover {
+    background: #421b08;
+
+    border-color: #421b08;
+
+    transform: translateY(-4px);
+}
+
+
+/* =========================================
+   Tablet
+========================================= */
+
+@media (max-width: 991px) {
+
+    .product-image img {
+        height: 220px;
+    }
+
+    .product-moq-badge {
+        top: 16px;
+
+        left: 16px;
+
+        padding: 9px 18px;
+
+        font-size: 16px;
+    }
+
+    .product-content {
+        padding: 22px;
+    }
+
+    .product-content h3 {
+        font-size: 22px;
+    }
+
+    .product-actions {
+        gap: 14px;
+    }
+
+}
+
+
+/* =========================================
+   Mobile
+========================================= */
+
+@media (max-width: 767px) {
+
+    .product-card {
+        border-radius: 24px;
+    }
+
+
+    /* Product Image */
+
+    .product-image img {
+        height: 240px;
+    }
+
+
+    /* MOQ */
+
+    .product-moq-badge {
+        top: 14px;
+
+        left: 14px;
+
+        padding: 9px 16px;
+
+        border-width: 2px;
+
+        font-size: 15px;
+
+        border-radius: 25px;
+    }
+
+
+    /* Content */
+
+    .product-content {
+        padding: 20px;
+    }
+
+
+    /* Title */
+
+    .product-content h3 {
+        font-size: 22px;
+
+        min-height: auto;
+
+        margin-bottom: 12px;
+    }
+
+
+    /* Description */
+
+    .product-content > p {
+        font-size: 15px;
+
+        line-height: 1.6;
+
+        margin-bottom: 20px;
+    }
+
+
+    /* Buttons */
+
+    .product-actions {
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+    }
+
+
+    .learn-more-btn,
+    .enquiry-btn {
+        min-height: 50px;
+
+        padding: 13px 20px;
+
+        font-size: 15px;
+
+        border-radius: 10px;
+    }
+
 }
