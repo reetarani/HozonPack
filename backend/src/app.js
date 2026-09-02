@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
+import compression from "compression";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import industryRoutes from "./routes/industryRoutes.js";
@@ -26,6 +29,17 @@ import publicIndustryRoutes from "./routes/publicIndustryRoutes.js";
 
 const app = express();
 
+// Basic security and performance middlewares
+app.use(helmet());
+app.use(compression());
+
+// Rate limiter for API endpoints (tunable)
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 120, // limit each IP to 120 requests per windowMs
+});
+app.use('/api/', apiLimiter);
+
 app.use(
     cors({
         origin: [
@@ -43,12 +57,19 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve uploaded files
+// Serve uploaded files with caching
 app.use(
     "/uploads",
-   express.static(
-        path.join(process.cwd(), "src", "uploads")
-    )
+   express.static(path.join(process.cwd(), "src", "uploads"), {
+       maxAge: "7d",
+       setHeaders: (res, filepath) => {
+           if (filepath.endsWith('.json')) {
+               res.setHeader('Cache-Control', 'no-cache');
+           } else {
+               res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+           }
+       },
+   })
 );
 app.use(
     "/api/dashboard",

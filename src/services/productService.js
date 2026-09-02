@@ -1,11 +1,18 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api";
+const API_BASE = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_URL) || "/api";
 
-export const getPublicProducts = async () => {
-    const response = await axios.get(
-        `${API_URL}/public/products`
-    );
+const api = axios.create({
+  baseURL: API_BASE,
+  timeout: 10000,
+});
 
-    return response.data;
+export const getPublicProducts = async (options = {}) => {
+  const { page, limit, signal } = options;
+  const params = {};
+  if (page) params.page = page;
+  if (limit) params.limit = limit;
+
+  const response = await api.get(`/public/products`, { params, signal });
+  return response.data;
 };

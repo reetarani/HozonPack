@@ -73,8 +73,11 @@ export const publicSearch = async (req, res) => {
             }
         );
 
-        // Search products
-        const products = await Product.find({
+        // Search products with pagination and limits to avoid returning huge result sets
+        const page = Math.max(1, parseInt(req.query.page || "1", 10));
+        const limit = Math.min(100, Math.max(1, parseInt(req.query.limit || "20", 10)));
+
+        const productQuery = Product.find({
             isActive: true,
 
             $or: [
@@ -107,12 +110,30 @@ export const publicSearch = async (req, res) => {
             .populate("industries", "name")
             .sort({
                 createdAt: -1,
-            });
+            })
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        const [products, totalCount] = await Promise.all([
+            productQuery.exec(),
+            Product.countDocuments({
+                isActive: true,
+                $or: [
+                    { name: regex },
+                    { description: regex },
+                    { category: { $in: categoryIds } },
+                    { industries: { $in: industryIds } },
+                ],
+            }),
+        ]);
 
         return res.status(200).json({
             success: true,
             keyword,
+            page,
+            limit,
             count: products.length,
+            total: totalCount,
             products,
         });
 
