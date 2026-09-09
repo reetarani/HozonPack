@@ -17,6 +17,7 @@ import Clients from "../pages/Clients/Clients";
 import Hero from "../pages/Hero/Hero";
 import SearchKeywords from "../pages/SearchKeywords/SearchKeywords";
 import SeoMeta from "../pages/SeoMeta/SeoMeta";
+import TopBar from "../pages/TopBar/TopBar";
 
 function AppRoutes() {
     return (
@@ -44,6 +45,10 @@ function AppRoutes() {
                     <Route
                         path="/"
                         element={<Dashboard />}
+                    />
+                    <Route
+                        path="/top-bar"
+                        element={<TopBar />}
                     />
                     <Route
                         path="/hero"

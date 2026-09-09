@@ -46,6 +46,11 @@ const enquirySchema = new mongoose.Schema(
             trim: true,
             default: "",
         },
+        ply: {
+            type: String,
+            default: "",
+            trim: true,
+        },
         message: {
             type: String,
             trim: true,

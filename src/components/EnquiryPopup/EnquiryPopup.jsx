@@ -15,6 +15,7 @@ import "./EnquiryPopup.css";
     contactNumber: "",
     email: "",
     customMOQ: "",
+    ply: "",
     dimensions: "",
     message: "",
 };
@@ -116,6 +117,7 @@ function EnquiryPopup({
             ? Number(formData.customMOQ)
             : null,
     dimensions: formData.dimensions || "",
+    ply: formData.ply || "",
     message: formData.message,
 };
 
@@ -345,6 +347,17 @@ setSubmitSuccess(
 
                                 </div>
                             )}
+                            <div className="form-group full-width">
+                                    <label>Ply</label>
+
+                                    <input
+                                        type="text"
+                                        name="ply"
+                                        value={formData.ply || ""}
+                                        onChange={handleChange}
+                                        placeholder="e.g. 1ply, 2ply, 3ply"
+                                    />
+                                </div>
                         {/* Message */}
                         <div className="form-group full-width">
                             <label>Your Product Description</label>

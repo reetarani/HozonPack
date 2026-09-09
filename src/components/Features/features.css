@@ -4,7 +4,7 @@
 
 .features{
     width:100%;
-    background:#FBF7F4;
+    background:#F8F9FA;
     padding:10px 0 100px 0;
 }
 .container-feaatures{
@@ -47,8 +47,8 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    background:#F8F9FA;
-    color:#202529;
+    background: #7778f6;
+    color: #ffffff;
     border-radius:15px;
     font-size:28px;
     margin-bottom:32px;

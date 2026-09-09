@@ -1,0 +1,18 @@
+@import "../index.css";
+@import "./global.css";
+
+@import "../components/topbar/topbar.css";
+@import "../components/Header/header.css";
+@import "../components/hero/hero.css";
+@import "../components/Features/features.css";
+@import "../components/products/products.css";
+@import "../components/Industry/Industry.css";
+@import "../components/LogoSlider/LogoSlider.css";
+@import "../components/TestimonialSlider/TestimonialSlider.css";
+@import "../components/Counter/Counter.css";
+@import "../components/footer/footer.css";
+@import "../components/EnquiryPopup/EnquiryPopup.css";
+@import "../components/CorporateQuote/CorporateQuote.css";
+@import "../pages/ProductDetails/ProductDetails.css";
+@import "../components/DeliveryChallenge/DeliveryChallenge.css";
+@import "../pages/Products/Products.css";

@@ -4,7 +4,6 @@ import logo from "../../assets/images/logo.png";
 import { FiSearch } from "react-icons/fi";
 import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
 import { useState, useEffect } from "react";
-import EnquiryPopup from "../EnquiryPopup/EnquiryPopup";
 
 import {
     getSearchSuggestions,
@@ -32,7 +31,31 @@ function Header({ onGetQuote }) {
   
     const [isHeaderVisible, setIsHeaderVisible] = useState(true);
 const [hasScrolled, setHasScrolled] = useState(false);
+const handleHashNavigation = (e, url) => {
+    const [, hash] = url.split("#");
 
+    if (!hash) return;
+
+    e.preventDefault();
+
+    setIsMenuOpen(false);
+
+    const element = document.getElementById(hash);
+
+    if (element) {
+        element.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+
+        // Keep the current page URL
+        window.history.pushState(
+            null,
+            "",
+            `${window.location.pathname}${window.location.search}#${hash}`
+        );
+    }
+};
 useEffect(() => {
     let lastScrollY = window.scrollY;
 
@@ -121,19 +144,20 @@ useEffect(() => {
         },
         {
             title: "Get a Quote",
-            action: "quote",
+            url: "/#corporate-quote",
         },
         
         {
             title: "Contact",
-            url: "/#contact",
+            url: "#contact",
         },
     ];
 
     const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
+        setIsMenuOpen((prev) => !prev);
         setShowSearch(false);
         setShowSuggestions(false);
+        setIsHeaderVisible(true);
     };
 
     const toggleSearch = () => {
@@ -204,7 +228,7 @@ useEffect(() => {
             >
                 <img
                     src={logo}
-                    alt="Logo"
+                    alt="Hozon Pack"
                     width="100"
                 />
             </Link>
@@ -224,11 +248,14 @@ useEffect(() => {
                   </button>
               ) : (
                   <a
-                      key={item.title}
-                      href={item.url}
-                  >
-                      {item.title}
-                  </a>
+                    key={item.title}
+                    href={item.url}
+                    onClick={(e) =>
+                        handleHashNavigation(e, item.url)
+                    }
+                >
+                    {item.title}
+                </a>
               )
           )}
       </nav>
@@ -301,16 +328,19 @@ useEffect(() => {
         {/* Mobile Icons */}
         <div className="mobile-actions">
 
-            <div
+            <button
+                type="button"
                 className="menu-toggle"
                 onClick={toggleMenu}
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMenuOpen}
             >
                 {isMenuOpen ? (
                     <HiOutlineX />
                 ) : (
                     <HiOutlineMenu />
                 )}
-            </div>
+            </button>
 
         </div>
     </div>
@@ -424,13 +454,14 @@ useEffect(() => {
                   <span className="arrow">›</span>
               </button>
           ) : (
-              <a
-                  key={item.title}
-                  href={item.url}
-                  onClick={() =>
-                      setIsMenuOpen(false)
-                  }
-              >
+            <a
+                key={item.title}
+                href={item.url}
+                onClick={(e) => {
+                    setIsMenuOpen(false);
+                    handleHashNavigation(e, item.url);
+                }}
+            >
                   <span>{item.title}</span>
                   <span className="arrow">›</span>
               </a>

@@ -1,5 +1,5 @@
 import Enquiry from "../models/Enquiry.js";
-
+import CorporateQuote from "../models/CorporateQuote.js";
 // CREATE ENQUIRY
 export const createEnquiry = async (req, res) => {
     try {
@@ -12,6 +12,7 @@ export const createEnquiry = async (req, res) => {
             subject,
             customMOQ,
             dimensions,
+            ply,
             message,
         } = req.body;
 
@@ -30,7 +31,7 @@ export const createEnquiry = async (req, res) => {
                     ? Number(customMOQ)
                     : null,
             dimensions: dimensions || "",
-
+            ply: ply || "",
             message,
         });
 
@@ -157,6 +158,264 @@ export const getEnquiries = async (req, res) => {
         );
 
         res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+// GET ALL ENQUIRIES + CORPORATE QUOTES
+export const getAllEnquiries = async (req, res) => {
+    try {
+        const {
+            search,
+            status,
+            active,
+            page = 1,
+            limit = 10,
+            sort = "newest",
+        } = req.query;
+
+        const currentPage = Number(page);
+        const perPage = Number(limit);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Build filters
+        |--------------------------------------------------------------------------
+        */
+
+        const enquiryFilter = {};
+        const corporateFilter = {};
+
+        // Active / inactive
+        if (active === "true") {
+            enquiryFilter.isActive = true;
+            corporateFilter.isActive = true;
+        }
+
+        if (active === "false") {
+            enquiryFilter.isActive = false;
+            corporateFilter.isActive = false;
+        }
+
+        // New / read
+        if (status === "new" || status === "read") {
+            enquiryFilter.status = status;
+            corporateFilter.status = status;
+        }
+
+        // Search
+        if (search && search.trim()) {
+            const searchText = search.trim();
+
+            enquiryFilter.$or = [
+                {
+                    name: {
+                        $regex: searchText,
+                        $options: "i",
+                    },
+                },
+                {
+                    email: {
+                        $regex: searchText,
+                        $options: "i",
+                    },
+                },
+                {
+                    phone: {
+                        $regex: searchText,
+                        $options: "i",
+                    },
+                },
+                {
+                    subject: {
+                        $regex: searchText,
+                        $options: "i",
+                    },
+                },
+                {
+                    companyName: {
+                        $regex: searchText,
+                        $options: "i",
+                    },
+                },
+                {
+                    message: {
+                        $regex: searchText,
+                        $options: "i",
+                    },
+                },
+            ];
+
+            corporateFilter.$or = [
+                {
+                    name: {
+                        $regex: searchText,
+                        $options: "i",
+                    },
+                },
+                {
+                    email: {
+                        $regex: searchText,
+                        $options: "i",
+                    },
+                },
+                {
+                    phone: {
+                        $regex: searchText,
+                        $options: "i",
+                    },
+                },
+                {
+                    companyName: {
+                        $regex: searchText,
+                        $options: "i",
+                    },
+                },
+                {
+                    requirements: {
+                        $regex: searchText,
+                        $options: "i",
+                    },
+                },
+            ];
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Get Product Enquiries
+        |--------------------------------------------------------------------------
+        */
+
+        const enquiries = await Enquiry.find(
+            enquiryFilter
+        ).lean();
+
+        const formattedEnquiries = enquiries.map(
+            (enquiry) => ({
+                ...enquiry,
+
+                // Identify source
+                type: "enquiry",
+
+                // Keep existing values
+                subject: enquiry.subject || "Enquiry",
+            })
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Get Corporate Quotes
+        |--------------------------------------------------------------------------
+        */
+
+        const corporateQuotes =
+            await CorporateQuote.find(
+                corporateFilter
+            ).lean();
+
+        const formattedCorporateQuotes =
+            corporateQuotes.map((quote) => ({
+                ...quote,
+
+                // Identify source
+                type: "corporate",
+
+                // Normalize Corporate Quote fields
+                subject: "Corporate Quote",
+
+                name: quote.name || "",
+                email: quote.email || "",
+                phone: quote.phone || "",
+
+                companyName:
+                    quote.companyName || "",
+
+                companyLocation: "",
+
+                customMOQ:
+                    quote.quantity ?? null,
+
+                dimensions:
+                    quote.dimensions || "",
+
+                ply:
+                    quote.ply || "",
+
+                message:
+                    quote.requirements || "",
+            }));
+
+        /*
+        |--------------------------------------------------------------------------
+        | Combine both collections
+        |--------------------------------------------------------------------------
+        */
+
+        let allEnquiries = [
+            ...formattedEnquiries,
+            ...formattedCorporateQuotes,
+        ];
+
+        /*
+        |--------------------------------------------------------------------------
+        | Sort
+        |--------------------------------------------------------------------------
+        */
+
+        allEnquiries.sort((a, b) => {
+            const dateA = new Date(a.createdAt).getTime();
+            const dateB = new Date(b.createdAt).getTime();
+
+            return sort === "oldest"
+                ? dateA - dateB
+                : dateB - dateA;
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Pagination
+        |--------------------------------------------------------------------------
+        */
+
+        const total = allEnquiries.length;
+
+        const totalPages =
+            Math.ceil(total / perPage);
+
+        const skip =
+            (currentPage - 1) * perPage;
+
+        const paginatedEnquiries =
+            allEnquiries.slice(
+                skip,
+                skip + perPage
+            );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Response
+        |--------------------------------------------------------------------------
+        */
+
+        return res.status(200).json({
+            success: true,
+            count: paginatedEnquiries.length,
+            total,
+            page: currentPage,
+            limit: perPage,
+            totalPages,
+            enquiries: paginatedEnquiries,
+        });
+
+    } catch (error) {
+        console.error(
+            "Get all enquiries error:",
+            error
+        );
+
+        return res.status(500).json({
             success: false,
             message: error.message,
         });

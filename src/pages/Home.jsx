@@ -11,27 +11,49 @@ import Counter from "../components/Counter/Counter";
 import Footer from "../components/footer/footer.jsx";
 import Industries from "../components/Industry/Industry.jsx";
 import EnquiryPopup from "../components/EnquiryPopup/EnquiryPopup";
+import CorporateQuote from "../components/CorporateQuote/CorporateQuote";
+import DeliveryChallenge from "../components/DeliveryChallenge/DeliveryChallenge";
 
-function Home() {
+
+function Home({
+    initialHero = null,
+    initialProducts = [],
+    initialCategories = [],
+    initialIndustries = [],
+    initialTopBar = null,
+}) {
 
     const [isQuoteOpen, setIsQuoteOpen] = useState(false);
 
     return (
         <>
-            <TopBar />
+            <TopBar initialTopBar={initialTopBar} />
 
             <Header
                 onGetQuote={() => setIsQuoteOpen(true)}
             />
-            
 
-            <Hero />
+            <Hero
+                initialHero={initialHero}
+            />
+
             <Features />
-            <Produtcs />
-            <Industries />
+            <Industries
+                initialIndustries={initialIndustries}
+            />
+
+            <Produtcs
+                initialProducts={initialProducts}
+                initialCategories={initialCategories}
+            />
+            <DeliveryChallenge />
+             <TestimonialSlider />
             <LogoSlider />
-            <TestimonialSlider />
+           
+
             <Counter />
+            <CorporateQuote />
+
             <Footer />
 
             <EnquiryPopup

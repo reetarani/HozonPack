@@ -150,7 +150,7 @@ const [recentSearchKeywords, setRecentSearchKeywords] = useState([]);
                 <div className="dashboard-stats">
 
                     <StatCard
-                        title="Total Enquiries"
+                        title="Total Product Enquiries"
                         value={
                             loading
                                 ? "..."
@@ -162,7 +162,7 @@ const [recentSearchKeywords, setRecentSearchKeywords] = useState([]);
                     />
 
                     <StatCard
-                        title="New Enquiries"
+                        title="New Product Enquiries"
                         value={
                             loading
                                 ? "..."
@@ -222,7 +222,7 @@ const [recentSearchKeywords, setRecentSearchKeywords] = useState([]);
                 <div className="dashboard-bottom-grid">
                     <div className="dashboard-panel recent-enquiries">
                     <div className="section-header">
-                        <h3>Recent Enquiries</h3>
+                        <h3>Recent Product Enquiries</h3>
                     </div>
                     
 

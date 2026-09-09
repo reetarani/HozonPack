@@ -26,3 +26,7 @@
   font-size: 18px;
   color: #666;
 }
+@media (max-width: 991px) {
+  .page {
+    padding: 170px 0;
+  }

@@ -1,3 +1,5 @@
+import React from "react";
+import "./ProductViewModal.css";
 function IndustryViewModal({
     isOpen,
     onClose,
@@ -8,8 +10,10 @@ function IndustryViewModal({
         return null;
     }
 
+    const SERVER_URL = apiUrl.replace(/\/api$/, "");
+
     const imageUrl = industry.image
-        ? `${apiUrl}${industry.image}`
+        ? `${SERVER_URL}${industry.image}`
         : "";
 
     return (

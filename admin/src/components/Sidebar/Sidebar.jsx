@@ -43,6 +43,12 @@ function Sidebar() {
                     </NavLink>
                 </li>
                 <li>
+                    <NavLink to="/top-bar">
+                        <FaTachometerAlt />
+                        <span>Top Bar</span>
+                    </NavLink>
+                </li>
+                <li>
                     <NavLink to="/hero">
                         <FaImage />
                         <span>Hero</span>

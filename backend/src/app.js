@@ -22,6 +22,8 @@ import searchKeywordRoutes from "./routes/searchKeywordRoutes.js";
 import seoMetaRoutes from "./routes/seoMetaRoutes.js";
 import publicSeoMetaRoutes from "./routes/publicSeoMetaRoutes.js";
 import publicIndustryRoutes from "./routes/publicIndustryRoutes.js";
+import topBarRoutes from "./routes/topBarRoutes.js";
+import corporateQuoteRoutes from "./routes/corporateQuoteRoutes.js";
 
 
 const app = express();
@@ -35,6 +37,7 @@ app.use(
              "http://localhost:5174",
              "http://localhost:5175",
              "http://localhost:5176",
+             "http://127.0.0.1:5174",
         ],
         credentials: true,
     })
@@ -72,6 +75,8 @@ app.use("/api/public", publicEnquiryRoutes);
 app.use("/api/public", publicSearchRoutes);
 app.use("/api/search-keywords", searchKeywordRoutes);
 app.use("/api/seo-meta", seoMetaRoutes);
+app.use("/api/topbar", topBarRoutes);
+app.use( "/api/corporate-quotes", corporateQuoteRoutes);
 app.use(
     "/api/public",
     publicSeoMetaRoutes

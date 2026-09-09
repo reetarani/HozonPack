@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import ProductCard from "../ProductCard/ProductCard";
 import SectionHeader from "../SectionHeader/SectionHeader";
 import EnquiryPopup from "../EnquiryPopup/EnquiryPopup";
@@ -8,152 +9,339 @@ import { getPublicCategories } from "../../services/categoryService";
 
 import "./products.css";
 
-function Products() {
-    const [products, setProducts] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [activeTab, setActiveTab] = useState("all");
 
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState("");
-    const [selectedProductMOQ, setSelectedProductMOQ] = useState("");
-
-    const [tabsFixed, setTabsFixed] = useState(false);
+function Products({
+    initialProducts = [],
+    initialCategories = [],
+}) {
 
     /* ===========================
-       Get Products & Categories
+       Products & Categories
     =========================== */
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [
-                    productsResponse,
-                    categoriesResponse,
-                ] = await Promise.all([
-                    getPublicProducts(),
-                    getPublicCategories(),
-                ]);
+    const [products, setProducts] =
+        useState(initialProducts || []);
 
-                if (productsResponse.success) {
-                    setProducts(
-                        productsResponse.products || []
-                    );
-                }
+    const [categories, setCategories] =
+        useState(initialCategories || []);
 
-                if (categoriesResponse.success) {
-                    setCategories(
-                        categoriesResponse.categories || []
-                    );
-                }
 
-            } catch (error) {
-                console.error(
-                    "Failed to load products/categories:",
-                    error
-                );
-            }
-        };
+    /* ===========================
+       Active Category
+    =========================== */
 
-        fetchData();
-    }, []);
+    const [activeTab, setActiveTab] =
+        useState("all");
+
+
+    /* ===========================
+       Enquiry Popup
+    =========================== */
+
+    const [isPopupOpen, setIsPopupOpen] =
+        useState(false);
+
+    const [selectedProduct, setSelectedProduct] =
+        useState("");
+
+    const [selectedProductMOQ, setSelectedProductMOQ] =
+        useState("");
 
 
     /* ===========================
        Mobile Fixed Tabs
     =========================== */
 
+    const [tabsFixed, setTabsFixed] =
+        useState(false);
+
+
+    /* =====================================================
+       Sync SSR Data
+
+       SSR data is already available during the first render.
+       This effect only acts as a fallback when SSR data is
+       missing.
+    ===================================================== */
+
     useEffect(() => {
-    const handleScroll = () => {
 
-        if (window.innerWidth > 767) {
-            setTabsFixed(false);
+        const hasProducts =
+            Array.isArray(initialProducts) &&
+            initialProducts.length > 0;
+
+        const hasCategories =
+            Array.isArray(initialCategories) &&
+            initialCategories.length > 0;
+
+
+        // If SSR already provided everything, do nothing.
+        if (
+            hasProducts &&
+            hasCategories
+        ) {
             return;
         }
 
-        const tabsElement =
-            document.getElementById(
-                "product-category-tabs"
+
+        const fetchData = async () => {
+
+            try {
+
+                const requests = [];
+
+
+                /* -----------------------------------------
+                   Fetch products only if SSR didn't provide
+                   them.
+                ----------------------------------------- */
+
+                if (!hasProducts) {
+                    requests.push(
+                        getPublicProducts()
+                    );
+                } else {
+                    requests.push(
+                        Promise.resolve(null)
+                    );
+                }
+
+
+                /* -----------------------------------------
+                   Fetch categories only if SSR didn't provide
+                   them.
+                ----------------------------------------- */
+
+                if (!hasCategories) {
+                    requests.push(
+                        getPublicCategories()
+                    );
+                } else {
+                    requests.push(
+                        Promise.resolve(null)
+                    );
+                }
+
+
+                const [
+                    productsResponse,
+                    categoriesResponse,
+                ] = await Promise.all(requests);
+
+
+                /* -----------------------------------------
+                   Products
+                ----------------------------------------- */
+
+                if (
+                    productsResponse?.success
+                ) {
+
+                    setProducts(
+                        productsResponse.products || []
+                    );
+
+                }
+
+
+                /* -----------------------------------------
+                   Categories
+                ----------------------------------------- */
+
+                if (
+                    categoriesResponse?.success
+                ) {
+
+                    setCategories(
+                        categoriesResponse.categories || []
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to load products/categories:",
+                    error
+                );
+
+            }
+
+        };
+
+
+        fetchData();
+
+    }, [
+        initialProducts,
+        initialCategories,
+    ]);
+
+
+    /* =====================================================
+       Mobile Fixed Tabs
+    ===================================================== */
+
+    useEffect(() => {
+
+        const handleScroll = () => {
+
+            /* -----------------------------------------
+               Desktop
+            ----------------------------------------- */
+
+            if (
+                window.innerWidth > 767
+            ) {
+
+                setTabsFixed(false);
+
+                return;
+            }
+
+
+            /* -----------------------------------------
+               Find elements
+            ----------------------------------------- */
+
+            const tabsElement =
+                document.getElementById(
+                    "product-category-tabs"
+                );
+
+            const sectionElement =
+                document.getElementById(
+                    "products"
+                );
+
+
+            if (
+                !tabsElement ||
+                !sectionElement
+            ) {
+
+                return;
+            }
+
+
+            /* -----------------------------------------
+               Header height
+            ----------------------------------------- */
+
+            const headerHeight = 70;
+
+
+            /* -----------------------------------------
+               Section position
+            ----------------------------------------- */
+
+            const sectionRect =
+                sectionElement.getBoundingClientRect();
+
+
+            const tabsRect =
+                tabsElement.getBoundingClientRect();
+
+
+            /* -----------------------------------------
+               Original tabs position
+            ----------------------------------------- */
+
+            const tabsOriginalTop =
+                tabsElement.getBoundingClientRect().top +
+                window.scrollY;
+
+
+            /* -----------------------------------------
+               Current scroll
+            ----------------------------------------- */
+
+            const scrollTop =
+                window.scrollY;
+
+
+            /* -----------------------------------------
+               Start fixing
+            ----------------------------------------- */
+
+            const startPoint =
+                tabsOriginalTop -
+                headerHeight;
+
+
+            /* -----------------------------------------
+               Section bottom
+            ----------------------------------------- */
+
+            const sectionBottom =
+                sectionRect.bottom +
+                window.scrollY;
+
+
+            /* -----------------------------------------
+               Stop fixing
+            ----------------------------------------- */
+
+            const stopPoint =
+                sectionBottom -
+                tabsRect.height -
+                headerHeight;
+
+
+            /* -----------------------------------------
+               Should fix?
+            ----------------------------------------- */
+
+            const shouldFix =
+                scrollTop >= startPoint &&
+                scrollTop < stopPoint;
+
+
+            setTabsFixed(
+                shouldFix
             );
 
-        const sectionElement =
-            document.getElementById(
-                "products"
-            );
+        };
 
-        if (!tabsElement || !sectionElement) {
-            return;
-        }
 
-        const headerHeight = 70;
-
-        const sectionRect =
-            sectionElement.getBoundingClientRect();
-
-        const tabsRect =
-            tabsElement.getBoundingClientRect();
-
-        // Where tabs normally start
-        const tabsOriginalTop =
-            tabsElement.getBoundingClientRect().top +
-            window.scrollY;
-
-        // Current scroll position
-        const scrollTop =
-            window.scrollY;
-
-        // Start fixing
-        const startPoint =
-            tabsOriginalTop -
-            headerHeight;
-
-        // Section bottom in document coordinates
-        const sectionBottom =
-            sectionRect.bottom +
-            window.scrollY;
-
-        // Bottom point where tabs should stop
-        const stopPoint =
-            sectionBottom -
-            tabsRect.height -
-            headerHeight;
-
-        const shouldFix =
-            scrollTop >= startPoint &&
-            scrollTop < stopPoint;
-
-        setTabsFixed(shouldFix);
-    };
-
-    window.addEventListener(
-        "scroll",
-        handleScroll,
-        { passive: true }
-    );
-
-    window.addEventListener(
-        "resize",
-        handleScroll
-    );
-
-    handleScroll();
-
-    return () => {
-        window.removeEventListener(
+        window.addEventListener(
             "scroll",
-            handleScroll
+            handleScroll,
+            {
+                passive: true,
+            }
         );
 
-        window.removeEventListener(
+
+        window.addEventListener(
             "resize",
             handleScroll
         );
-    };
-}, []);
 
 
-    /* ===========================
+        handleScroll();
+
+
+        return () => {
+
+            window.removeEventListener(
+                "scroll",
+                handleScroll
+            );
+
+            window.removeEventListener(
+                "resize",
+                handleScroll
+            );
+
+        };
+
+    }, []);
+
+
+    /* =====================================================
        Category Order
-    =========================== */
+    ===================================================== */
 
     const categoryOrder = [
         "Corrugated Packaging",
@@ -161,86 +349,161 @@ function Products() {
         "Packaging Accessories",
     ];
 
+
+    /* =====================================================
+       Sorted Categories
+    ===================================================== */
+
     const sortedCategories =
-        [...categories].sort((a, b) => {
+        [...categories].sort(
+            (a, b) => {
 
-            const indexA =
-                categoryOrder.indexOf(a.name);
+                const indexA =
+                    categoryOrder.indexOf(
+                        a.name
+                    );
 
-            const indexB =
-                categoryOrder.indexOf(b.name);
-
-            // Unknown categories go at the end
-            return (
-                (indexA === -1 ? 999 : indexA) -
-                (indexB === -1 ? 999 : indexB)
-            );
-        });
+                const indexB =
+                    categoryOrder.indexOf(
+                        b.name
+                    );
 
 
-    /* ===========================
+                /*
+                 * Unknown categories
+                 * go to the end.
+                 */
+
+                return (
+                    (indexA === -1
+                        ? 999
+                        : indexA) -
+                    (indexB === -1
+                        ? 999
+                        : indexB)
+                );
+
+            }
+        );
+
+
+    /* =====================================================
        Category Tabs
-    =========================== */
+    ===================================================== */
 
     const tabs = [
+
         {
             id: "all",
             title: "All",
         },
 
-        ...sortedCategories.map((category) => ({
-            id: category._id,
-            title: category.name,
-        })),
+        ...sortedCategories.map(
+            (category) => ({
+
+                id:
+                    category._id ||
+                    category.slug,
+
+                title:
+                    category.name,
+
+            })
+        ),
+
     ];
 
 
-    /* ===========================
+    /* =====================================================
        Filter Products
-    =========================== */
+    ===================================================== */
 
     const filteredProducts =
         activeTab === "all"
+
             ? products
-            : products.filter((product) => {
 
-                  const categoryId =
-                      product.category?._id ||
-                      product.category;
+            : products.filter(
+                (product) => {
 
-                  return (
-                      String(categoryId) ===
-                      String(activeTab)
-                  );
-              });
+                    const categoryId =
+                        product.category?._id ||
+                        product.category;
 
 
-    /* ===========================
+                    return (
+                        String(categoryId) ===
+                        String(activeTab)
+                    );
+
+                }
+            );
+
+
+    /* =====================================================
        Product Enquiry
-    =========================== */
+    ===================================================== */
 
-    const handleEnquiry = (product) => {
-    console.log("SELECTED PRODUCT:", product);
-    console.log("PRODUCT MOQ:", product.moq);
+    const handleEnquiry =
+        (product) => {
 
-    setSelectedProduct(product.name);
-    setSelectedProductMOQ(product.moq);
-    setIsPopupOpen(true);
-};
+            console.log(
+                "SELECTED PRODUCT:",
+                product
+            );
 
-    /* ===========================
+            console.log(
+                "PRODUCT MOQ:",
+                product.moq
+            );
+
+
+            setSelectedProduct(
+                product.name
+            );
+
+
+            setSelectedProductMOQ(
+                product.moq
+            );
+
+
+            setIsPopupOpen(
+                true
+            );
+
+        };
+
+
+    /* =====================================================
+       Close Enquiry Popup
+    ===================================================== */
+
+    const handleClosePopup = () => {
+
+        setIsPopupOpen(false);
+
+        setSelectedProduct("");
+
+        setSelectedProductMOQ("");
+
+    };
+
+
+    /* =====================================================
        Render
-    =========================== */
+    ===================================================== */
 
     return (
+
         <section
             className="products-section"
             id="products"
         >
 
-            {/* ===========================
+            {/* =================================================
                 Section Header
-            =========================== */}
+            ================================================= */}
 
             <div className="container">
 
@@ -253,46 +516,63 @@ function Products() {
             </div>
 
 
-            {/* ===========================
+            {/* =================================================
                 Category Tabs
-            =========================== */}
+            ================================================= */}
 
-            {/* Placeholder prevents layout jump */}
             {tabsFixed && (
-                <div className="category-tabs-placeholder"></div>
+
+                <div
+                    className="category-tabs-placeholder"
+                />
+
             )}
+
 
             <div
                 id="product-category-tabs"
-                className={`category-tabs-sticky ${
-                    tabsFixed
-                        ? "tabs-fixed"
-                        : ""
-                }`}
+                className={
+                    `category-tabs-sticky ${
+                        tabsFixed
+                            ? "tabs-fixed"
+                            : ""
+                    }`
+                }
             >
 
                 <div className="container">
 
                     <div className="category-tabs">
 
-                        {tabs.map((tab) => (
+                        {tabs.map(
+                            (tab) => (
 
-                            <button
-                                key={tab.id}
-                                type="button"
-                                onClick={() =>
-                                    setActiveTab(tab.id)
-                                }
-                                className={
-                                    activeTab === tab.id
-                                        ? "active"
-                                        : ""
-                                }
-                            >
-                                {tab.title}
-                            </button>
+                                <button
+                                    key={
+                                        tab.id
+                                    }
+                                    type="button"
+                                    onClick={() =>
+                                        setActiveTab(
+                                            tab.id
+                                        )
+                                    }
+                                    className={
+                                        activeTab ===
+                                        tab.id
+                                            ? "active"
+                                            : ""
+                                    }
+                                >
 
-                        ))}
+                                    {
+                                        tab.title
+                                    }
+
+                                </button>
+
+                            )
+                        )}
 
                     </div>
 
@@ -301,9 +581,9 @@ function Products() {
             </div>
 
 
-            {/* ===========================
+            {/* =================================================
                 Products
-            =========================== */}
+            ================================================= */}
 
             <div className="container">
 
@@ -312,15 +592,17 @@ function Products() {
                     <div className="products-grid">
 
                         {filteredProducts.map(
-                            (product) => (
+                            (product, index) => (
 
                                 <ProductCard
                                     key={product._id}
                                     name={product.name}
+                                    slug={product.slug}
                                     description={product.description}
-                                    image={product.image}
                                     moq={product.moq}
-                                    onEnquire={() => handleEnquiry(product)}
+                                    moqUnit={product.moqUnit || "pcs"}
+                                    image={product.image}
+                                    onEnquire={handleEnquiry}
                                 />
 
                             )
@@ -339,24 +621,37 @@ function Products() {
             </div>
 
 
-            {/* ===========================
+            {/* =================================================
                 Enquiry Popup
-            =========================== */}
+            ================================================= */}
 
             <EnquiryPopup
-                isOpen={isPopupOpen}
-                selectedProduct={selectedProduct}
-                selectedProductMOQ={selectedProductMOQ}
-                showProduct={true}
-                onClose={() => {
-                    setIsPopupOpen(false);
-                    setSelectedProduct("");
-                    setSelectedProductMOQ("");
-                }}
+                isOpen={
+                    isPopupOpen
+                }
+
+                selectedProduct={
+                    selectedProduct
+                }
+
+                selectedProductMOQ={
+                    selectedProductMOQ
+                }
+
+                showProduct={
+                    true
+                }
+
+                onClose={
+                    handleClosePopup
+                }
             />
 
         </section>
+
     );
+
 }
+
 
 export default Products;

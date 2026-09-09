@@ -15,6 +15,9 @@ function ProductModal({
     onSubmit,
     isSubmitting,
     editingId,
+    galleryPreview,
+    onGalleryChange,
+    onRemoveGallery,
 }) {
     return (
         <Modal
@@ -33,6 +36,9 @@ function ProductModal({
                 onRemove={onRemove}
                 onSubmit={onSubmit}
                 isSubmitting={isSubmitting}
+                galleryPreview={galleryPreview}
+                onGalleryChange={onGalleryChange}
+                onRemoveGallery={onRemoveGallery}
             />
         </Modal>
     );

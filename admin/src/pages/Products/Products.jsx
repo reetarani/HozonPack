@@ -30,6 +30,7 @@ function Products() {
   const [industries, setIndustries] = useState([]);
   const [errors, setErrors] = useState({});
   const [preview, setPreview] = useState("");
+  const [galleryPreview, setGalleryPreview] = useState([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -95,18 +96,63 @@ function Products() {
     slug: "",
     description: "",
     moq: "",
+    moqUnit: "pcs",
+    fastDelivery: false,
     category: "",
     industries: [],
+    highlights: [],
     image: null,
     isActive: true,
 });
 const handleChange = (e) => {
-    const { name, value } = e.target;
+    const {
+        name,
+        value,
+        type,
+        checked,
+    } = e.target;
 
     setFormData((prev) => ({
         ...prev,
-        [name]: value,
+        [name]:
+            type === "checkbox"
+                ? checked
+                : value,
     }));
+};
+const handleGalleryChange = (e) => {
+    const files = Array.from(e.target.files || []);
+
+    if (!files.length) {
+        return;
+    }
+
+    const newImages = files.map((file) => ({
+        id: `${file.name}-${file.lastModified}-${Math.random()}`,
+        file,
+        url: URL.createObjectURL(file),
+        existing: false,
+    }));
+
+    setGalleryPreview((prev) => [
+        ...prev,
+        ...newImages,
+    ]);
+
+    // Allow selecting the same file again
+    e.target.value = "";
+};
+const handleRemoveGallery = (index) => {
+    setGalleryPreview((prev) => {
+        const image = prev[index];
+
+        // Release browser-created preview URL
+        if (image?.file && image?.url) {
+            URL.revokeObjectURL(image.url);
+        }
+
+        return prev.filter((_, i) => i !== index);
+    });
 };
     const handleDelete = (product) => {
     setConfirmDelete({
@@ -199,14 +245,25 @@ const loadIndustries = async () => {
         console.error("Failed to load industries:", error);
     }
 };
+
 const resetForm = () => {
+    galleryPreview.forEach((image) => {
+    if (image.file && image.url) {
+        URL.revokeObjectURL(image.url);
+    }
+});
+
+setGalleryPreview([]);
     setFormData({
         name: "",
         slug: "",
         description: "",
         moq: "",
+        moqUnit: "pcs",
+        fastDelivery: false,
         category: "",
         industries: [],
+        highlights: [],
         image: null,
         isActive: true,
     });
@@ -269,12 +326,25 @@ const handleSubmit = async (e) => {
             ? String(formData.moq)
             : ""
     );
+    data.append(
+        "moqUnit",
+        formData.moqUnit || "pcs"
+    );
+    data.append(
+        "fastDelivery",
+        String(formData.fastDelivery)
+    );
 
     data.append("category", formData.category);
 
     data.append(
         "industries",
         JSON.stringify(formData.industries)
+    );
+
+    data.append(
+        "highlights",
+        JSON.stringify(formData.highlights)
     );
 
     data.append(
@@ -286,6 +356,23 @@ const handleSubmit = async (e) => {
         data.append("image", formData.image);
     }
 
+    const existingGallery = galleryPreview
+    .filter((image) => image.existing)
+    .map((image) => image.path);
+
+    data.append(
+        "gallery",
+        JSON.stringify(existingGallery)
+    );
+
+    galleryPreview
+        .filter((image) => !image.existing && image.file)
+        .forEach((image) => {
+            data.append(
+                "galleryImages",
+                image.file
+            );
+        });
     let response;
 
     if (editingId) {
@@ -345,28 +432,70 @@ const handleEdit = async (id) => {
             slug: product.slug || "",
             description: product.description || "",
             moq: product.moq ?? "",
+            moqUnit: product.moqUnit || "pcs",
+            fastDelivery: product.fastDelivery ?? false,
             category: product.category?._id || "",
             industries:
                 product.industries?.map(
                     (industry) => industry._id
                 ) || [],
+            highlights: product.highlights || [],
             image: null,
             isActive: product.isActive ?? true,
         });
 
+        /*
+        |--------------------------------------------------------------------------
+        | Main Image
+        |--------------------------------------------------------------------------
+        */
+
         if (product.image) {
-            const imageUrl = `${API_URL}${product.image}`;
+            const imageUrl =
+                `${API_URL}${product.image}`;
+
             setPreview(imageUrl);
         } else {
             setPreview("");
         }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Gallery Images
+        |--------------------------------------------------------------------------
+        */
+
+        if (product.gallery?.length > 0) {
+
+            const galleryImages = product.gallery.map(
+                (image, index) => ({
+                    id: `existing-${index}-${image}`,
+                    url: `${API_URL}${image}`,
+                    path: image,
+                    existing: true,
+                    file: null,
+                })
+            );
+
+            setGalleryPreview(
+                galleryImages
+            );
+
+        } else {
+            setGalleryPreview([]);
+        }
+
 
         setErrors({});
         setEditingId(id);
         setIsFormOpen(true);
 
     } catch (error) {
-        console.error("Failed to load product:", error);
+        console.error(
+            "Failed to load product:",
+            error
+        );
     }
 };
 const handleView = async (id) => {
@@ -530,7 +659,7 @@ useEffect(() => {
           </div>
         )}
 <ProductModal
-     isOpen={isFormOpen}
+    isOpen={isFormOpen}
     onClose={() => {
         resetForm();
         setIsFormOpen(false);
@@ -540,6 +669,11 @@ useEffect(() => {
     industries={industries}
     errors={errors}
     preview={preview}
+
+    galleryPreview={galleryPreview}
+    onGalleryChange={handleGalleryChange}
+    onRemoveGallery={handleRemoveGallery}
+
     onChange={handleChange}
     onImageChange={handleImageChange}
     onRemove={handleRemoveImage}

@@ -1,143 +1,338 @@
-.hero-section{
-    background:#faf7f4;
-    padding:130px 20px 0;
+.hero-section {
+    background: #F8F9FA;
+    padding: 110px 20px 0;
+    overflow: hidden;
 }
-.hero-container{
-    max-width:1200px;
-    margin:auto;
-    text-align:center;
+
+.hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 45% 55%;
+    align-items: center;
+    min-height: 620px;
 }
+
+/* =========================
+   LEFT CONTENT
+========================= */
+
+.hero-content {
+    text-align: left;
+    position: relative;
+    z-index: 2;
+}
+
 /* Badge */
-.hero-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:5px;
-    padding:14px 14px;
-    border-radius:50px;
-    background:#DDE2E6;
-    color:#202529;
-    font-weight:600;
-    font-size:14px;
-    margin-bottom:30px;
-}
-.badge-icon{
-    width:12px;
-    height:12px;
-    color:#202529;
-    stroke-width:2;
-}
-/* Heading */
 
-.hero-title{
-    font-size:clamp(48px,6vw,80px);
-    line-height:clamp(54px,7vw,90px);
-    margin-bottom:20px;
-    font-weight:700;
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 15px;
+    border-radius: 50px;
+    background: #e4e3ff;
+    color: #202529;
+    font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 28px;
+}
+
+.badge-icon {
+    width: 13px;
+    height: 13px;
+    color: #202529;
+    stroke-width: 2;
+}
+
+/* =========================
+   HEADING
+========================= */
+
+.hero-title {
+    font-size: clamp(52px, 5.5vw, 76px);
+    line-height: 0.98;
+    margin: 0 0 24px;
+    font-weight: 700;
     font-family: "Playfair Display", serif;
     color: rgb(26, 26, 26);
-    --tw-tracking: 14px;
-    letter-spacing: 14px;
+    letter-spacing: -2px;
 }
 
-.hero-title .dark{
+.hero-title .dark {
     font-family: "Playfair Display", serif;
     color: rgb(26, 26, 26);
-    --tw-tracking: 14px;
-    letter-spacing: 14px;
 }
 
-.hero-title .orange{
+.hero-title .orange {
+    display: block;
     font-family: "Bricolage Grotesque", sans-serif;
-    color:#7778F6;
-    --tw-tracking: 0;
-    letter-spacing: normal;
+    color: #7778f6;
+    letter-spacing: -3px;
+    font-style: italic;
 }
 
-/* Description */
-.hero-description{
+/* =========================
+   DESCRIPTION
+========================= */
+
+.hero-description {
     font-family: "IBM Plex Sans", sans-serif;
-    max-width:900px;
-    margin:0 auto;
-    font-size:18px;
-    line-height:1.6;
-    color:#444;
-    margin-bottom:20px;
-    font-style:italic;
+    max-width: 520px;
+    margin: 0 0 28px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #444;
+    font-style: italic;
 }
-/* Button */
-.hero-btn{
-    background: #2D1103;
-    color:#fff;
-    border:none;
-    border-radius:10px;
-    padding:15px 25px;
-    font-size:16px;
-    font-weight:700;
-    cursor:pointer;
-    transition:.3s;
-    box-shadow: 0 12px 35px rgba(119, 120, 246, .25);
+
+/* =========================
+   BUTTON
+========================= */
+
+.hero-btn {
+    background: #2d1103;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 15px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 12px 35px rgba(119, 120, 246, 0.25);
 }
-.hero-btn:hover{
-    transform:translateY(-4px);
+
+.hero-btn:hover {
+    transform: translateY(-3px);
 }
-/* Image */
-.hero-image{
-    margin-top:0px;
+
+/* =========================
+   RIGHT IMAGE
+========================= */
+
+.hero-image {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
 }
-.hero-image img{
-    width:60%;
-    max-width:900px;
-    display:block;
-    margin:auto;
+
+.hero-image img {
+    width: 100%;
+    max-width: 680px;
+    height: auto;
+    display: block;
+    object-fit: contain;
 }
-/* Mobile */
-@media (max-width:768px){
-.hero{
-    padding:130px 20px 0;
+/* =========================
+   HERO BENEFITS
+========================= */
+
+.hero-benefits {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 38px;
+    padding-top: 17px;
+    border-top: 1px solid #d9d9d9;
+    max-width: 445px;
+    color: #5b5b5b;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    white-space: nowrap;
 }
-.hero-container{
+
+.hero-benefit {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.benefit-icon {
+    font-size: 16px;
+    line-height: 1;
+    color: #555;
+}
+
+.hero-benefit-divider {
+    color: #c8c8c8;
+    font-size: 14px;
+}
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 992px) {
+
+    .hero-section {
+        padding-top: 90px;
+    }
+
+    .hero-container {
+        grid-template-columns: 48% 52%;
+        min-height: 550px;
+    }
+
+    .hero-title {
+        font-size: clamp(46px, 6vw, 65px);
+    }
+
+    .hero-description {
+        font-size: 17px;
+    }
+
+    .hero-image img {
+        max-width: 580px;
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .hero-section {
+        padding: 90px 20px 0;
+        overflow: hidden;
+    }
+
+    .hero-container {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        min-height: auto;
+    }
+
+    .hero-content {
         text-align: left;
     }
-.hero-badge{
-    display:inline-flex;
-    margin: 0 0 24px;
-    gap:5px;
-    padding:12px 12px;
-    border-radius:50px;
-    background:#ffa07026;
-    color:#7778F6;
-    font-weight:600;
-    font-size:12px;
-}
-.hero-image img{
-    width:100%;
-    max-width:900px;
-    display:block;
-    margin:auto;
-}
-.hero-title{
-    font-size:50px;
-    line-height:1.2;
-    text-align:left;
-}
-.hero-description{
-    font-size:16px;
-    text-align: left;
-    margin: 0 0 32px;
-    max-width: 100%;
-}
-.hero-btn{
-    display: inline-flex;
-    width: auto;
-    max-width: none;
-    font-size:18px;
-    padding:18px;
-    
-}
-.hero-image{
-    margin-top:40px;
-    display: flex;
-    justify-content: center;
+
+    .hero-badge {
+        margin-bottom: 22px;
+        padding: 10px 13px;
+        font-size: 11px;
+    }
+
+    .hero-title {
+        font-size: 48px;
+        line-height: 1;
+        letter-spacing: -1.5px;
+        margin-bottom: 22px;
+    }
+
+    .hero-title .orange {
+        letter-spacing: -2px;
+    }
+
+    .hero-description {
+        max-width: 100%;
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 28px;
+    }
+
+    /* Full width button */
+    .hero-btn {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding: 14px 20px;
+        min-height: 46px;
+        font-size: 14px;
+        text-transform: uppercase;
+        border-radius: 12px;
+    }
+
+    /* Benefits box */
+    .hero-benefits {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        width: 100%;
+        max-width: none;
+        margin-top: 30px;
+        padding: 0;
+        border: 1px solid #ddd5d0;
+        border-radius: 12px;
+        overflow: hidden;
+        background: transparent;
+        font-size: 11px;
+        white-space: normal;
+    }
+
+    .hero-benefit {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 36px;
+        padding: 8px 13px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #555;
+    }
+
+    .hero-benefit + .hero-benefit {
+        border-top: 1px solid #ddd5d0;
+    }
+
+    .benefit-icon {
+        width: 14px;
+        min-width: 14px;
+        height: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+    }
+
+    /* Hide desktop divider */
+    .hero-benefit-divider {
+        display: none;
+    }
+
+    /* Product image */
+    .hero-image {
+        width: 100%;
+        margin-top: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hero-image img {
+        width: 100%;
+        max-width: 420px;
+        height: auto;
+        display: block;
+        object-fit: contain;
+    }
 }
 
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 480px) {
+
+    .hero-section {
+        padding: 170px 16px 0;
+    }
+
+    .hero-title {
+        font-size: 43px;
+    }
+
+    .hero-description {
+        font-size: 15px;
+    }
+
+    .hero-image {
+        margin-top: 30px;
+    }
 }

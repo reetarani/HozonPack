@@ -7,24 +7,32 @@ function ClientModal({
     errors,
     onChange,
     onSubmit,
-    onRemoveLogo, // ✅ add this
+    onRemoveLogo,
+    logoPreview,
     isSubmitting,
 }) {
+
     if (!isOpen) {
         return null;
     }
 
+
     return (
+
         <div className="modal-overlay">
 
             <div className="modal-content">
 
+                {/* Header */}
+
                 <div className="modal-header">
+
                     <h3>
                         {formData._id
                             ? "Edit Client"
                             : "Add Client"}
                     </h3>
+
 
                     <button
                         type="button"
@@ -33,17 +41,46 @@ function ClientModal({
                     >
                         ×
                     </button>
+
                 </div>
 
+
+                {/* Body */}
+
                 <div className="modal-body">
+
                     <ClientForm
-                        formData={formData}
-                        errors={errors}
-                        onChange={onChange}
-                        onSubmit={onSubmit}
-                        onRemoveLogo={onRemoveLogo} // ✅ add this
-                        isSubmitting={isSubmitting}
+
+                        formData={
+                            formData
+                        }
+
+                        errors={
+                            errors
+                        }
+
+                        onChange={
+                            onChange
+                        }
+
+                        onSubmit={
+                            onSubmit
+                        }
+
+                        onRemoveLogo={
+                            onRemoveLogo
+                        }
+
+                        logoPreview={
+                            logoPreview
+                        }
+
+                        isSubmitting={
+                            isSubmitting
+                        }
+
                     />
+
                 </div>
 
             </div>

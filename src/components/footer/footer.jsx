@@ -1,21 +1,24 @@
 import "./footer.css";
+import logo from "/images/logo.png";
 import { FiMail, FiPhone, FiMapPin } from "react-icons/fi";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="footer" id="contact">
+    <footer id="contact" className="footer">
       <div className="container">
         <div className="footer-top">
           {/* Company */}
           <div className="footer-column">
-            <Link to="/">
-                <img 
-                src="/images/logo.png" 
-                alt="Hozone" 
-                className="footerLogo" 
-                />
+            <Link to="/" onClick={() => 
+            window.scrollTo({ top: 0, behavior: "smooth", 
+            }) }
+            >
+              <img
+                src={logo}
+                alt="Hozon Pack" width="200"
+               />
             </Link>
             <p>
               Premium corrugated packaging solutions that protect and perform.

@@ -26,7 +26,25 @@ const industrySchema = new mongoose.Schema(
         description: {
             type: String,
             default: "",
+            trim: true,
         },
+
+        // Dynamic description information
+        descriptionList: [
+            {
+                label: {
+                    type: String,
+                    default: "",
+                    trim: true,
+                },
+
+                value: {
+                    type: String,
+                    default: "",
+                    trim: true,
+                },
+            },
+        ],
 
         image: {
             type: String,

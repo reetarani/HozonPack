@@ -5,13 +5,14 @@ import Footer from "../components/footer/footer";
 import PageHeader from "../components/PageHeader/PageHeader.jsx";
 import TopBar from "../components/topbar/topbar.jsx";
 import EnquiryPopup from "../components/EnquiryPopup/EnquiryPopup";
+import CorporateQuote from "../components/CorporateQuote/CorporateQuote.jsx";
 
-function PrivacyPolicy() {
+function PrivacyPolicy({ initialTopBar = null }) {
     const [isQuoteOpen, setIsQuoteOpen] = useState(false);
 
     return (
         <>
-            <TopBar />
+            <TopBar initialTopBar={initialTopBar} />
 
             <Header
                 onGetQuote={() => setIsQuoteOpen(true)}
@@ -56,8 +57,9 @@ function PrivacyPolicy() {
                 showProduct={false}
                 onClose={() => setIsQuoteOpen(false)}
             />
-
+            <CorporateQuote />
             <Footer />
+
         </>
     );
 }

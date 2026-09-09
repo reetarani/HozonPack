@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { SERVER_URL } from "../../config/env";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 
@@ -98,7 +98,7 @@ function TestimonialCard({ item }) {
 
                 {item.image && (
                     <img
-                        src={`http://localhost:5000${item.image}`}
+                        src={`${SERVER_URL}${item.image}`}
                         alt={item.name}
                     />
                 )}

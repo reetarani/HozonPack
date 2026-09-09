@@ -85,6 +85,12 @@ function EnquiryViewModal({
                             {enquiry.dimensions || "-"}
                         </p>
                     </div>
+                     <div className="view-field">
+                        <h3>Ply</h3>
+                        <p>
+                            {enquiry.ply || "-"}
+                        </p>
+                    </div>
 
                     <div className="view-field">
                         <h3>Message</h3>

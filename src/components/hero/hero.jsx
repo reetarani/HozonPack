@@ -1,22 +1,27 @@
 import { useEffect, useState } from "react";
-
+import { SERVER_URL } from "../../config/env";
 import "./hero.css";
 
 import { getPublicHero } from "../../services/heroService";
 
-function Hero() {
+function Hero({ initialHero = null }) {
 
-    const [hero, setHero] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [hero, setHero] = useState(initialHero);
+    const [loading, setLoading] = useState(!initialHero);
 
     useEffect(() => {
+
+        // SSR already provided the hero.
+        // No need to fetch it again immediately.
+        if (initialHero) {
+            return;
+        }
 
         const fetchHero = async () => {
 
             try {
 
-                const response =
-                    await getPublicHero();
+                const response = await getPublicHero();
 
                 if (response.success) {
                     setHero(response.hero);
@@ -38,7 +43,7 @@ function Hero() {
 
         fetchHero();
 
-    }, []);
+    }, [initialHero]);
 
 
     if (loading) {
@@ -61,30 +66,30 @@ function Hero() {
                     {/* Badge */}
                     {hero.badge && (
                         <div className="hero-badge">
-                          <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="lucide lucide-leaf badge-icon"
-                              aria-hidden="true"
-                          >
-                              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
-                              <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
-                          </svg>                        
-                          {hero.badge}
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="lucide lucide-leaf badge-icon"
+                                aria-hidden="true"
+                            >
+                                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+                                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+                            </svg>
+
+                            {hero.badge}
                         </div>
                     )}
 
-
                     {/* Heading */}
                     <h1 className="hero-title">
-                        {hero.title}{" "}
+                        {hero.title}
 
                         {hero.highlight && (
                             <span className="orange">
@@ -93,7 +98,6 @@ function Hero() {
                         )}
                     </h1>
 
-
                     {/* Description */}
                     {hero.subtitle && (
                         <p className="hero-description">
@@ -101,56 +105,72 @@ function Hero() {
                         </p>
                     )}
 
-
                     {/* Button */}
                     {hero.buttonText && (
-                      <button
-                          type="button"
-                          className="hero-btn"
-                          onClick={() => {
-                              const url = hero.buttonUrl?.trim();
+                        <button
+                            type="button"
+                            className="hero-btn"
+                            onClick={() => {
 
-                              if (!url) return;
+                                const url =
+                                    hero.buttonUrl?.trim();
 
-                              // Scroll to section: #products
-                              if (url.startsWith("#")) {
-                                  const element = document.getElementById(
-                                      url.substring(1)
-                                  );
+                                if (!url) return;
 
-                                  if (element) {
-                                      element.scrollIntoView({
-                                          behavior: "smooth",
-                                          block: "start",
-                                      });
-                                  }
+                                if (url.startsWith("#")) {
 
-                                  return;
-                              }
+                                    const element =
+                                        document.getElementById(
+                                            url.substring(1)
+                                        );
 
-                              // Normal URL
-                              window.location.href = url;
-                          }}
-                      >
-                          {hero.buttonText}
-                      </button>
-                  )}
+                                    if (element) {
+                                        element.scrollIntoView({
+                                            behavior: "smooth",
+                                            block: "start",
+                                        });
+                                    }
 
+                                    return;
+                                }
+
+                                window.location.href = url;
+
+                            }}
+                        >
+                            {hero.buttonText}
+                        </button>
+                    )}
+                    {/* Benefits */}
+                    <div className="hero-benefits">
+
+                        <div className="hero-benefit">
+                            <span className="benefit-icon">◷</span>
+                            <span>24-HOUR DISPATCH</span>
+                        </div>
+
+                        <span className="hero-benefit-divider">|</span>
+
+                        <div className="hero-benefit">
+                            <span className="benefit-icon">♧</span>
+                            <span>ANY QUANTITY ON ADVANCE PAYMENT</span>
+                        </div>
+
+                    </div>
                 </div>
-
 
                 {/* Hero Image */}
                 {hero.image && (
                     <div className="hero-image">
-
                         <img
-                            src={`http://localhost:5000${hero.image}`}
+                            src={`${SERVER_URL}${hero.image}`}
                             alt={
-                                hero.title ||
-                                "Packaging"
+                                hero.title
+                                    ? `${hero.title} - Hozon Pack packaging solutions`
+                                    : "Hozon Pack packaging solutions"
                             }
+                            fetchPriority="high"
                         />
-
                     </div>
                 )}
 

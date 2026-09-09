@@ -1,12 +1,27 @@
 import "./ProductCard.css";
+import { SERVER_URL } from "../../config/env.js";
+import { useNavigate } from "react-router-dom";
 
 function ProductCard({
     name,
+    slug,
     description,
     moq,
+    moqUnit,
     image,
     onEnquire,
 }) {
+    const navigate = useNavigate();
+
+    const handleLearnMore = () => {
+        navigate(`/products/${slug}`);
+    };
+
+    const shortDescription =
+        description && description.length > 35
+            ? `${description.substring(0, 35)}...`
+            : description;
+
     return (
         <div className="product-card">
 
@@ -18,18 +33,20 @@ function ProductCard({
                         src={
                             image.startsWith("http")
                                 ? image
-                                : `http://localhost:5000${image}`
+                                : `${SERVER_URL}${image}`
                         }
-                        alt={name}
+                        alt={`${name} packaging product`}
+                        loading="lazy"
                     />
                 )}
 
-                {/* Dynamic MOQ Badge */}
-                {moq !== null && moq !== undefined && moq !== "" && (
-                    <div className="product-moq-badge">
-                        MOQ : {Number(moq).toLocaleString()} pcs
-                    </div>
-                )}
+                {moq !== null &&
+                    moq !== undefined &&
+                    moq !== "" && (
+                        <div className="product-moq-badge">
+                            MOQ : {Number(moq).toLocaleString()} {moqUnit || "pcs"}
+                        </div>
+                    )}
 
             </div>
 
@@ -38,13 +55,14 @@ function ProductCard({
 
                 <h3>{name}</h3>
 
-                <p>{description}</p>
+                <p>{shortDescription}</p>
 
                 <div className="product-actions">
 
                     <button
                         className="learn-more-btn"
                         type="button"
+                        onClick={handleLearnMore}
                     >
                         Learn More
                     </button>
@@ -52,7 +70,13 @@ function ProductCard({
                     <button
                         className="enquiry-btn"
                         type="button"
-                        onClick={() => onEnquire(name)}
+                        onClick={() =>
+                            onEnquire({
+                                name,
+                                moq,
+                                moqUnit,
+                            })
+                        }
                     >
                         Enquire now
                     </button>
@@ -64,5 +88,4 @@ function ProductCard({
         </div>
     );
 }
-
 export default ProductCard;

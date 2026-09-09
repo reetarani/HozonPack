@@ -1,32 +1,76 @@
 import express from "express";
+
 import auth from "../middleware/authMiddleware.js";
 import upload from "../middleware/upload.js";
-import { createProduct, 
-    getProducts, 
-    getProduct, 
+
+import {
+    createProduct,
+    getProducts,
+    getProduct,
     getProductBySlug,
-    updateProduct, 
+    updateProduct,
     deleteProduct,
-permanentlyDeleteProduct, } 
-from "../controllers/productController.js";
+    permanentlyDeleteProduct,
+} from "../controllers/productController.js";
 
 const router = express.Router();
+
+/*
+|--------------------------------------------------------------------------
+| Public Product Routes
+|--------------------------------------------------------------------------
+*/
+
+router.get("/slug/:slug", getProductBySlug);
+
+
+/*
+|--------------------------------------------------------------------------
+| Protected Admin Product Routes
+|--------------------------------------------------------------------------
+*/
+
 router.use(auth);
-//router.post("/", createProduct);
+
 router.post(
     "/",
-    upload.single("image"),
+    upload.fields([
+        {
+            name: "image",
+            maxCount: 1,
+        },
+        {
+            name: "galleryImages",
+            maxCount: 20,
+        },
+    ]),
     createProduct
 );
+
 router.get("/", getProducts);
-router.get("/slug/:slug", getProductBySlug);
+
 router.get("/id/:id", getProduct);
+
 router.put(
     "/id/:id",
-    upload.single("image"),
+    upload.fields([
+        {
+            name: "image",
+            maxCount: 1,
+        },
+        {
+            name: "galleryImages",
+            maxCount: 20,
+        },
+    ]),
     updateProduct
 );
-router.delete("/id/:id", deleteProduct);
+
+router.delete(
+    "/id/:id",
+    deleteProduct
+);
+
 router.delete(
     "/id/:id/permanent",
     permanentlyDeleteProduct

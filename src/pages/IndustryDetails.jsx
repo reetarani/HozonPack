@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import TopBar from "../components/topbar/topBar";
-import Header from "../components/Header/Header";
+import TopBar from "../components/topbar/topbar";
+import Header from "../components/Header/header";
 import EnquiryPopup from "../components/EnquiryPopup/EnquiryPopup";
-import Footer from "../components/Footer/Footer";
+import Footer from "../components/footer/footer";
 import ProductCard from "../components/ProductCard/ProductCard";
+import CorporateQuote from "../components/CorporateQuote/CorporateQuote";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -134,7 +135,7 @@ function IndustryDetails() {
         setSelectedProduct("");
     }}
 />
-
+            <CorporateQuote />
             <Footer />
         </>
     );

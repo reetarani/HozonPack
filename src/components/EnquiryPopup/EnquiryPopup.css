@@ -198,9 +198,9 @@
 
     padding: 15px 18px;
 
-    background-color: rgb(253, 248, 245);
+    background-color: #f9fbff;
 
-    border: 1px solid rgb(232, 224, 216);
+    border: 1px solid #d8e2f7;
 
     border-radius: 12px;
 
@@ -232,14 +232,10 @@
 ========================= */
 
 .form-group input[readonly] {
-    background-color: rgb(253, 248, 245);
-
-    border: 1px solid rgb(232, 224, 216);
-
+    background-color: #f9fbff;
+    border: 1px solid #d8e2f7;
     border-radius: 12px;
-
     color: #666;
-
     cursor: not-allowed;
 }
 

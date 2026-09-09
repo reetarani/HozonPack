@@ -6,12 +6,19 @@ import EnquiryViewModal from "../../components/modals/EnquiryViewModal";
 import ConfirmModal from "../../components/common/ConfirmModal";
 import Toast from "../../components/common/Toast";
 import {
-    getEnquiries,
+    getAllEnquiries,
     getEnquiry,
     markEnquiryAsRead,
     deleteEnquiry,
     permanentlyDeleteEnquiry,
 } from "../../services/enquiryService";
+
+import {
+    getCorporateQuote,
+    markCorporateQuoteAsRead,
+    deleteCorporateQuote,
+    permanentlyDeleteCorporateQuote,
+} from "../../services/corporateQuoteService";
 
 import "./Enquiries.css";
 
@@ -83,8 +90,11 @@ const [confirmDelete, setConfirmDelete] = useState({
                 params.active = active;
             }
 
-        const response = await getEnquiries(params);
-
+        const response = await getAllEnquiries(params);
+console.log(
+    "ALL ENQUIRIES RESPONSE:",
+    response
+);
         setEnquiries(
             response.enquiries || []
         );
@@ -97,49 +107,103 @@ const [confirmDelete, setConfirmDelete] = useState({
         );
 
     } catch (error) {
-        console.error(
-            "Failed to load enquiries:",
-            error
-        );
-    } finally {
-        setLoading(false);
-    }
+    console.error(
+        "FAILED TO LOAD ENQUIRIES:",
+        error
+    );
+
+    console.error(
+        "STATUS:",
+        error?.response?.status
+    );
+
+    console.error(
+        "RESPONSE:",
+        error?.response?.data
+    );
+
+    console.error(
+        "URL:",
+        error?.config?.url
+    );
+} finally {
+    setLoading(false);
+}
 };
-const handleView = async (id) => {
+const handleView = async (enquiry) => {
     try {
-        // Get enquiry details
-        const response = await getEnquiry(id);
+        let response;
+        let data;
 
-        const enquiry = response?.enquiry;
+        // Corporate Quote
+        if (enquiry.type === "corporate") {
+            response = await getCorporateQuote(
+                enquiry._id
+            );
 
-        if (!enquiry) {
-            throw new Error("Enquiry data not found");
-        }
+            data = response?.quote;
 
-        // Mark as read if it is currently new
-        if (enquiry.status === "new") {
-            const readResponse =
-                await markEnquiryAsRead(id);
+            if (!data) {
+                throw new Error(
+                    "Corporate quote data not found"
+                );
+            }
 
+            // Mark corporate quote as read
+            if (data.status === "new") {
+                const readResponse =
+                    await markCorporateQuoteAsRead(
+                        enquiry._id
+                    );
 
-            // Use updated enquiry returned by backend
-            if (readResponse?.enquiry) {
-                enquiry.status =
-                    readResponse.enquiry.status;
+                if (readResponse?.quote) {
+                    data.status =
+                        readResponse.quote.status;
+                }
+            }
+
+        } else {
+            // Normal Product Enquiry
+            response = await getEnquiry(
+                enquiry._id
+            );
+
+            data = response?.enquiry;
+
+            if (!data) {
+                throw new Error(
+                    "Enquiry data not found"
+                );
+            }
+
+            // Mark enquiry as read
+            if (data.status === "new") {
+                const readResponse =
+                    await markEnquiryAsRead(
+                        enquiry._id
+                    );
+
+                if (readResponse?.enquiry) {
+                    data.status =
+                        readResponse.enquiry.status;
+                }
             }
         }
 
-        // Update selected enquiry
-        setViewEnquiry(enquiry);
+        // Keep type so modal knows the source
+        data.type = enquiry.type;
+
+        setViewEnquiry(data);
 
         // Update table immediately
         setEnquiries((prev) =>
             prev.map((item) =>
-                item._id === id
+                item._id === enquiry._id &&
+                item.type === enquiry.type
                     ? {
-                          ...item,
-                          status: "read",
-                      }
+                        ...item,
+                        status: "read",
+                    }
                     : item
             )
         );
@@ -177,15 +241,33 @@ const handleConfirmDelete = async () => {
     }
 
     try {
-        if (enquiry.isActive) {
-            // Active → Soft delete
-            await deleteEnquiry(enquiry._id);
+        if (enquiry.type === "corporate") {
+
+            if (enquiry.isActive) {
+                // Corporate Quote → Soft delete
+                await deleteCorporateQuote(
+                    enquiry._id
+                );
+            } else {
+                // Corporate Quote → Permanent delete
+                await permanentlyDeleteCorporateQuote(
+                    enquiry._id
+                );
+            }
 
         } else {
-            // Inactive → Permanent delete
-            await permanentlyDeleteEnquiry(
-                enquiry._id
-            );
+
+            if (enquiry.isActive) {
+                // Product Enquiry → Soft delete
+                await deleteEnquiry(
+                    enquiry._id
+                );
+            } else {
+                // Product Enquiry → Permanent delete
+                await permanentlyDeleteEnquiry(
+                    enquiry._id
+                );
+            }
         }
 
         setConfirmDelete({
@@ -194,8 +276,9 @@ const handleConfirmDelete = async () => {
         });
 
         await loadEnquiries();
+
         setToast({
-            message: "User deleted successfully.",
+            message: "Enquiry deleted successfully.",
             type: "success",
         });
 
@@ -204,13 +287,19 @@ const handleConfirmDelete = async () => {
             "Failed to delete enquiry:",
             error
         );
+
+        const message =
+            error?.response?.data?.message ||
+            "Failed to delete enquiry.";
+
         setToast({
             message,
             type: "error",
         });
+
         console.error(
             "Server response:",
-            error.response?.data
+            error?.response?.data
         );
     }
 };
@@ -291,9 +380,8 @@ const handleConfirmDelete = async () => {
                     <thead className="table-light">
                         <tr>
                             <th>#</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
+                            <th>Type</th>
+                            <th>Email</th>                     
                             <th>Subject</th>
                             <th>Status</th>
                             <th>Date</th>
@@ -308,7 +396,7 @@ const handleConfirmDelete = async () => {
                         {loading ? (
                             <tr>
                                 <td
-                                    colSpan="8"
+                                    colSpan="7"
                                     className="text-center py-4"
                                 >
                                     Loading enquiries...
@@ -320,27 +408,29 @@ const handleConfirmDelete = async () => {
                             enquiries.map(
                                 (enquiry, index) => (
                                     <tr
-                                        key={
-                                            enquiry._id
-                                        }
+                                        key={`${enquiry.type}-${enquiry._id}`}
                                     >
-
                                         <td>
                                             {index + 1}
                                         </td>
 
                                         <td>
-                                            {enquiry.name}
+                                            {enquiry.type === "corporate" ? (
+                                                <span className="text-dark">
+                                                    Corporate Quote
+                                                </span>
+                                            ) : (
+                                                <span>
+                                                    Product Enquiry
+                                                </span>
+                                            )}
                                         </td>
 
                                         <td>
                                             {enquiry.email}
                                         </td>
 
-                                        <td>
-                                            {enquiry.phone ||
-                                                "-"}
-                                        </td>
+                                        
 
                                         <td>
                                             {enquiry.subject ||
@@ -374,7 +464,7 @@ const handleConfirmDelete = async () => {
                                                     type="button"
                                                     className="action-btn view-btn"
                                                     title="View"
-                                                    onClick={() => handleView(enquiry._id)}
+                                                    onClick={() => handleView(enquiry)}
                                                 >
                                                     <FaEye />
                                                 </button>
@@ -403,7 +493,7 @@ const handleConfirmDelete = async () => {
 
                             <tr>
                                 <td
-                                    colSpan="8"
+                                    colSpan="7"
                                     className="text-center py-4"
                                 >
                                     No enquiries found.

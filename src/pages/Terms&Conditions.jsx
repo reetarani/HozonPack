@@ -5,13 +5,14 @@ import Footer from "../components/footer/footer.jsx";
 import PageHeader from "../components/PageHeader/PageHeader.jsx";
 import TopBar from "../components/topbar/topbar.jsx";
 import EnquiryPopup from "../components/EnquiryPopup/EnquiryPopup";
+import CorporateQuote from "../components/CorporateQuote/CorporateQuote.jsx";
 
-function TermsNConditions() {
+function TermsNConditions({ initialTopBar = null }) {
     const [isQuoteOpen, setIsQuoteOpen] = useState(false);
 
     return (
         <>
-            <TopBar />
+            <TopBar initialTopBar={initialTopBar} />
 
             <Header
                 onGetQuote={() => setIsQuoteOpen(true)}
@@ -49,7 +50,7 @@ function TermsNConditions() {
                     <p>Email: info@hozonpack.com</p>
                 </div>
             </section>
-
+            <CorporateQuote />
             <Footer />
 
             <EnquiryPopup

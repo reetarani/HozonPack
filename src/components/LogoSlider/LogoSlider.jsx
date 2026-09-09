@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import "./LogoSlider.css";
+
 import { getPublicClients } from "../../services/clientService";
+import { SERVER_URL } from "../../config/env";
+
+import SectionHeader from "../SectionHeader/SectionHeader";
 
 function LogoSlider() {
     const [clients, setClients] = useState([]);
@@ -8,13 +12,10 @@ function LogoSlider() {
     useEffect(() => {
         const fetchClients = async () => {
             try {
-                const response =
-                    await getPublicClients();
+                const response = await getPublicClients();
 
                 if (response.success) {
-                    setClients(
-                        response.clients || []
-                    );
+                    setClients(response.clients || []);
                 }
             } catch (error) {
                 console.error(
@@ -28,23 +29,41 @@ function LogoSlider() {
     }, []);
 
     return (
-        <div
-            className="logo-slider"
-            id="clients"
-        >
-            <div className="logo-track">
+        <section className="clients-section" id="clients">
 
-                {clients.map((client) => (
-                    <div
-                        className="logo-item"
-                        key={client._id}
-                    >
-                        {client.name}
+            <div className="container">
+
+                <SectionHeader
+                    title="Our"
+                    highlight="Partners"
+                />
+
+                <div className="logo-slider">
+
+                    <div className="logo-track">
+
+                        {clients.map((client) => (
+                            <div
+                                className="logo-item"
+                                key={client._id}
+                            >
+                                {client.logo && (
+                                    <img
+                                        src={`${SERVER_URL}${client.logo}`}
+                                        alt={client.name || "Hozon Pack partner"}
+                                        loading="lazy"
+                                    />
+                                )}
+                            </div>
+                        ))}
+
                     </div>
-                ))}
+
+                </div>
 
             </div>
-        </div>
+
+        </section>
     );
 }
 

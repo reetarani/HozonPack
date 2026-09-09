@@ -1,154 +1,980 @@
-/* ===========================
-   Products Section
-=========================== */
+/* =========================================================
+   INDUSTRIES SECTION
+========================================================= */
 
-.industries{
-    width:100%;
-    background:#ffffff;
-    padding:30px 0 50px 0px;
+.industries {
+    width: 100%;
+    padding: 20px 0px;
+    background: #f7f8fa;
+    box-sizing: border-box;
 }
 
-.industry-layout {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 24px;
+
+/* =========================================================
+   SHOWCASE
+========================================================= */
+
+.industry-showcase {
+    width: 100%;
+    max-width: 1200px;
+    height: 480px;
+
+    margin: 40px auto 0;
+    padding: 14px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    /* YOUR ORIGINAL THEME COLOR */
+    background: linear-gradient(
+        110deg,
+        #cdd6ff 0%,
+        #999af5 45%,
+        #4545e9 100%
+    );
+
+    transition: background 0.8s ease;
 }
 
-/* CARDS */
+
+/* =========================================================
+   TRACK
+========================================================= */
+
+.industry-track {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+
+    align-items: stretch;
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   COMMON CARD
+========================================================= */
 
 .industry-card {
     position: relative;
-    overflow: hidden;
-    border-radius: 24px;
 
-    background: #eee;
+    height: 100%;
+
+    min-width: 0;
+
+    flex: 1 1 0;
+
+    transition:
+        flex-grow 0.8s cubic-bezier(
+            0.22,
+            0.61,
+            0.36,
+            1
+        ),
+        flex-basis 0.8s cubic-bezier(
+            0.22,
+            0.61,
+            0.36,
+            1
+        ),
+        transform 0.8s cubic-bezier(
+            0.22,
+            0.61,
+            0.36,
+            1
+        );
+
+    will-change:
+        flex-grow,
+        flex-basis,
+        transform;
 }
 
-.industry-card img,
-.industry-image {
+
+/* =========================================================
+   ACTIVE CARD
+========================================================= */
+
+.industry-card.is-active {
+    flex: 3.5 1 0;
+
+    z-index: 10;
+}
+
+
+/* =========================================================
+   SMALL CARD
+========================================================= */
+
+.industry-card.is-small {
+    flex: 1 1 0;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   ACTIVE CARD
+   WHITE + BLACK TEXT
+========================================================= */
+
+.industry-active-card {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s ease;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    color: #111111;
+
+    box-shadow:
+        0 12px 35px
+        rgba(0, 0, 0, 0.12);
+
+    transition:
+        background 0.8s ease,
+        color 0.5s ease,
+        box-shadow 0.5s ease,
+        border-radius 0.8s ease;
 }
 
-.industry-card:hover .industry-image {
-    transform: scale(1.05);
+
+/* =========================================================
+   ACTIVE CONTENT
+========================================================= */
+
+.industry-active-content {
+    width: 100%;
+    height: 100%;
+
+    padding: 34px 32px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
 }
 
-/* TEXT OVERLAY */
 
-.industry-summary {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 28px;
-    color: #fff;
-    z-index: 2;
+/* =========================================================
+   EYEBROW
+========================================================= */
 
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.85) 0%,
-        rgba(0, 0, 0, 0.45) 45%,
-        rgba(0, 0, 0, 0) 100%
-    );
-}
+.industry-eyebrow {
+    margin-bottom: 10px;
 
-.industry-title {
-    margin: 0;
-    font-size: 2rem;
+    font-family:
+        "IBM Plex Sans",
+        sans-serif;
+
+    font-size: 12px;
+
+    line-height: 2.3;
+
     font-weight: 700;
-    line-height: 1.2;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    color: #555cff;
 }
 
-.industry-subtitle {
-    margin: 8px 0;
-    color: #7778F6;
-    font-size: 21px;
-    font-weight: 600;
-    --tw-leading: 31px;
-    line-height: 31px;
+
+/* =========================================================
+   ACTIVE TITLE
+========================================================= */
+
+.industry-active-content h2 {
+    margin: 0 0 14px;
+
+    max-width: 650px;
+
+    font-family:
+        "Playfair Display",
+        serif;
+
+    font-size: 34px;
+
+    line-height: 1.05;
+
+    font-weight: 700;
+
+    color: #111111;
 }
 
-.industry-description {
+
+/* =========================================================
+   ACTIVE DESCRIPTION
+========================================================= */
+
+.industry-active-description {
+    max-width: 620px;
+
     margin: 0;
-    font-size: 0.95rem;
-    line-height: 1.5;
+
+    font-family:
+        "IBM Plex Sans",
+        sans-serif;
+
+    font-size: 13px;
+
+    line-height: 1.55;
+
+    color: #555555;
 }
 
-/* LARGE LEFT CARD */
 
-.industry-card.large {
-    height: 640px;
+/* =========================================================
+   DESCRIPTION LIST
+========================================================= */
+
+.industry-description-list {
+    width: 100%;
+
+    max-width: 650px;
+
+    margin-top: 20px;
+
+    overflow: hidden;
 }
 
-/* RIGHT COLUMN */
 
-.right-column {
+/* =========================================================
+   DESCRIPTION ITEM
+========================================================= */
+
+.industry-description-item {
     display: grid;
-    gap: 24px;
+
+    grid-template-columns:
+        90px
+        minmax(0, 1fr);
+
+    column-gap: 15px;
+
+    padding: 8px 0;
+
+    border-bottom:
+        1px solid
+        #e7e7e7;
 }
 
-.right-column .industry-card {
-    height: 308px;
+
+.industry-description-item:first-child {
+    border-top:
+        1px solid
+        #e7e7e7;
 }
 
-/* BOTTOM ROW */
 
-.bottom-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    margin-top: 24px;
+/* =========================================================
+   DESCRIPTION LABEL
+========================================================= */
+
+.industry-description-label {
+    font-family:
+        "IBM Plex Sans",
+        sans-serif;
+
+    font-size: 10px;
+
+    line-height: 2.3;
+
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+
+    text-transform: uppercase;
+
+    color: #999999;
 }
 
-.bottom-row .industry-card {
-    height: 280px;
+
+/* =========================================================
+   DESCRIPTION VALUE
+========================================================= */
+
+.industry-description-value {
+    min-width: 0;
+
+    font-family:
+        "IBM Plex Sans",
+        sans-serif;
+
+    font-size: 13px;
+
+    line-height: 2.4;
+
+    color: #333333;
 }
 
-/* RESPONSIVE */
 
-@media (max-width: 991px) {
+/* =========================================================
+   ACTIVE FOOTER
+========================================================= */
 
-    .industry-layout {
-        grid-template-columns: 1fr;
+.industry-active-footer {
+    margin-top: auto;
+
+    padding-top: 18px;
+
+    border-top:
+        1px solid
+        #e5e5e5;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+/* =========================================================
+   VIEW PACKAGING BUTTON
+========================================================= */
+
+.industry-view-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #111111;
+
+    font-family:
+        "IBM Plex Sans",
+        sans-serif;
+
+    font-size: 12px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    transition:
+        transform 0.25s ease,
+        color 0.25s ease;
+}
+
+
+.industry-view-link:hover {
+    transform:
+        translateX(4px);
+
+    color: #4545e9;
+}
+
+
+.industry-view-arrow {
+    font-size: 18px;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   PRODUCT COUNT
+========================================================= */
+
+.industry-product-count {
+    flex: 0 0 auto;
+
+    font-family:
+        "IBM Plex Sans",
+        sans-serif;
+
+    font-size: 9px;
+
+    color: #999999;
+}
+
+
+/* =========================================================
+   SMALL CARD
+========================================================= */
+
+.industry-small-card {
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+
+    box-sizing: border-box;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.40);
+
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.10);
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    transition:
+        background 0.45s ease,
+        border-color 0.45s ease,
+        transform 0.45s ease,
+        box-shadow 0.45s ease;
+}
+
+
+/* =========================================================
+   SMALL CARD HOVER
+========================================================= */
+
+.industry-small-card:hover {
+    background:
+        rgba(255, 255, 255, 0.18);
+
+    border-color:
+        rgba(255, 255, 255, 0.65);
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================================
+   SMALL CARD NAME
+========================================================= */
+
+.industry-small-name {
+    display: block;
+
+    max-width: 100%;
+
+    font-family:
+        "Playfair Display",
+        serif;
+
+    font-size: 18px;
+
+    line-height: 1.2;
+
+    font-weight: 500;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   SMALL CARD VIEW
+========================================================= */
+
+.industry-small-view {
+    display: block;
+    margin-top: 11px;
+    font-family:
+        "IBM Plex Sans",
+        sans-serif;
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 1.5px;
+    color:
+        rgba(255, 255, 255, 0.65);
+        border: 1px solid #fff;
+    padding: 8px;
+    border-radius: 12px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .industry-showcase {
+        height: 460px;
     }
 
-    .industry-card.large,
-    .right-column .industry-card,
-    .bottom-row .industry-card {
-        height: 350px;
+
+    .industry-active-content {
+        padding: 30px 26px;
     }
 
-    .bottom-row {
-        grid-template-columns: 1fr;
+
+    .industry-active-content h2 {
+        font-size: 30px;
     }
 
-    .industry-title {
-        font-size: 1.6rem;
+
+    .industry-small-name {
+        font-size: 15px;
     }
+
 }
+
+
+/* =========================================================
+   MOBILE
+   SAME CARD DESIGN
+   ONLY VERTICAL LAYOUT
+========================================================= */
 
 @media (max-width: 768px) {
 
-    .industry-layout,
-    .bottom-row {
+    .industries {
+        padding: 60px 16px;
+    }
+
+
+    /* -----------------------------------------------------
+       SHOWCASE
+    ----------------------------------------------------- */
+
+    .industry-showcase {
+        height: auto;
+
+        min-height: 700px;
+
+        margin-top: 30px;
+
+        padding: 10px;
+
+        border-radius: 16px;
+
+        overflow: hidden;
+    }
+
+
+    /* -----------------------------------------------------
+       VERTICAL TRACK
+    ----------------------------------------------------- */
+
+    .industry-track {
+        width: 100%;
+        height: auto;
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+
+    /* -----------------------------------------------------
+       CARD
+    ----------------------------------------------------- */
+
+    .industry-card {
+        width: 100%;
+
+        min-width: 0;
+
+        position: relative;
+
+        flex: none;
+
+        transition:
+            height 0.8s cubic-bezier(
+                0.22,
+                0.61,
+                0.36,
+                1
+            ),
+            transform 0.8s cubic-bezier(
+                0.22,
+                0.61,
+                0.36,
+                1
+            );
+    }
+
+
+    /* -----------------------------------------------------
+       ACTIVE
+    ----------------------------------------------------- */
+
+    .industry-card.is-active {
+        width: 100%;
+
+        height: 430px;
+
+        flex: none;
+
+        z-index: 10;
+    }
+
+
+    /* -----------------------------------------------------
+       SMALL
+    ----------------------------------------------------- */
+
+    .industry-card.is-small {
+        width: 100%;
+
+        height: 88px;
+
+        flex: none;
+
+        z-index: 2;
+    }
+
+
+    /* -----------------------------------------------------
+       ACTIVE CARD
+       SAME WHITE DESIGN AS DESKTOP
+    ----------------------------------------------------- */
+
+    .industry-active-card {
+        width: 100%;
+        height: 100%;
+
+        border-radius: 14px;
+
+        background: #ffffff;
+
+        color: #111111;
+
+        box-shadow:
+            0 10px 25px
+            rgba(0, 0, 0, 0.12);
+    }
+
+
+    /* -----------------------------------------------------
+       ACTIVE CONTENT
+    ----------------------------------------------------- */
+
+    .industry-active-content {
+        width: 100%;
+        height: 100%;
+
+        padding: 25px 20px;
+
+        box-sizing: border-box;
+    }
+
+
+    /* -----------------------------------------------------
+       EYEBROW
+    ----------------------------------------------------- */
+
+    .industry-eyebrow {
+        margin-bottom: 9px;
+        font-size: 10px;
+        letter-spacing: 1.5px;
+    }
+
+
+    /* -----------------------------------------------------
+       TITLE
+    ----------------------------------------------------- */
+
+    .industry-active-content h2 {
+        margin-bottom: 12px;
+        font-size: 27px;
+        line-height: 2.08;
+        color: #111111;
+    }
+
+
+    /* -----------------------------------------------------
+       DESCRIPTION
+    ----------------------------------------------------- */
+
+    .industry-active-description {
+        max-width: 100%;
+
+        font-size: 11px;
+
+        line-height: 1.5;
+
+        color: #555555;
+    }
+
+
+    /* -----------------------------------------------------
+       DESCRIPTION LIST
+    ----------------------------------------------------- */
+
+    .industry-description-list {
+        width: 100%;
+
+        margin-top: 16px;
+
+        max-height: 180px;
+
+        overflow-y: auto;
+
+        scrollbar-width: thin;
+    }
+
+
+    .industry-description-item {
+        grid-template-columns:
+            70px
+            minmax(0, 1fr);
+
+        column-gap: 9px;
+
+        padding: 7px 0;
+
+        border-bottom:
+            1px solid
+            #e7e7e7;
+    }
+
+
+    .industry-description-label {
+        font-size: 6px;
+        letter-spacing: 1px;
+        color: #999999;
+    }
+
+
+    .industry-description-value {
+        font-size: 9px;
+
+        line-height: 1.35;
+
+        color: #333333;
+    }
+
+
+    /* -----------------------------------------------------
+       FOOTER
+    ----------------------------------------------------- */
+
+    .industry-active-footer {
+        margin-top: auto;
+
+        padding-top: 15px;
+
+        border-top:
+            1px solid
+            #e5e5e5;
+    }
+
+
+    .industry-view-link {
+        font-size: 10px;
+
+        color: #111111;
+    }
+
+
+    .industry-product-count {
         display: none;
     }
 
-    .mobile-slider {
-        display: block;
+
+    /* -----------------------------------------------------
+       SMALL CARD
+       EXACT SAME DESIGN AS DESKTOP
+    ----------------------------------------------------- */
+
+    .industry-small-card {
+        width: 100%;
+        height: 100%;
+        padding: 0 18px;
+        box-sizing: border-box;
+        border:
+            1px solid
+            rgba(255, 255, 255, 0.40);
+        border-radius: 14px;
+        background:
+            rgba(255, 255, 255, 0.10);
+        color: #ffffff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
 
-    .mobile-slider .industry-card {
-        height: 420px;
+
+    .industry-small-card:hover {
+        background:
+            rgba(255, 255, 255, 0.18);
+
+        transform: translateY(-2px);
     }
+
+
+    .industry-small-name {
+        font-size: 17px;
+
+        color: #ffffff;
+    }
+
+
+    .industry-small-view {
+        margin-top: 0;
+
+        margin-left: 12px;
+
+        font-size: 7px;
+
+        color:
+            rgba(255, 255, 255, 0.65);
+    }
+
 }
 
-@media (min-width: 769px) {
-    .mobile-slider {
-        display: none;
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .industries {
+        padding: 50px 14px;
     }
+
+
+    .industry-showcase {
+        min-height: 650px;
+
+        margin-top: 25px;
+
+        padding: 8px;
+
+        border-radius: 14px;
+    }
+
+
+    .industry-track {
+        gap: 8px;
+    }
+
+
+    .industry-card.is-active {
+        height: 410px;
+    }
+
+
+    .industry-card.is-small {
+        height: 76px;
+    }
+
+
+    .industry-active-content {
+        padding: 22px 16px;
+    }
+
+
+    .industry-eyebrow {
+        font-size: 7px;
+
+        letter-spacing: 1.3px;
+    }
+
+
+    .industry-active-content h2 {
+        font-size: 24px;
+    }
+
+
+    .industry-active-description {
+        font-size: 10px;
+    }
+
+
+    .industry-description-list {
+        margin-top: 14px;
+
+        max-height: 165px;
+    }
+
+
+    .industry-description-item {
+        grid-template-columns:
+            58px
+            minmax(0, 1fr);
+
+        column-gap: 7px;
+
+        padding: 6px 0;
+    }
+
+
+    .industry-description-value {
+        font-size: 8px;
+    }
+
+
+    .industry-small-card {
+        padding: 0 14px;
+    }
+
+
+    .industry-small-name {
+        font-size: 15px;
+    }
+
+
+    .industry-small-view {
+        margin-left: 8px;
+
+        font-size: 6px;
+    }
+
+
+    .industry-view-link {
+        font-size: 9px;
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .industry-card,
+    .industry-active-card,
+    .industry-small-card,
+    .industry-showcase {
+        transition: none !important;
+    }
+
 }

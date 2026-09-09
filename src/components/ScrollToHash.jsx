@@ -2,21 +2,55 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 function ScrollToHash() {
-  const { hash } = useLocation();
+    const location = useLocation();
 
-  useEffect(() => {
-    if (hash) {
-      const element = document.querySelector(hash);
+    useEffect(() => {
+        if (!location.hash) return;
 
-      if (element) {
-        element.scrollIntoView({
-          behavior: "smooth",
-        });
-      }
-    }
-  }, [hash]);
+        const hash = location.hash.substring(1);
 
-  return null;
+        let attempts = 0;
+        const maxAttempts = 30;
+
+        const scrollToTarget = () => {
+            const element = document.getElementById(hash);
+
+            if (!element) {
+                attempts++;
+
+                if (attempts < maxAttempts) {
+                    setTimeout(scrollToTarget, 100);
+                }
+
+                return;
+            }
+
+            // Contact should go to the very bottom
+            if (hash === "contact") {
+                window.scrollTo({
+                    top: document.documentElement.scrollHeight,
+                    behavior: "smooth",
+                });
+
+                return;
+            }
+
+            // Other sections
+            element.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        };
+
+        // Wait for SSR/client content
+        setTimeout(scrollToTarget, 100);
+
+        return () => {
+            attempts = maxAttempts;
+        };
+    }, [location.pathname, location.hash]);
+
+    return null;
 }
 
 export default ScrollToHash;
